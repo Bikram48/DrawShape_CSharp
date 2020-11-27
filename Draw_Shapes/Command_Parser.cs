@@ -20,7 +20,9 @@ namespace Draw_Shapes
             }
             else if(all_shapes.Contains(input_shapes))
             {
-                MessageBox.Show("Shape exist");
+                DrawingBox box=new DrawingBox();
+                box.Show();
+
             }
             else
             {

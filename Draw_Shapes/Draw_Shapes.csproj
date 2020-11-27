@@ -47,6 +47,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Command_Parser.cs" />
+    <Compile Include="DrawingBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DrawingBox.Designer.cs">
+      <DependentUpon>DrawingBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -64,6 +70,9 @@
     <Compile Include="Welcome_Page.Designer.cs">
       <DependentUpon>Welcome_Page.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="DrawingBox.resx">
+      <DependentUpon>DrawingBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

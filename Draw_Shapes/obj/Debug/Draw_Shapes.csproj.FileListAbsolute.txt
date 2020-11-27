@@ -9,3 +9,4 @@ D:\C#\Draw_Shapes\Draw_Shapes\obj\Debug\Draw_Shapes.pdb
 D:\C#\Draw_Shapes\Draw_Shapes\obj\Debug\Draw_Shapes.Form1.resources
 D:\C#\Draw_Shapes\Draw_Shapes\obj\Debug\Draw_Shapes.Welcome_Page.resources
 D:\C#\Draw_Shapes\Draw_Shapes\obj\Debug\Draw_Shapes.csprojAssemblyReference.cache
+D:\C#\Draw_Shapes\Draw_Shapes\obj\Debug\Draw_Shapes.DrawingBox.resources
