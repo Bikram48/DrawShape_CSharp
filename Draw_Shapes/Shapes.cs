@@ -11,12 +11,14 @@ namespace Draw_Shapes
     {
         protected Color colour;
         protected int xAxis, yAxis;
+        protected Boolean fillOn;
 
-        public Shapes(Color colour,int xAxis,int yAxis)
+        public Shapes(Color colour,int xAxis,int yAxis,Boolean fillOn)
         {
             this.colour = colour;
             this.xAxis = xAxis;
             this.yAxis = yAxis;
+            this.fillOn = fillOn;
         }
 
         public abstract void draw(Graphics g);

@@ -46,7 +46,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandChecker.cs" />
     <Compile Include="Command_Parser.cs" />
+    <Compile Include="DrawAllShapes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DrawAllShapes.Designer.cs">
+      <DependentUpon>DrawAllShapes.cs</DependentUpon>
+    </Compile>
     <Compile Include="DrawingBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,6 +79,9 @@
     <Compile Include="Welcome_Page.Designer.cs">
       <DependentUpon>Welcome_Page.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="DrawAllShapes.resx">
+      <DependentUpon>DrawAllShapes.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DrawingBox.resx">
       <DependentUpon>DrawingBox.cs</DependentUpon>
     </EmbeddedResource>

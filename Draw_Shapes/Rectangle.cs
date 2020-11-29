@@ -13,7 +13,7 @@ namespace Draw_Shapes
         private int height;
 
 
-        public Rectangle(Color colour,int xAxis, int yAxis,int width,int height) : base(colour,xAxis,yAxis)
+        public Rectangle(Color colour,int xAxis, int yAxis,Boolean fillOn,int width,int height) : base(colour,xAxis,yAxis,fillOn)
         {
             this.width = width;
             this.height = height;
@@ -21,9 +21,21 @@ namespace Draw_Shapes
 
         public override void draw(Graphics g)
         {
-            Pen p = new Pen(Color.Black, 2);
-            SolidBrush b = new SolidBrush(colour);
-            g.DrawRectangle(p, xAxis, yAxis, width, height);
+            if (fillOn==true)
+            {
+                //SolidBrush sb = new SolidBrush(btn_PenColor.BackColor);
+                //g.FillRectangle(sb, e.X, e.Y, int.Parse(txt_ShapeSize.Text), int.Parse(txt_ShapeSize.Text));
+                SolidBrush sb = new SolidBrush(colour);
+                g.FillRectangle(sb, xAxis, yAxis, width, height);
+            }
+            else
+            {
+                Pen p = new Pen(colour, 2);
+                // SolidBrush sb = new SolidBrush(btn_PenColor.BackColor);
+                //g.FillRectangle(sb, e.X, e.Y, int.Parse(txt_ShapeSize.Text), int.Parse(txt_ShapeSize.Text));
+
+                g.DrawRectangle(p, xAxis, yAxis, width, height);
+            }
         }
 
         public override void drawLine(Graphics g)

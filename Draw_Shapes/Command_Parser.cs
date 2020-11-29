@@ -59,8 +59,8 @@ namespace Draw_Shapes
                         int firstParameter = Convert.ToInt32(split_parameters[0]);
                         int secondParameter = Convert.ToInt32(split_parameters[1]);
 
-                        Shapes shape = new Rectangle(col, firstParameter, secondParameter, w, h);
-                        shape.draw(g);
+                       // Shapes shape = new Rectangle(col, firstParameter, secondParameter, w, h);
+                        //shape.draw(g);
                     }
                     catch(FormatException e)
                     {
@@ -81,8 +81,8 @@ namespace Draw_Shapes
                         int firstParameter = Convert.ToInt32(split_parameters[0]);
                         int secondParameter = Convert.ToInt32(split_parameters[1]);
 
-                        Shapes shape = new Rectangle(Color.Red, firstParameter, secondParameter, 300, 300);
-                        shape.drawLine(g);
+                       // Shapes shape = new Rectangle(Color.Red, firstParameter, secondParameter, 300, 300);
+                       // shape.drawLine(g);
                     }
                     catch (FormatException e)
                     {
