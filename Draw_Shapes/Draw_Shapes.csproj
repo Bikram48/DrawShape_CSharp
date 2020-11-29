@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Circle.cs" />
     <Compile Include="CommandChecker.cs" />
     <Compile Include="Command_Parser.cs" />
     <Compile Include="DrawAllShapes.cs">
