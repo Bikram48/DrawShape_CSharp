@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,7 +50,7 @@ namespace Draw_Shapes
 
         private void textBox2_KeyDown(object sender, KeyEventArgs e)
         {
-            
+
             if (e.KeyCode == Keys.Enter)
             {
 
@@ -63,15 +64,17 @@ namespace Draw_Shapes
                     MessageBox.Show(textBox);
                 }
                 */
-                string[] RichTextBoxLines = richTextBox1.Lines;
+              
+
                 String run_commands = textBox2.Text.Trim();
                 String lower = run_commands.ToLower();
                 //if (lower.Equals("run"))
                 //{
-                    foreach (string line in RichTextBoxLines)
-                    {
-                        checker.parseCommands(line, g);
-                    }
+                string[] RichTextBoxLines = richTextBox1.Lines;
+                foreach (string line in RichTextBoxLines)
+                {
+                    checker.parseCommands(line, g);
+                }
                 //}
                 /*
                 else if(lower.Equals("clear"))
@@ -87,5 +90,7 @@ namespace Draw_Shapes
 
             }
         }
+
+        
     }
 }

@@ -16,7 +16,8 @@ namespace Draw_Shapes
         }
         public override void draw(Graphics g)
         {
-            throw new NotImplementedException();
+            Pen p = new Pen(Color.Red, 2);
+            g.DrawEllipse(p, xAxis-radius, yAxis-radius,radius+radius, radius+radius);
         }
 
         public override void drawLine(Graphics g)

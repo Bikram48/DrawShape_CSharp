@@ -30,7 +30,7 @@ namespace Draw_Shapes
             }
             else
             {
-                Pen p = new Pen(colour, 2);
+                Pen p = new Pen(Color.Red, 2);
                 // SolidBrush sb = new SolidBrush(btn_PenColor.BackColor);
                 //g.FillRectangle(sb, e.X, e.Y, int.Parse(txt_ShapeSize.Text), int.Parse(txt_ShapeSize.Text));
 
