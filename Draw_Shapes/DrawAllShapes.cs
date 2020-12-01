@@ -14,6 +14,7 @@ namespace Draw_Shapes
     public partial class DrawAllShapes : Form
     {
         Graphics g;
+        CommandChecker checker = new CommandChecker();
         public DrawAllShapes()
         {
             InitializeComponent();
@@ -54,7 +55,7 @@ namespace Draw_Shapes
             if (e.KeyCode == Keys.Enter)
             {
 
-                CommandChecker checker = new CommandChecker();
+                
 
 
                 /*for(int i = 0; i <= richTextBox1.Lines.Length; i++)
@@ -71,9 +72,27 @@ namespace Draw_Shapes
                 //if (lower.Equals("run"))
                 //{
                 string[] RichTextBoxLines = richTextBox1.Lines;
-                foreach (string line in RichTextBoxLines)
+
+                String singleLineCommand = textBox2.Text.Trim().ToLower();
+
+             
+                if (singleLineCommand.Equals("run"))
                 {
-                    checker.parseCommands(line, g);
+                    foreach (string line in RichTextBoxLines)
+                    {
+                        checker.parseCommands(line, g);
+                    }
+                    
+                }
+                else if (singleLineCommand.Equals("clear"))
+                {
+                    richTextBox1.Clear();
+                    panel1.Refresh();
+                }
+               
+                else
+                {
+                    checker.parseCommands(textBox2.Text,g);
                 }
                 //}
                 /*
@@ -91,6 +110,6 @@ namespace Draw_Shapes
             }
         }
 
-        
+      
     }
 }

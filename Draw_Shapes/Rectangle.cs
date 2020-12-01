@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Draw_Shapes
 {
@@ -33,9 +34,24 @@ namespace Draw_Shapes
                 Pen p = new Pen(Color.Red, 2);
                 // SolidBrush sb = new SolidBrush(btn_PenColor.BackColor);
                 //g.FillRectangle(sb, e.X, e.Y, int.Parse(txt_ShapeSize.Text), int.Parse(txt_ShapeSize.Text));
-
+                MessageBox.Show(xAxis + " " + yAxis);
                 g.DrawRectangle(p, xAxis, yAxis, width, height);
             }
+        }
+
+        public void setXandsetY(int x,int y)
+        {
+            xAxis = x;
+            yAxis = y;
+        }
+
+        public int getX()
+        {
+            return xAxis;
+        }
+        public int getY()
+        {
+            return yAxis;
         }
 
         public override void drawLine(Graphics g)

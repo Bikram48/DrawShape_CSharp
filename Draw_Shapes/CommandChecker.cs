@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -11,16 +12,15 @@ namespace Draw_Shapes
     class CommandChecker
     {
         Boolean fillOn = false;
-        int xAxis;
-        int yAxis;
+        private int xAxis;
+        private int yAxis;
         Color colour;
+        ArrayList axis = new ArrayList();
         public void parseCommands(String line,Graphics g)
         {
             
             String text = line.ToLower().Trim();
-            if(text.Equals("")) {
-                return;
-            }
+            
             String[] splitter = text.Split(' ');
 
             String commands = splitter[0];
@@ -34,6 +34,7 @@ namespace Draw_Shapes
 
                 if (commands.Equals("moveto"))
                 {
+                    
 
                     if (split_parameters.Length != 2)
                     {
@@ -46,7 +47,8 @@ namespace Draw_Shapes
 
                             xAxis = Convert.ToInt32(split_parameters[0]);
                             yAxis = Convert.ToInt32(split_parameters[1]);
-
+                          
+                        
                         }
                         catch (FormatException e)
                         {
@@ -121,9 +123,10 @@ namespace Draw_Shapes
                         try
                         {
 
+                       
                             int firstParameter = Convert.ToInt32(split_parameters[0]);
                             int secondParameter = Convert.ToInt32(split_parameters[1]);
-
+                        
                             Shapes shape = new Rectangle(colour, xAxis, yAxis, fillOn, firstParameter, secondParameter);
                             shape.draw(g);
                         }
@@ -146,8 +149,6 @@ namespace Draw_Shapes
                     yAxis = Convert.ToInt32(split_parameters[1]);
 
                     triangle.drawTriangle(g, xAxis, yAxis);
-
-
                 }
                 else
                 {
@@ -159,7 +160,12 @@ namespace Draw_Shapes
 
             }
             */
-
+        
+            public void moveTo(int x,int y)
+        {
+            xAxis = x;
+            yAxis = y;
+        }
 
         
     }
