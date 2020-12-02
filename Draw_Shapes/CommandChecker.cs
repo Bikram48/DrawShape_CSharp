@@ -11,49 +11,43 @@ namespace Draw_Shapes
 {
     class CommandChecker
     {
+        public static Boolean isPen=false;
         Boolean fillOn = false;
         private int xAxis;
         private int yAxis;
         Color colour;
-        ArrayList axis = new ArrayList();
-        public void parseCommands(String line,Graphics g)
+        public void parseCommands(String line, Graphics g)
         {
-            
+            int[] parameter = new int[2];
             String text = line.ToLower().Trim();
-            
             String[] splitter = text.Split(' ');
-
             String commands = splitter[0];
-            //try
-            //{
+            try
+            {
                 String parameters = splitter[1];
-
-
-
                 String[] split_parameters = parameters.Split(',');
+                for(int i = 0; i < split_parameters.Length; i++)
+                {
+                    try
+                    {
+                        parameter[i] = Convert.ToInt32(split_parameters[i]);
+                    }
+                    catch (FormatException e)
+                    {
+                        MessageBox.Show("Please enter the integer values");
+                    }
+                }
 
                 if (commands.Equals("moveto"))
                 {
-                    
-
                     if (split_parameters.Length != 2)
                     {
                         MessageBox.Show("Invalid parameters");
                     }
                     else
                     {
-                        try
-                        {
-
-                            xAxis = Convert.ToInt32(split_parameters[0]);
-                            yAxis = Convert.ToInt32(split_parameters[1]);
-                          
-                        
-                        }
-                        catch (FormatException e)
-                        {
-                            MessageBox.Show("Please enter the integer values");
-                        }
+                        xAxis =parameter[0];
+                        yAxis = parameter[1];      
                     }
                 }
                 else if (commands.Equals("drawto"))
@@ -64,46 +58,16 @@ namespace Draw_Shapes
                     }
                     else
                     {
-                        try
-                        {
-                            int firstParameter = Convert.ToInt32(split_parameters[0]);
-                            int secondParameter = Convert.ToInt32(split_parameters[1]);
-
-
-                        }
-                        catch (FormatException e)
-                        {
-                            MessageBox.Show("Please enter the integer values");
-                        }
+                            int firstParameter = parameter[0]; ;
+                            int secondParameter = parameter[1]; ;
+                       
                     }
                 }
                 else if (commands.Equals("pen"))
                 {
-                    if (parameters == "red")
-                    {
-                        colour = Color.Red;
-                    }
-                    else if (parameters == "blue")
-                    {
-                        colour = Color.Blue;
-                    }
-                    else if (parameters == "yellow")
-                    {
-                        colour = Color.Yellow;
-                    }
-                    else if (parameters == "gray")
-                    {
-                        colour = Color.Gray;
-                    }
-                    else if (parameters == "green")
-                    {
-                        colour = Color.Green;
-                    }
-                    else
-                    {
-                        colour = Color.Black;
-                    }
-
+                    isPen = true;                  
+                    PenColor colors = new PenColor();
+                    colour=colors.getPenColor(parameters);
                 }
                 else if (commands.Equals("fill"))
                 {
@@ -120,20 +84,7 @@ namespace Draw_Shapes
                     }
                     else
                     {
-                        try
-                        {
-
-                       
-                            int firstParameter = Convert.ToInt32(split_parameters[0]);
-                            int secondParameter = Convert.ToInt32(split_parameters[1]);
-                        
-                            Shapes shape = new Rectangle(colour, xAxis, yAxis, fillOn, firstParameter, secondParameter);
-                            shape.draw(g);
-                        }
-                        catch (FormatException e)
-                        {
-                            MessageBox.Show("Please enter the integer values");
-                        }
+                            Shapes shape = new Rectangle(colour, xAxis, yAxis, fillOn, parameter[0], parameter[1]); 
                     }
                 }
                 else if (commands.Equals("circle"))
@@ -145,26 +96,19 @@ namespace Draw_Shapes
                 else if (commands.Equals("triangle"))
                 {
                     Triangle triangle = new Triangle();
-                    xAxis = Convert.ToInt32(split_parameters[0]);
-                    yAxis = Convert.ToInt32(split_parameters[1]);
-
-                    triangle.drawTriangle(g, xAxis, yAxis);
+                    triangle.drawTriangle(g, parameter[0], parameter[1]);
                 }
                 else
                 {
                     MessageBox.Show("Invalid command");
                 }
             }
-            /*catch(IndexOutOfRangeException e)
+            catch (IndexOutOfRangeException e)
             {
 
             }
-            */
-        
-            public void moveTo(int x,int y)
-        {
-            xAxis = x;
-            yAxis = y;
+
+
         }
 
         

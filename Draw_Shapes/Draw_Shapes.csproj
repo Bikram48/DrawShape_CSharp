@@ -70,9 +70,12 @@
     <Compile Include="GradientPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="LoadFile.cs" />
+    <Compile Include="PenColor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rectangle.cs" />
+    <Compile Include="SaveFile.cs" />
     <Compile Include="Shapes.cs" />
     <Compile Include="Triangle.cs" />
     <Compile Include="Welcome_Page.cs">

@@ -24,36 +24,34 @@ namespace Draw_Shapes
         {
             if (fillOn==true)
             {
-                //SolidBrush sb = new SolidBrush(btn_PenColor.BackColor);
-                //g.FillRectangle(sb, e.X, e.Y, int.Parse(txt_ShapeSize.Text), int.Parse(txt_ShapeSize.Text));
-                SolidBrush sb = new SolidBrush(colour);
-                g.FillRectangle(sb, xAxis, yAxis, width, height);
+                if (CommandChecker.isPen == true)
+                {
+                    SolidBrush sb = new SolidBrush(colour);
+                    g.FillRectangle(sb, xAxis, yAxis, width, height);
+                }
+                else
+                {
+                    SolidBrush sb = new SolidBrush(Color.Black);
+                    g.FillRectangle(sb, xAxis, yAxis, width, height);
+                }
+                
             }
             else
             {
-                Pen p = new Pen(Color.Red, 2);
-                // SolidBrush sb = new SolidBrush(btn_PenColor.BackColor);
-                //g.FillRectangle(sb, e.X, e.Y, int.Parse(txt_ShapeSize.Text), int.Parse(txt_ShapeSize.Text));
-                MessageBox.Show(xAxis + " " + yAxis);
-                g.DrawRectangle(p, xAxis, yAxis, width, height);
+                if (CommandChecker.isPen == true)
+                {
+                    Pen p = new Pen(colour, 2);
+                    g.DrawRectangle(p, xAxis, yAxis, width, height);
+                }
+                else
+                {
+                    Pen p = new Pen(Color.Black, 2);
+                    g.DrawRectangle(p, xAxis, yAxis, width, height);
+                }
             }
         }
 
-        public void setXandsetY(int x,int y)
-        {
-            xAxis = x;
-            yAxis = y;
-        }
-
-        public int getX()
-        {
-            return xAxis;
-        }
-        public int getY()
-        {
-            return yAxis;
-        }
-
+       
         public override void drawLine(Graphics g)
         {
             
