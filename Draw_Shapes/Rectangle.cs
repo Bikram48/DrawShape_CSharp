@@ -59,6 +59,14 @@ namespace Draw_Shapes
             this.width = list[2];
             this.height = list[3];
         }
+        public void setWidth(int width)
+        {
+            this.width = width;
+        }
+        public int getWidth()
+        {
+            return this.width;
+        }
         /// <summary>
         /// Uses the public visibility modifier to give access to other classes also.
         /// This method draws the rectangle in canvas.

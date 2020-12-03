@@ -86,6 +86,14 @@ namespace Draw_Shapes
             //sets the fillOn property
             this.fillOn = fillOn;
         }
+        public void setX(int xAxis)
+        {
+            this.xAxis = xAxis;
+        }
+        public int getX()
+        {
+            return this.xAxis;
+        }
 
     }
 }

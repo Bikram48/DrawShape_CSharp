@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Draw_Shapes", "Draw_Shapes\Draw_Shapes.csproj", "{8C1E33F0-DB5B-4F16-8DC7-12442911407E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandCheckerTest", "CommandCheckerTest\CommandCheckerTest.csproj", "{3292CA75-9793-49B9-9CF8-611DC1411683}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{823FFF79-AEFE-40BE-BB10-875AEB0717BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{8C1E33F0-DB5B-4F16-8DC7-12442911407E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C1E33F0-DB5B-4F16-8DC7-12442911407E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C1E33F0-DB5B-4F16-8DC7-12442911407E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3292CA75-9793-49B9-9CF8-611DC1411683}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3292CA75-9793-49B9-9CF8-611DC1411683}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3292CA75-9793-49B9-9CF8-611DC1411683}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3292CA75-9793-49B9-9CF8-611DC1411683}.Release|Any CPU.Build.0 = Release|Any CPU
+		{823FFF79-AEFE-40BE-BB10-875AEB0717BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{823FFF79-AEFE-40BE-BB10-875AEB0717BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{823FFF79-AEFE-40BE-BB10-875AEB0717BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{823FFF79-AEFE-40BE-BB10-875AEB0717BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

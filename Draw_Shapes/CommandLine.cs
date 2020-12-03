@@ -13,6 +13,7 @@ namespace Draw_Shapes
     /// </summary>
     class CommandLine
     {
+        private static int line;
         /// <summary>
         /// Instantiates an object of CommandChecker class.
         /// </summary>
@@ -25,7 +26,7 @@ namespace Draw_Shapes
         /// <param name="richTextBox1">RichTextBox texts</param>
         /// <param name="panel1">Panel</param>
         /// <param name="g">Graphics reference</param>
-        public void commandLineCommands(TextBox textBox2,RichTextBox richTextBox1,Panel panel1,Graphics g)
+        public void commandLineCommands(TextBox textBox2,RichTextBox richTextBox1,Panel panel1,Graphics g,RichTextBox richTextBox2,TextBox textBox1)
         {
             String run_commands = textBox2.Text.Trim();
             String lower = run_commands.ToLower();
@@ -36,8 +37,11 @@ namespace Draw_Shapes
             //If run command entered then this block get executed
             if (singleLineCommand.Equals("run"))
             {
+                textBox2.Clear();
+                DrawAllShapes.syntaxCheckerClicked = false;
                 foreach (string line in RichTextBoxLines)
                 {
+                  
                     //passed the line of text into the parseCommands method to check the commands are valid or invalid
                     checker.parseCommands(line, g);
                 }
@@ -50,10 +54,16 @@ namespace Draw_Shapes
                 richTextBox1.Clear();
                 panel1.Refresh();
             }
+            else if (singleLineCommand.Equals("reset"))
+            {
+                checker.Reset();
+            }
             else
             {
+              
                 //passed the text of TextBox into the parseCommands method to check the commands are valid or invalid
                 checker.parseCommands(textBox2.Text, g);
+               
             }
         }
     }

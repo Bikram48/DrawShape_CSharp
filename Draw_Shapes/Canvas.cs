@@ -34,10 +34,15 @@ namespace Draw_Shapes
         /// <param name="g">Graphics reference</param>
         public void drawRectangle(Color colour, int xAxis, int yAxis, Boolean fillOn, int width, int height, Graphics g)
         {
-            //Creates the object of rectangle class.
-            Shapes s1=shape.checkShapes("rectangle");
-            s1.set(colour, fillOn, xAxis, yAxis,width,height);
-            s1.draw(g);
+            if (DrawAllShapes.syntaxCheckerClicked == false)
+            {
+                //Creates the object of rectangle class.
+                Shapes s1 = shape.checkShapes("rectangle");
+                s1.set(colour, fillOn, xAxis, yAxis, width, height);
+                s1.draw(g);
+            }
+           
+           
         }
 
         /// <summary>
@@ -52,10 +57,13 @@ namespace Draw_Shapes
         /// <param name="g">Graphics reference</param>
         public void drawCircle(Color colour,int xAxis,int yAxis,Boolean fillOn,int radius,Graphics g)
         {
-            //Creates the object of circle class.
-            Shapes s2 = shape.checkShapes("circle");
-            s2.set(colour, fillOn, xAxis, yAxis, radius);
-            s2.draw(g);
+            if (DrawAllShapes.syntaxCheckerClicked == false)
+            {
+                //Creates the object of circle class.
+                Shapes s2 = shape.checkShapes("circle");
+                s2.set(colour, fillOn, xAxis, yAxis, radius);
+                s2.draw(g);
+            }
         }
 
         /// <summary>
@@ -69,10 +77,13 @@ namespace Draw_Shapes
         /// <param name="g">Graphics reference</param>
         public void drawTriangle(Color colour, int xAxis, int yAxis, Boolean fillOn, Graphics g)
         {
-            //Creates the object of triangle class.
-            Shapes s3 = shape.checkShapes("triangle");
-            s3.set(colour, fillOn, xAxis, yAxis);
-            s3.draw(g);
+            if (DrawAllShapes.syntaxCheckerClicked == false)
+            {
+                //Creates the object of triangle class.
+                Shapes s3 = shape.checkShapes("triangle");
+                s3.set(colour, fillOn, xAxis, yAxis);
+                s3.draw(g);
+            }
         }
 
         /// <summary>
@@ -88,21 +99,25 @@ namespace Draw_Shapes
         /// <param name="g">Graphics reference</param>
         public void drawLine(Color colour, int xAxis, int yAxis, Boolean fillOn, int point1, int point2, Graphics g)
         {
-            if (CommandChecker.isPen == true)
+            if (DrawAllShapes.syntaxCheckerClicked == false)
             {
-                Pen p = new Pen(colour, 2);
-                //draws the line with the color passed by the user.
-                g.DrawLine(p, point1, point2, xAxis, yAxis);
+                if (CommandChecker.isPen == true)
+                {
+                    Pen p = new Pen(colour, 2);
+                    //draws the line with the color passed by the user.
+                    g.DrawLine(p, point1, point2, xAxis, yAxis);
+                }
+                else
+                {
+                    Pen p = new Pen(Color.Black, 2);
+                    //draws the line with the black color.
+                    g.DrawLine(p, point1, point2, xAxis, yAxis);
+                }
             }
-            else
-            {
-                Pen p = new Pen(Color.Black, 2);
-                //draws the line with the black color.
-                g.DrawLine(p, point1, point2, xAxis, yAxis);
-            }
-
 
           
         }
+
+       
     }
 }

@@ -22,8 +22,8 @@ namespace Draw_Shapes
         {
             timer1.Stop();
             Hide();
-            Form1 obj = new Form1();
-            obj.ShowDialog();
+            DrawAllShapes shapes = new DrawAllShapes();
+            shapes.ShowDialog();
             Close();
         }
     }

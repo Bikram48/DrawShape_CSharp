@@ -10,7 +10,7 @@ namespace Draw_Shapes
     /// This is the design patterns which is used to create the objects of the shapes
     /// which are passed as a parameter in the method.
     /// </summary>
-    class ShapeFactory
+    public class ShapeFactory
     {
         /// <summary>
         /// Checks if the shapes are existed and creates the object of the shapes if they are existed.

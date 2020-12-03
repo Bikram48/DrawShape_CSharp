@@ -49,13 +49,29 @@ namespace Draw_Shapes
             {
                 if (CommandChecker.isPen == true)
                 {
+                    //makes a pen with the color passed by the user 
+                    Pen p = new Pen(colour, 4);
+                    //making the points for a trianlgle
+                    point1 = new Point(xAxis, yAxis);
+                    point2 = new Point(xAxis, xAxis + 90);
+                    point3 = new Point(xAxis + 90, yAxis + 90);
+                    //storing the points into an array
+                    Point[] points = { point1, point2, point3 };
                     SolidBrush sb = new SolidBrush(colour);
-                   // g.FillRectangle(sb, xAxis, yAxis, width, height);
+                   g.FillPolygon(sb,points);
                 }
                 else
                 {
                     SolidBrush sb = new SolidBrush(Color.Black);
-                    //g.FillRectangle(sb, xAxis, yAxis, width, height);
+                    //makes a pen with the color passed by the user 
+                    Pen p = new Pen(colour, 4);
+                    //making the points for a trianlgle
+                    point1 = new Point(xAxis, yAxis);
+                    point2 = new Point(xAxis, xAxis + 90);
+                    point3 = new Point(xAxis + 90, yAxis + 90);
+                    //storing the points into an array
+                    Point[] points = { point1, point2, point3 };
+                    g.FillPolygon(sb, points);
                 }
 
             }

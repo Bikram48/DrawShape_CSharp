@@ -57,10 +57,43 @@ namespace Draw_Shapes
         /// <param name="g"></param>
         public override void draw(Graphics g)
         {
-            //creates the pen 
-            Pen p = new Pen(Color.Red, 2);
-            //draw the circle
-            g.DrawEllipse(p, xAxis-radius, yAxis-radius,radius+radius, radius+radius);
+            //if fill command is executed then this block of code will get executed.
+            if (fillOn == true)
+            {
+                //checks if pen command is entered. If entered then the back color will be set with the same color of pen.
+                if (CommandChecker.isPen == true)
+                {
+                    SolidBrush sb = new SolidBrush(colour);
+                    //fills the rectangle with color sent by the user.
+                    g.FillEllipse(sb, xAxis - radius, yAxis - radius, radius + radius, radius + radius);
+                }
+                else
+                {
+                    SolidBrush sb = new SolidBrush(Color.Black);
+                    //fills the rectangle with black color.
+                    g.FillEllipse(sb, xAxis - radius, yAxis - radius, radius + radius, radius + radius);
+                }
+
+            }
+            else
+            {
+                //if pen has a color then it gets executed.
+                if (CommandChecker.isPen == true)
+                {
+                    //makes the pen
+                    Pen p = new Pen(colour, 2);
+                    //draws the rectangle in canvas
+                    g.DrawEllipse(p, xAxis - radius, yAxis - radius, radius + radius, radius + radius);
+                }
+                //if pen doesn't have a color then the default color of pen will be black.
+                else
+                {
+                    Pen p = new Pen(Color.Black, 2);
+                    //draws the rectangle in canvas.
+                    g.DrawEllipse(p, xAxis - radius, yAxis - radius, radius + radius, radius + radius);
+                }
+            }
+         
         }
 
         public override void drawLine(Graphics g)
