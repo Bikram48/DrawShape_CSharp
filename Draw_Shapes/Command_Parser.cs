@@ -10,9 +10,12 @@ namespace Draw_Shapes
 {
     class Command_Parser
     {
-        private String[] all_shapes = { "Rectangle", "rectangle", "Circle", "circle", "triangle", "Triangle" };
 
+        private String[] all_shapes = { "Rectangle", "rectangle", "Circle", "circle", "triangle", "Triangle" };
+        public static Boolean point_appear = false;
         String[] colors = { "red", "yellow", "black", "blue", "brown" };
+        
+       
 
         public void checkShapes(String shapes)
         {
@@ -47,12 +50,14 @@ namespace Draw_Shapes
             String[] split_parameters = parameters.Split(',');
             if (commands.Equals("moveto"))
             {
+
                 if (split_parameters.Length != 2)
                 {
                     MessageBox.Show("Invalid parameters");
                 }
                 else
                 {
+                    point_appear = true;
                     try
                     {
                         Color col = checkPenColor(color);

@@ -15,39 +15,21 @@ namespace Draw_Shapes
     {
         Graphics g;
         CommandChecker checker = new CommandChecker();
+        CommandLine commands = new CommandLine();
         public DrawAllShapes()
         {
             InitializeComponent();
             g = panel1.CreateGraphics();
+
+           
         }
 
         private void textBox2_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                String run_commands = textBox2.Text.Trim();
-                String lower = run_commands.ToLower();
-                string[] RichTextBoxLines = richTextBox1.Lines;
-                String singleLineCommand = textBox2.Text.Trim().ToLower();
-
-                if (singleLineCommand.Equals("run"))
-                {
-                    foreach (string line in RichTextBoxLines)
-                    {
-                        checker.parseCommands(line, g);
-                    }
-                    
-                }
-                else if (singleLineCommand.Equals("clear"))
-                {
-                    richTextBox1.Clear();
-                    panel1.Refresh();
-                }
-                else
-                {
-                    checker.parseCommands(textBox2.Text,g);
-                }
-                
+          
+                commands.commandLineCommands(textBox2, richTextBox1, panel1, g);
             }
         }
 
@@ -61,6 +43,18 @@ namespace Draw_Shapes
         {
             SaveFile savefile = new SaveFile();
             savefile.fileSave(richTextBox1);
+        }
+
+        public void makePoint(int xAxis, int yAxis)
+        {
+            Pen p = new Pen(new SolidBrush(Color.Red), 2);
+            g.DrawEllipse(p, xAxis, yAxis, 4,4);
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+            checker.pointer(g);
+            
         }
     }
 }
