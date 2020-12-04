@@ -38,8 +38,8 @@ namespace Draw_Shapes
                         //embeds the line into the richTextBox.
                         richTextBox1.Text += line + "\n";
                     }
-                }
-      
+                }   
+                //if file doesn't exist then this exception will be thrown
                 catch (FileNotFoundException)
                 {
                     MessageBox.Show("Error", "Cannot find limerick.txt");
@@ -48,7 +48,6 @@ namespace Draw_Shapes
                 {
                     MessageBox.Show("Error", "IO exception");
                 }
-
             }
         }
     }

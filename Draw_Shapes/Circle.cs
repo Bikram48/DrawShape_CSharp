@@ -26,6 +26,7 @@ namespace Draw_Shapes
         {
 
         }
+
         /// <summary>
         /// Parameterized constructor is declaired to the set the value of properties.
         /// </summary>
@@ -36,8 +37,10 @@ namespace Draw_Shapes
         /// <param name="radius">Circle radius</param>
         public Circle(Color colour, int xAxis, int yAxis, Boolean fillOn,int radius):base(colour,xAxis,yAxis,fillOn)
         {
+            //sets the radius of circle
             this.radius = radius;
         }
+
         /// <summary>
         /// Overrides the set method of base class.
         /// It sets the values for the properties
@@ -45,11 +48,14 @@ namespace Draw_Shapes
         /// <param name="colour">Pen color</param>
         /// <param name="fillOn">color fill on/off</param>
         /// <param name="list">xAxis,yAxis and Radius</param>
-        public override void set(Color colour, Boolean fillOn, params int[] list)
+        public override void set(Color colour, Boolean fillOn,Boolean isPen, params int[] list)
         {
-            base.set(colour, fillOn, list[0], list[1]);
+            //passing values into the base class method set
+            base.set(colour, fillOn,isPen, list[0], list[1]);
+            //sets the radius of the circle
             this.radius = list[2];
         }
+
         /// <summary>
         /// Uses the public visibility modifier to give access to other classes also.
         /// It draws the circle in canvas using DrawEllipse method
@@ -63,17 +69,18 @@ namespace Draw_Shapes
                 //checks if pen command is entered. If entered then the back color will be set with the same color of pen.
                 if (CommandChecker.isPen == true)
                 {
+                    //brush is created to fill the circle by color.
                     SolidBrush sb = new SolidBrush(colour);
                     //fills the rectangle with color sent by the user.
                     g.FillEllipse(sb, xAxis - radius, yAxis - radius, radius + radius, radius + radius);
                 }
                 else
                 {
+                    //brush is created to fill the circle by color.
                     SolidBrush sb = new SolidBrush(Color.Black);
                     //fills the rectangle with black color.
                     g.FillEllipse(sb, xAxis - radius, yAxis - radius, radius + radius, radius + radius);
                 }
-
             }
             else
             {
@@ -88,17 +95,12 @@ namespace Draw_Shapes
                 //if pen doesn't have a color then the default color of pen will be black.
                 else
                 {
+                    //creates the pen
                     Pen p = new Pen(Color.Black, 2);
                     //draws the rectangle in canvas.
                     g.DrawEllipse(p, xAxis - radius, yAxis - radius, radius + radius, radius + radius);
                 }
-            }
-         
-        }
-
-        public override void drawLine(Graphics g)
-        {
-            throw new NotImplementedException();
+            }         
         }
     }
 }

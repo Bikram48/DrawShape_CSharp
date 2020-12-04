@@ -16,11 +16,12 @@ namespace Draw_Shapes
     /// shapes and it passed those parameter to shape classes (rectangle,Triangle,Circle) to draw the shapes.
     /// </summary>
     class Canvas
-    {
+    { 
         /// <summary>
         /// Instantiates an object of ShapeFacotry shape.
         /// </summary>
         ShapeFactory shape = new ShapeFactory();
+
         /// <summary>
         /// If the shape is rectangle then this method helps to get the parameters requires 
         /// fro the rectangle class.
@@ -32,17 +33,17 @@ namespace Draw_Shapes
         /// <param name="width">Rectangle widht</param>
         /// <param name="height">Rectangle height</param>
         /// <param name="g">Graphics reference</param>
-        public void drawRectangle(Color colour, int xAxis, int yAxis, Boolean fillOn, int width, int height, Graphics g)
+        public void drawRectangle(Color colour, int xAxis, int yAxis, Boolean fillOn,Boolean isPen, int width, int height, Graphics g)
         {
-            if (DrawAllShapes.syntaxCheckerClicked == false)
+            if (!DrawAllShapes.syntaxCheckerClicked)
             {
-                //Creates the object of rectangle class.
+                //Creates the object of rectangle class by passing a rectangle text as a parameter into the ShapeFactory class
                 Shapes s1 = shape.checkShapes("rectangle");
-                s1.set(colour, fillOn, xAxis, yAxis, width, height);
+                //passing the parameter into Shapes abstract class to draw the rectangle
+                s1.set(colour, fillOn,isPen, xAxis, yAxis, width, height);
+                //sends the reference of Graphcs to draw the rectangle in panel
                 s1.draw(g);
             }
-           
-           
         }
 
         /// <summary>
@@ -55,15 +56,17 @@ namespace Draw_Shapes
         /// <param name="fillOn">color fill on/off</param>
         /// <param name="radius">Circle radius</param>
         /// <param name="g">Graphics reference</param>
-        public void drawCircle(Color colour,int xAxis,int yAxis,Boolean fillOn,int radius,Graphics g)
+        public void drawCircle(Color colour,int xAxis,int yAxis,Boolean fillOn,Boolean isPen,int radius,Graphics g)
         {
-            if (DrawAllShapes.syntaxCheckerClicked == false)
+            if (!DrawAllShapes.syntaxCheckerClicked)
             {
-                //Creates the object of circle class.
+                 //Creates the object of circle class by passing a circle text as a parameter into the ShapeFactory class
                 Shapes s2 = shape.checkShapes("circle");
-                s2.set(colour, fillOn, xAxis, yAxis, radius);
+                //passing the parameter into Shapes abstract class to draw the circle
+                s2.set(colour, fillOn,isPen, xAxis, yAxis, radius);
+                //sends the reference of Graphcs to draw the rectangle in panel
                 s2.draw(g);
-            }
+            }  
         }
 
         /// <summary>
@@ -75,13 +78,15 @@ namespace Draw_Shapes
         /// <param name="yAxis">yAxis from moveTo command</param>
         /// <param name="fillOn">color fill on/off</param>
         /// <param name="g">Graphics reference</param>
-        public void drawTriangle(Color colour, int xAxis, int yAxis, Boolean fillOn, Graphics g)
+        public void drawTriangle(Color colour, int xAxis, int yAxis, Boolean fillOn,Boolean isPen, Graphics g)
         {
-            if (DrawAllShapes.syntaxCheckerClicked == false)
+            if (!DrawAllShapes.syntaxCheckerClicked)
             {
-                //Creates the object of triangle class.
+                //Creates the object of triangle class by passing a triangle text as a parameter into the ShapeFactory class
                 Shapes s3 = shape.checkShapes("triangle");
-                s3.set(colour, fillOn, xAxis, yAxis);
+                //passing the parameter into Shapes abstract class to draw the circle
+                s3.set(colour, fillOn,isPen, xAxis, yAxis);
+                //sends the reference of Graphcs to draw the rectangle in panel
                 s3.draw(g);
             }
         }
@@ -99,25 +104,27 @@ namespace Draw_Shapes
         /// <param name="g">Graphics reference</param>
         public void drawLine(Color colour, int xAxis, int yAxis, Boolean fillOn, int point1, int point2, Graphics g)
         {
-            if (DrawAllShapes.syntaxCheckerClicked == false)
+            if (!DrawAllShapes.syntaxCheckerClicked)
             {
+                //if pen is set from the commandline then this block will get executed
                 if (CommandChecker.isPen == true)
                 {
+                    //creates the pen
                     Pen p = new Pen(colour, 2);
                     //draws the line with the color passed by the user.
                     g.DrawLine(p, point1, point2, xAxis, yAxis);
                 }
+                //if pen is not set then this block will get executed
                 else
                 {
+                    //creates the pen
                     Pen p = new Pen(Color.Black, 2);
                     //draws the line with the black color.
                     g.DrawLine(p, point1, point2, xAxis, yAxis);
                 }
             }
-
-          
+            //end of if block
         }
-
        
     }
 }

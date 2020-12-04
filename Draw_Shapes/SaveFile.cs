@@ -31,7 +31,6 @@ namespace Draw_Shapes
                 StreamWriter sw = new StreamWriter(filestream);
                 //writes the commands into the textfile
                 sw.Write(richTextBox1.Text);
-
                 sw.Close();
                 filestream.Close();
             }

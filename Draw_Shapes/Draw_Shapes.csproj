@@ -50,24 +50,11 @@
     <Compile Include="Circle.cs" />
     <Compile Include="CommandChecker.cs" />
     <Compile Include="CommandLine.cs" />
-    <Compile Include="Command_Parser.cs" />
     <Compile Include="DrawAllShapes.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DrawAllShapes.Designer.cs">
       <DependentUpon>DrawAllShapes.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DrawingBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DrawingBox.Designer.cs">
-      <DependentUpon>DrawingBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="GradientPanel.cs">
       <SubType>Component</SubType>
@@ -81,6 +68,7 @@
     <Compile Include="ShapeFactory.cs" />
     <Compile Include="Shapes.cs" />
     <Compile Include="Triangle.cs" />
+    <Compile Include="VariableChecker.cs" />
     <Compile Include="Welcome_Page.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,12 +77,6 @@
     </Compile>
     <EmbeddedResource Include="DrawAllShapes.resx">
       <DependentUpon>DrawAllShapes.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DrawingBox.resx">
-      <DependentUpon>DrawingBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

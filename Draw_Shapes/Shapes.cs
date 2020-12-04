@@ -35,6 +35,7 @@ namespace Draw_Shapes
         /// returns true if fill is on if not then it returns false.
         /// </summary>
         protected Boolean fillOn;
+        protected Boolean isPen;
 
         /// <summary>
         /// A default constructor is declaired
@@ -64,18 +65,14 @@ namespace Draw_Shapes
         /// </summary>
         /// <param name="g">Graphics reference</param>
         public abstract void draw(Graphics g);
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="g"></param>
-        public abstract void drawLine(Graphics g);
+       
         /// <summary>
         /// It sets the properties of this class.
         /// </summary>
         /// <param name="colour">Pen color</param>
         /// <param name="fillOn">color fill on/off</param>
         /// <param name="list">array which store xAxis and yAxis</param>
-        public virtual void set(Color colour, bool fillOn, params int[] list)
+        public virtual void set(Color colour, bool fillOn,bool isPen, params int[] list)
         {
             //sets the color property
             this.colour = colour;
@@ -85,11 +82,22 @@ namespace Draw_Shapes
             this.yAxis = list[1];
             //sets the fillOn property
             this.fillOn = fillOn;
+            this.isPen = isPen;
         }
+
+        /// <summary>
+        /// This method is created for the testing purpose
+        /// </summary>
+        /// <param name="xAxis"></param>
         public void setX(int xAxis)
         {
             this.xAxis = xAxis;
         }
+
+        /// <summary>
+        /// This method is created for the testing purpose
+        /// </summary>
+        /// <returns></returns>
         public int getX()
         {
             return this.xAxis;

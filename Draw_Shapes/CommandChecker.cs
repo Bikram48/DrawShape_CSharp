@@ -16,8 +16,16 @@ namespace Draw_Shapes
     /// </summary>
     public class CommandChecker
     {
-     
+        /// <summary>
+        /// ArrayList is created with static keyword to access this arraylist by a classname.
+        /// Stores all the errors throws by the commands or program.
+        /// </summary>
         public static ArrayList errors = new ArrayList();
+        /// <summary>
+        /// Uses a public modifier to give access to other classes also.
+        /// Declaired as a static variable which will get accessed  through the class name.
+        /// It returns the true value if errors are detected if not then it returns false.
+        /// </summary>
         public static Boolean error = false;
         /// <summary>
         /// Uses a public modifier to give access to other classes also.
@@ -30,13 +38,13 @@ namespace Draw_Shapes
         /// Uses a private visibility modifier to give access to this class only.
         /// It's a integer type which will store the values of xAxis from the moveTo command.
         /// </summary>
-        public static int xAxis;
+        private  int xAxis;
         /// <summary>
         /// Uses a private visibility modifier to give access to this class only.
         /// It's a integer type which will store the values of yAxis from the moveTo command.
         /// </summary>
-        public static int yAxis;
-        public static Boolean isAppear = false;
+        private  int yAxis;
+   
         /// <summary>
         /// Local variable with the boolean property which will check if the fill command is get executed or not.
         /// It will return true if the fillOn command is executed if not it will return false.
@@ -53,15 +61,31 @@ namespace Draw_Shapes
         /// </summary>
         Canvas canvas = new Canvas();
         
+        /// <summary>
+        /// uses public access modifier to give access to other classes also.
+        /// It splits the text by spaces and returns string array with splitted text
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public String[] splitTextBySpace(String text)
         {
+            //storing the splitted text in array
             String[] splitter = text.Split(' ');
+            //returning array with splitted text
             return splitter;
         }
 
+        /// <summary>
+        /// uses public access modifier to give access to other classes also.
+        /// It splits the parameters by comma and returns string array with splitted parameter
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
         public String[] splitParameterByComma(String parameter)
         {
+            //storing the splitted parameters in array
             String[] split_parameters = parameter.Split(',');
+            //returning an array with splitted parameter
             return split_parameters;
         }
         /// <summary>
@@ -86,29 +110,34 @@ namespace Draw_Shapes
             if (commands.Equals("triangle"))
             { 
                 //calls the method drawTriangle from canvas class to draw a triangle.
-                canvas.drawTriangle(colour, xAxis, yAxis, fillOn, g);
-
+                canvas.drawTriangle(colour, xAxis, yAxis, fillOn,isPen, g);
             }
-            
+            //If there is no commands entered then return nothing
+            if (commands.Equals(""))
+            {
+                return;
+            }
+            //try block starts
             try
             {
                 //The second text splitted by the space are parameters.
                 String parameters = splitter[1];
                 //splitting the parameters by the comma
                 String[] split_parameters = splitParameterByComma(parameters);
-               
+               //if moveto command is executed then this block will be called
                 if (commands.Equals("moveto"))
                 {
                     //if many parameters are passed then the system requires then this block will get executed.
                     if (split_parameters.Length != 2)
                     {
+                        //if invalid parameter is entered then error becomes true
                         error = true;
-                        
-                        errors.Add("Invalid parameters at line"+DrawAllShapes.line_number);
+                        //storing errors in arraylist
+                        errors.Add("Invalid parameters at line "+DrawAllShapes.line_number);
                     }
                     else
                     {
-                        isAppear = true;
+                      
                         try
                         {
                             //converting the parameters from string to integer
@@ -116,17 +145,16 @@ namespace Draw_Shapes
                             yAxis = Convert.ToInt32(split_parameters[1]);
                             //creates a pen
                             Pen p = new Pen(new SolidBrush(Color.Red), 2);
-                    
-                            g.DrawEllipse(p, xAxis, yAxis, 4, 4);
                         }
                         //catch the exception thrown by the try block
                         catch (FormatException e)
                         {
-                            
+                            //if non numberic values is entered then error becomes true
                             error = true;
-                            errors.Add("Non numeric values at line" + DrawAllShapes.line_number);
+                            //storing errors in arraylist
+                            errors.Add("Non numeric values at line " + DrawAllShapes.line_number);
                         }
-        }
+                    }
                 }
                 //if user type a drawto command this block will get executed
                 else if (commands.Equals("drawto"))
@@ -134,8 +162,10 @@ namespace Draw_Shapes
                     //if many parameters are passed then the system requires then this block will get executed.
                     if (split_parameters.Length != 2)
                     {
+                        //if invalid parameter is entered then error becomes true
                         error = true;
-                        errors.Add("Invalid parameters at line" + DrawAllShapes.line_number);
+                        //storing errors in arraylist
+                        errors.Add("Invalid parameters at line " + DrawAllShapes.line_number);
                     }
                     else
                     {
@@ -152,8 +182,10 @@ namespace Draw_Shapes
                         //catch the exception thrown by the try block
                         catch (FormatException e)
                         {
+                            //if Non nummeric values  is entered then error becomes true
                             error = true;
-                            errors.Add("Non nummeric values at line" + DrawAllShapes.line_number);
+                            //storing errors in arraylist
+                            errors.Add("Non nummeric values at line " + DrawAllShapes.line_number);
                         }
                     }
                 }
@@ -165,7 +197,7 @@ namespace Draw_Shapes
                     //Instantiating the object of PenColor class
                     PenColor colors = new PenColor();
                     //passing colors to getPenColor method of PenColor class 
-                    colour=colors.getPenColor(parameters);
+                    colour = colors.getPenColor(parameters);
                 }
                 //if user type a fill command this block will get executed
                 else if (commands.Equals("fill"))
@@ -181,8 +213,10 @@ namespace Draw_Shapes
                 {
                     if (split_parameters.Length != 2)
                     {
+                        //if invalid parameter is entered then error becomes true
                         error = true;
-                        errors.Add("Invalid parameters");
+                        //storing errors in arraylist
+                        errors.Add("Invalid parameters at line " + DrawAllShapes.line_number);
                     }
                     else
                     {
@@ -192,16 +226,17 @@ namespace Draw_Shapes
                             int firstParameter = Convert.ToInt32(split_parameters[0]);
                             int secondParameter = Convert.ToInt32(split_parameters[1]);
                            
-                                //passing the parameters to draw a  rectangle
-                                canvas.drawRectangle(colour, xAxis, yAxis, fillOn, firstParameter, secondParameter, g);
-                            
+                            //passing the parameters to draw a  rectangle
+                            canvas.drawRectangle(colour, xAxis, yAxis, fillOn,isPen, firstParameter, secondParameter, g);                           
                         }
                         catch (FormatException e)
                         {
+                            //if Non nummeric values  is entered then error becomes true
                             error = true;
-                            errors.Add("Non nummeric values at line" + DrawAllShapes.line_number);
+                            //storing errors in arraylist
+                            errors.Add("Non nummeric values at line " + DrawAllShapes.line_number);
                         }
-        }
+                    }
                 }
                 //if user type a circle command this block will get executed
                 else if (commands.Equals("circle"))
@@ -211,46 +246,53 @@ namespace Draw_Shapes
                         //converting from string to integer
                         int radius = Convert.ToInt32(parameters);
                         //draws the cricle shape
-                        canvas.drawCircle(colour, xAxis, yAxis, fillOn, radius, g);
+                        canvas.drawCircle(colour, xAxis, yAxis, fillOn,isPen, radius, g);
                     }
                     catch (FormatException e)
                     {
+                        //if Non nummeric values  is entered then error becomes true
                         error = true;
-                        errors.Add("Non nummeric values at line" + DrawAllShapes.line_number);
+                        //storing errors in arraylist
+                        errors.Add("Non nummeric values at line " + DrawAllShapes.line_number);
                     }
 
-                }
+                }            
                 //if user type a command which is not valid then this block executes
                 else
                 {
+                    //if invalid command is entered then error becomes true
                     error = true;
+                    //storing errors in arraylist
                     errors.Add("Invalid command at line " + DrawAllShapes.line_number);
                 }
             }
             catch (IndexOutOfRangeException e)
             {
-                error = true;
-                errors.Add("Invalid command at line " + DrawAllShapes.line_number);
+                //if commands is trianlge then make error to false
+                if (commands.Equals("triangle"))
+                {
+                    error = false;
+                }              
+                else
+                {
+                    //if invalid command is entered then error becomes true
+                    error = true;
+                    //storing errors in arraylist
+                    errors.Add("Invalid command at line " + DrawAllShapes.line_number); 
+                }
             }
-
-
         }
 
+        /// <summary>
+        /// If reset command is get executed from the commandline then this method will be called to reset
+        /// the position of xAxis and yAxis to 0,0
+        /// </summary>
         public void Reset()
         {
+            //sets xAxis to zero
             xAxis = 0;
+            //sets yAxis to zero
             yAxis = 0;
         }
-
-        public void pointer( PaintEventArgs e,Bitmap bitmap1 )
-         {
-            Graphics windowg = e.Graphics;
-            windowg.DrawImageUnscaled(bitmap1, xAxis, yAxis);
-        }
-        
-
-
-
-
     }
 }

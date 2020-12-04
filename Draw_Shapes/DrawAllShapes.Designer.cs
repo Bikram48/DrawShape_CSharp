@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DrawAllShapes));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -36,13 +37,13 @@
             this.gradientPanel1 = new Draw_Shapes.GradientPanel();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.canvasBox = new System.Windows.Forms.Panel();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.errorBox = new System.Windows.Forms.RichTextBox();
+            this.syntaxChecker = new System.Windows.Forms.Button();
+            this.multiLineCommandBox = new System.Windows.Forms.RichTextBox();
+            this.singleLineCommandBox = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.gradientPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -66,28 +67,32 @@
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Font = new System.Drawing.Font("Calisto MT", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.fileToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.fileToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("fileToolStripMenuItem.Image")));
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(41, 21);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(57, 21);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // openFileToolStripMenuItem
             // 
+            this.openFileToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("openFileToolStripMenuItem.Image")));
             this.openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
-            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.openFileToolStripMenuItem.Text = "Open File";
             this.openFileToolStripMenuItem.Click += new System.EventHandler(this.openFileToolStripMenuItem_Click);
             // 
             // saveFileToolStripMenuItem
             // 
+            this.saveFileToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("saveFileToolStripMenuItem.Image")));
             this.saveFileToolStripMenuItem.Name = "saveFileToolStripMenuItem";
-            this.saveFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveFileToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.saveFileToolStripMenuItem.Text = "Save File";
             this.saveFileToolStripMenuItem.Click += new System.EventHandler(this.saveFileToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
+            this.exitToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("exitToolStripMenuItem.Image")));
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -97,13 +102,13 @@
             this.gradientPanel1.BottomColor = System.Drawing.Color.DarkSlateGray;
             this.gradientPanel1.Controls.Add(this.textBox1);
             this.gradientPanel1.Controls.Add(this.button4);
-            this.gradientPanel1.Controls.Add(this.panel1);
+            this.gradientPanel1.Controls.Add(this.canvasBox);
             this.gradientPanel1.Controls.Add(this.button3);
             this.gradientPanel1.Controls.Add(this.button2);
-            this.gradientPanel1.Controls.Add(this.richTextBox2);
-            this.gradientPanel1.Controls.Add(this.button1);
-            this.gradientPanel1.Controls.Add(this.richTextBox1);
-            this.gradientPanel1.Controls.Add(this.textBox2);
+            this.gradientPanel1.Controls.Add(this.errorBox);
+            this.gradientPanel1.Controls.Add(this.syntaxChecker);
+            this.gradientPanel1.Controls.Add(this.multiLineCommandBox);
+            this.gradientPanel1.Controls.Add(this.singleLineCommandBox);
             this.gradientPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gradientPanel1.Location = new System.Drawing.Point(0, 0);
             this.gradientPanel1.Name = "gradientPanel1";
@@ -135,17 +140,16 @@
             this.button4.Text = "Command Box";
             this.button4.UseVisualStyleBackColor = false;
             // 
-            // panel1
+            // canvasBox
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.panel1.Font = new System.Drawing.Font("Cambria", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.panel1.Location = new System.Drawing.Point(279, 75);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(585, 363);
-            this.panel1.TabIndex = 0;
-            this.panel1.Tag = "";
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            this.canvasBox.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.canvasBox.Font = new System.Drawing.Font("Cambria", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.canvasBox.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.canvasBox.Location = new System.Drawing.Point(279, 75);
+            this.canvasBox.Name = "canvasBox";
+            this.canvasBox.Size = new System.Drawing.Size(585, 363);
+            this.canvasBox.TabIndex = 0;
+            this.canvasBox.Tag = "";
             // 
             // button3
             // 
@@ -173,55 +177,55 @@
             this.button2.Text = "Error Box";
             this.button2.UseVisualStyleBackColor = false;
             // 
-            // richTextBox2
+            // errorBox
             // 
-            this.richTextBox2.BackColor = System.Drawing.Color.Black;
-            this.richTextBox2.Font = new System.Drawing.Font("Modern No. 20", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox2.ForeColor = System.Drawing.Color.Maroon;
-            this.richTextBox2.Location = new System.Drawing.Point(279, 456);
-            this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.Size = new System.Drawing.Size(585, 69);
-            this.richTextBox2.TabIndex = 6;
-            this.richTextBox2.Text = "";
+            this.errorBox.BackColor = System.Drawing.Color.Black;
+            this.errorBox.Font = new System.Drawing.Font("Modern No. 20", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.errorBox.ForeColor = System.Drawing.Color.Maroon;
+            this.errorBox.Location = new System.Drawing.Point(279, 456);
+            this.errorBox.Name = "errorBox";
+            this.errorBox.Size = new System.Drawing.Size(585, 69);
+            this.errorBox.TabIndex = 6;
+            this.errorBox.Text = "";
             // 
-            // button1
+            // syntaxChecker
             // 
-            this.button1.BackColor = System.Drawing.Color.MidnightBlue;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Calisto MT", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.SystemColors.Control;
-            this.button1.Location = new System.Drawing.Point(279, 531);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(142, 38);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Syntax Check";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            this.button1.MouseLeave += new System.EventHandler(this.button1_MouseLeave);
-            this.button1.MouseHover += new System.EventHandler(this.button1_MouseHover);
+            this.syntaxChecker.BackColor = System.Drawing.Color.MidnightBlue;
+            this.syntaxChecker.FlatAppearance.BorderSize = 0;
+            this.syntaxChecker.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.syntaxChecker.Font = new System.Drawing.Font("Calisto MT", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.syntaxChecker.ForeColor = System.Drawing.SystemColors.Control;
+            this.syntaxChecker.Location = new System.Drawing.Point(279, 531);
+            this.syntaxChecker.Name = "syntaxChecker";
+            this.syntaxChecker.Size = new System.Drawing.Size(142, 38);
+            this.syntaxChecker.TabIndex = 5;
+            this.syntaxChecker.Text = "Syntax Check";
+            this.syntaxChecker.UseVisualStyleBackColor = false;
+            this.syntaxChecker.Click += new System.EventHandler(this.button1_Click);
+            this.syntaxChecker.MouseLeave += new System.EventHandler(this.button1_MouseLeave);
+            this.syntaxChecker.MouseHover += new System.EventHandler(this.button1_MouseHover);
             // 
-            // richTextBox1
+            // multiLineCommandBox
             // 
-            this.richTextBox1.BackColor = System.Drawing.Color.Linen;
-            this.richTextBox1.Font = new System.Drawing.Font("Lucida Fax", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox1.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.richTextBox1.Location = new System.Drawing.Point(3, 75);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(255, 450);
-            this.richTextBox1.TabIndex = 1;
-            this.richTextBox1.Text = "";
+            this.multiLineCommandBox.BackColor = System.Drawing.Color.Linen;
+            this.multiLineCommandBox.Font = new System.Drawing.Font("Lucida Fax", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.multiLineCommandBox.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.multiLineCommandBox.Location = new System.Drawing.Point(3, 75);
+            this.multiLineCommandBox.Name = "multiLineCommandBox";
+            this.multiLineCommandBox.Size = new System.Drawing.Size(255, 450);
+            this.multiLineCommandBox.TabIndex = 1;
+            this.multiLineCommandBox.Text = "";
             // 
-            // textBox2
+            // singleLineCommandBox
             // 
-            this.textBox2.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.textBox2.Font = new System.Drawing.Font("Lucida Fax", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(3, 531);
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(255, 42);
-            this.textBox2.TabIndex = 3;
-            this.textBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox2_KeyDown);
+            this.singleLineCommandBox.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.singleLineCommandBox.Font = new System.Drawing.Font("Lucida Fax", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.singleLineCommandBox.Location = new System.Drawing.Point(3, 531);
+            this.singleLineCommandBox.Multiline = true;
+            this.singleLineCommandBox.Name = "singleLineCommandBox";
+            this.singleLineCommandBox.Size = new System.Drawing.Size(255, 38);
+            this.singleLineCommandBox.TabIndex = 3;
+            this.singleLineCommandBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox2_KeyDown);
             // 
             // DrawAllShapes
             // 
@@ -243,17 +247,17 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Panel canvasBox;
+        private System.Windows.Forms.RichTextBox multiLineCommandBox;
+        private System.Windows.Forms.TextBox singleLineCommandBox;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private GradientPanel gradientPanel1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.RichTextBox richTextBox2;
+        private System.Windows.Forms.Button syntaxChecker;
+        private System.Windows.Forms.RichTextBox errorBox;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;

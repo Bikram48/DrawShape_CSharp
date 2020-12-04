@@ -16,8 +16,6 @@ D:\C#\csharp_projects\Draw_Shapes\bin\Debug\Draw_Shapes.exe
 D:\C#\csharp_projects\Draw_Shapes\bin\Debug\Draw_Shapes.pdb
 D:\C#\csharp_projects\Draw_Shapes\obj\Debug\Draw_Shapes.csprojAssemblyReference.cache
 D:\C#\csharp_projects\Draw_Shapes\obj\Debug\Draw_Shapes.DrawAllShapes.resources
-D:\C#\csharp_projects\Draw_Shapes\obj\Debug\Draw_Shapes.DrawingBox.resources
-D:\C#\csharp_projects\Draw_Shapes\obj\Debug\Draw_Shapes.Form1.resources
 D:\C#\csharp_projects\Draw_Shapes\obj\Debug\Draw_Shapes.Properties.Resources.resources
 D:\C#\csharp_projects\Draw_Shapes\obj\Debug\Draw_Shapes.Welcome_Page.resources
 D:\C#\csharp_projects\Draw_Shapes\obj\Debug\Draw_Shapes.csproj.GenerateResource.cache

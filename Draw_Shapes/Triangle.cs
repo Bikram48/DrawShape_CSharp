@@ -32,9 +32,9 @@ namespace Draw_Shapes
       /// <param name="fillOn">To fill the shapes with color</param>
       /// <param name="list">xAxis,yAxis</param>      
 
-        public override void set(Color colour, Boolean fillOn, params int[] list)
+        public override void set(Color colour, Boolean fillOn,Boolean isPen, params int[] list)
         {
-            base.set(colour, fillOn, list[0], list[1]);
+            base.set(colour, fillOn,isPen, list[0], list[1]);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Draw_Shapes
             //checks if fill command is on
             if (fillOn == true)
             {
-                if (CommandChecker.isPen == true)
+                if (isPen == true)
                 {
                     //makes a pen with the color passed by the user 
                     Pen p = new Pen(colour, 4);
@@ -111,9 +111,5 @@ namespace Draw_Shapes
             }
         }
 
-        public override void drawLine(Graphics g)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

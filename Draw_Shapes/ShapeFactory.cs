@@ -45,11 +45,8 @@ namespace Draw_Shapes
                 //if we get here then what has been passed in is inkown so throw an appropriate exception
                 System.ArgumentException argEx = new System.ArgumentException("Factory error: " + shapeType + " does not exist");
                 throw argEx;
-            }
-
+            }            
             return null;
-
-
         }
     }
 }

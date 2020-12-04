@@ -43,7 +43,9 @@ namespace Draw_Shapes
         /// <param name="height">Rectangle height</param>
         public Rectangle(Color colour,int xAxis, int yAxis,Boolean fillOn,int width,int height) : base(colour,xAxis,yAxis,fillOn)
         {
+            //sets the width of rectangle
             this.width = width;
+            //sets the height of rectangle
             this.height = height;
         }
         /// <summary>
@@ -53,20 +55,17 @@ namespace Draw_Shapes
         /// <param name="colour">Pen color</param>
         /// <param name="fillOn">color fill on/off</param>
         /// <param name="list">xAxis,yAxis,width and height</param>
-        public override void set(Color colour,Boolean fillOn,params int[] list)
+        public override void set(Color colour,Boolean fillOn,Boolean isPen,params int[] list)
         {
-            base.set(colour, fillOn,list[0],list[1]);
+            //sending values into the base class method set.
+            base.set(colour, fillOn,isPen,list[0],list[1]);
+            //sets the width of rectangle
             this.width = list[2];
+            //sets the height of rectangle
             this.height = list[3];
         }
-        public void setWidth(int width)
-        {
-            this.width = width;
-        }
-        public int getWidth()
-        {
-            return this.width;
-        }
+        
+      
         /// <summary>
         /// Uses the public visibility modifier to give access to other classes also.
         /// This method draws the rectangle in canvas.
@@ -78,14 +77,16 @@ namespace Draw_Shapes
             if (fillOn==true)
             {
                 //checks if pen command is entered. If entered then the back color will be set with the same color of pen.
-                if (CommandChecker.isPen == true)
+                if (isPen == true)
                 {
+                    //creates the brush to fill the rectangle
                     SolidBrush sb = new SolidBrush(colour);
                     //fills the rectangle with color sent by the user.
                     g.FillRectangle(sb, xAxis, yAxis, width, height);
                 }
                 else
                 {
+                    //creates the brush to fill the rectangle
                     SolidBrush sb = new SolidBrush(Color.Black);
                     //fills the rectangle with black color.
                     g.FillRectangle(sb, xAxis, yAxis, width, height);
@@ -96,7 +97,7 @@ namespace Draw_Shapes
             else
             {
                 //if pen has a color then it gets executed.
-                if (CommandChecker.isPen == true)
+                if (isPen == true)
                 {
                     //makes the pen
                     Pen p = new Pen(colour, 2);
@@ -106,22 +107,12 @@ namespace Draw_Shapes
                 //if pen doesn't have a color then the default color of pen will be black.
                 else
                 {
+                    //creates the pen
                     Pen p = new Pen(Color.Black, 2);
                     //draws the rectangle in canvas.
                     g.DrawRectangle(p, xAxis, yAxis, width, height);
                 }
             }
         }
-
-       
-        public override void drawLine(Graphics g)
-        {
-            
-            Pen p = new Pen(colour, 2);
-            SolidBrush b = new SolidBrush(colour);
-            g.DrawLine(p, xAxis,xAxis,yAxis,yAxis);
-           
-        }
-
     }
 }

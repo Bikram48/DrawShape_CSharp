@@ -16,7 +16,8 @@ namespace Draw_Shapes
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new DrawAllShapes());
+            //Runs the DrawAllShapes class
+            Application.Run(new Welcome_Page());
         }
     }
 }
