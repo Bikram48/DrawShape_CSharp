@@ -59,6 +59,7 @@
     <Compile Include="GradientPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="IfCommand.cs" />
     <Compile Include="LoadFile.cs" />
     <Compile Include="PenColor.cs" />
     <Compile Include="Program.cs" />

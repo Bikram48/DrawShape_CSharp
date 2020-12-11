@@ -22,3 +22,14 @@ D:\C#\csharp_projects\Draw_Shapes\obj\Debug\Draw_Shapes.csproj.GenerateResource.
 D:\C#\csharp_projects\Draw_Shapes\obj\Debug\Draw_Shapes.csproj.CoreCompileInputs.cache
 D:\C#\csharp_projects\Draw_Shapes\obj\Debug\Draw_Shapes.exe
 D:\C#\csharp_projects\Draw_Shapes\obj\Debug\Draw_Shapes.pdb
+D:\C#\component1(Bikramchand 77202514)\Draw_Shapes\bin\Debug\Draw_Shapes.exe.config
+D:\C#\component1(Bikramchand 77202514)\Draw_Shapes\bin\Debug\Draw_Shapes.exe
+D:\C#\component1(Bikramchand 77202514)\Draw_Shapes\bin\Debug\Draw_Shapes.pdb
+D:\C#\component1(Bikramchand 77202514)\Draw_Shapes\obj\Debug\Draw_Shapes.csprojAssemblyReference.cache
+D:\C#\component1(Bikramchand 77202514)\Draw_Shapes\obj\Debug\Draw_Shapes.DrawAllShapes.resources
+D:\C#\component1(Bikramchand 77202514)\Draw_Shapes\obj\Debug\Draw_Shapes.Properties.Resources.resources
+D:\C#\component1(Bikramchand 77202514)\Draw_Shapes\obj\Debug\Draw_Shapes.Welcome_Page.resources
+D:\C#\component1(Bikramchand 77202514)\Draw_Shapes\obj\Debug\Draw_Shapes.csproj.GenerateResource.cache
+D:\C#\component1(Bikramchand 77202514)\Draw_Shapes\obj\Debug\Draw_Shapes.csproj.CoreCompileInputs.cache
+D:\C#\component1(Bikramchand 77202514)\Draw_Shapes\obj\Debug\Draw_Shapes.exe
+D:\C#\component1(Bikramchand 77202514)\Draw_Shapes\obj\Debug\Draw_Shapes.pdb

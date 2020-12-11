@@ -13,6 +13,8 @@ namespace Draw_Shapes
     /// </summary>
     class CommandLine
     {
+        public static int lineNumber;
+        VariableChecker variable_check = new VariableChecker();
         /// <summary>
         /// Instantiates an object of CommandChecker class.
         /// </summary>
@@ -46,8 +48,11 @@ namespace Draw_Shapes
                 //Taking all the lines of text from richtextbox
                 foreach (string line in RichTextBoxLines)
                 {
-                    //passed the line of text into the parseCommands method to check the commands are valid or invalid
-                    checker.parseCommands(line, g);
+                    
+                    lineNumber++;
+                        //passed the line of text into the parseCommands method to check the commands are valid or invalid
+                        checker.parseCommands(line, g,richTextBox1);
+                    
                 }
             }
             //If clear command entered then this block get executed
@@ -71,7 +76,7 @@ namespace Draw_Shapes
             else
             {
                 //passed the text of TextBox into the parseCommands method to check the commands are valid or invalid
-                checker.parseCommands(textBox2.Text, g);
+                checker.parseCommands(textBox2.Text, g,richTextBox1);
             }
         }
     }

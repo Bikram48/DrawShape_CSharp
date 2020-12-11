@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,6 +17,18 @@ namespace Draw_Shapes
     /// </summary>
     public class CommandChecker
     {
+       
+        bool equal,greater_equals,smaller_equals,greater,smaller,not_equals = false;
+        String[] signs = { "<=", ">=", "<", ">", "==", "!=" };
+        IDictionary<String, int> store_variables = new Dictionary<String,int>();
+        private int firstParameter;
+        private int secondParameter;
+        private bool isVariable = false;
+        private bool isIf = false;
+        private String para1;
+        int value1;
+        int value2;
+        private String para2;
         /// <summary>
         /// ArrayList is created with static keyword to access this arraylist by a classname.
         /// Stores all the errors throws by the commands or program.
@@ -75,6 +88,18 @@ namespace Draw_Shapes
             return splitter;
         }
 
+        public String[] splitVariables(String text)
+        {
+            String[] splitter = text.Split(' ');
+            return splitter;
+        }
+
+        public String[] splitValues(String parameter)
+        {
+            String[] split_parameter = parameter.Split('=');
+            return split_parameter;
+        }
+
         /// <summary>
         /// uses public access modifier to give access to other classes also.
         /// It splits the parameters by comma and returns string array with splitted parameter
@@ -97,8 +122,80 @@ namespace Draw_Shapes
         /// </summary>
         /// <param name="line"></param>
         /// <param name="g"></param>
-        public void parseCommands(String line, Graphics g)
+        public void parseCommands(String line, Graphics g,RichTextBox richTextBox1)
         {
+            /*String match = @"if\s*\(((?!\s*\{).+)\)";
+            Regex reg = new Regex(match);
+            if (reg.IsMatch(line))
+            {
+                MessageBox.Show("Matched");
+            }
+            */
+            if (line.Contains("var"))
+            {
+                
+                isVariable = true;
+                String txt = line.ToLower().Trim();
+                String[] var_splitter = splitVariables(txt);
+                String variables = var_splitter[1];
+                String[] values = splitValues(variables);
+                String variable_name = values[0];
+                String variable_value = values[1];
+                int v = Convert.ToInt32(variable_value);
+                store_variables.Add(variable_name, v);
+            }
+
+            if (line.Contains("if"))
+            {
+                int linen = CommandLine.lineNumber;
+               for(int i = linen; i == linen+1; i++)
+                {
+                    String[] message = richTextBox1.Lines;
+                    MessageBox.Show(message+"");
+                }
+                isVariable = false;
+                isIf = true;
+                IfCommand command = new IfCommand();
+                
+                String[] para = command.commandCheck(line);
+                value1 = store_variables[para[0]];
+                value2 = store_variables[para[1]];
+                if (line.Contains("=="))
+                {
+                    if (value1 == value2)
+                        equal = true;
+                }
+                else if (line.Contains(">="))
+                {
+                    if (value1 >= value2)
+                        greater_equals = true;
+
+                }
+                else if (line.Contains("<="))
+                {
+                    if (value1 <= value2)
+                        smaller_equals = true;
+                }
+                else if (line.Contains("!="))
+                {
+                    if (value1 != value2)
+                        not_equals = true;
+                }
+                else if (line.Contains(">"))
+                {
+                    if (value1 > value2)
+                        greater = true;
+                }
+                else if (line.Contains("<"))
+                {
+                    if (value1 < value2)
+                        smaller = true;
+                }
+                else 
+                {
+                    MessageBox.Show("Invalid operator ");
+                }
+            }
             int[] parameter = new int[2];
             //change the text in lower form and removing the whitespaces from the text.
             String text = line.ToLower().Trim();
@@ -135,6 +232,20 @@ namespace Draw_Shapes
                         //storing errors in arraylist
                         errors.Add("Invalid parameters at line "+DrawAllShapes.line_number);
                     }
+                    else if (isVariable)
+                    {
+                        if (store_variables.ContainsKey(split_parameters[0]))
+                        {
+                            xAxis = Convert.ToInt32(store_variables[split_parameters[0]]);
+                            //MessageBox.Show("" + firstParameter);
+                        }
+
+                        if (store_variables.ContainsKey(split_parameters[1]))
+                        {
+                            yAxis = Convert.ToInt32(store_variables[split_parameters[1]]);
+                            //MessageBox.Show("" + secondParameter);
+                        }
+                    }
                     else
                     {
                       
@@ -167,6 +278,20 @@ namespace Draw_Shapes
                         //storing errors in arraylist
                         errors.Add("Invalid parameters at line " + DrawAllShapes.line_number);
                     }
+                    else if (isVariable)
+                    {
+                        if (store_variables.ContainsKey(split_parameters[0]))
+                        {
+                            firstParameter = Convert.ToInt32(store_variables[split_parameters[0]]);
+                            //MessageBox.Show("" + firstParameter);
+                        }
+
+                        if (store_variables.ContainsKey(split_parameters[1]))
+                        {
+                            secondParameter = Convert.ToInt32(store_variables[split_parameters[1]]);
+                            //MessageBox.Show("" + secondParameter);
+                        }
+                    }
                     else
                     {
                         try
@@ -192,6 +317,7 @@ namespace Draw_Shapes
                 //if user type a pen command this block will get executed
                 else if (commands.Equals("pen"))
                 {
+
                     //if pen command executed then isPen boolean value becomes true
                     isPen = true;    
                     //Instantiating the object of PenColor class
@@ -211,12 +337,40 @@ namespace Draw_Shapes
                 //if user type a rectangle command this block will get executed
                 else if (commands.Equals("rectangle"))
                 {
+
                     if (split_parameters.Length != 2)
                     {
                         //if invalid parameter is entered then error becomes true
                         error = true;
                         //storing errors in arraylist
                         errors.Add("Invalid parameters at line " + DrawAllShapes.line_number);
+                    }
+                    else if (isVariable)
+                    {
+                        
+                        if (store_variables.ContainsKey(split_parameters[0]))
+                        {
+                            firstParameter = Convert.ToInt32(store_variables[split_parameters[0]]);
+                            //MessageBox.Show("" + firstParameter);
+                        }
+
+                        if (store_variables.ContainsKey(split_parameters[1]))
+                        {
+                            secondParameter = Convert.ToInt32(store_variables[split_parameters[1]]);
+                            //MessageBox.Show("" + secondParameter);
+                        }
+                        
+                        
+                       canvas.drawRectangle(colour, xAxis, yAxis, fillOn, isPen, firstParameter, secondParameter, g);
+                    }
+                    
+                    else if (isIf == true)
+                    {
+                        if (equal||greater_equals||smaller_equals||not_equals||greater||greater_equals)
+                            canvas.drawRectangle(colour, xAxis, yAxis, fillOn, isPen, value1, value2, g);
+                                
+                        else
+                            MessageBox.Show("Condition doesn't meet");
                     }
                     else
                     {
@@ -238,22 +392,37 @@ namespace Draw_Shapes
                         }
                     }
                 }
+        
                 //if user type a circle command this block will get executed
                 else if (commands.Equals("circle"))
                 {
-                    try
+                    if (isVariable)
                     {
-                        //converting from string to integer
-                        int radius = Convert.ToInt32(parameters);
-                        //draws the cricle shape
-                        canvas.drawCircle(colour, xAxis, yAxis, fillOn,isPen, radius, g);
+                        if (store_variables.ContainsKey(parameters))
+                        {
+                            int radius = Convert.ToInt32(store_variables[parameters]);
+                            canvas.drawCircle(colour, xAxis, yAxis, fillOn, isPen, radius, g);
+                        }
+
+                       
+                      
                     }
-                    catch (FormatException e)
+                    else
                     {
-                        //if Non nummeric values  is entered then error becomes true
-                        error = true;
-                        //storing errors in arraylist
-                        errors.Add("Non nummeric values at line " + DrawAllShapes.line_number);
+                        try
+                        {
+                            //converting from string to integer
+                            int radius = Convert.ToInt32(parameters);
+                            //draws the cricle shape
+                            canvas.drawCircle(colour, xAxis, yAxis, fillOn, isPen, radius, g);
+                        }
+                        catch (FormatException e)
+                        {
+                            //if Non nummeric values  is entered then error becomes true
+                            error = true;
+                            //storing errors in arraylist
+                            errors.Add("Non nummeric values at line " + DrawAllShapes.line_number);
+                        }
                     }
 
                 }            
