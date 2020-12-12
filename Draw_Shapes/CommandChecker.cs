@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -113,6 +114,8 @@ namespace Draw_Shapes
             //returning an array with splitted parameter
             return split_parameters;
         }
+
+       
         /// <summary>
         /// This method takes the text from the richTextBox and textBox and it 
         /// split the text by the spaces and commas to get the commands and the parameter.
@@ -122,7 +125,7 @@ namespace Draw_Shapes
         /// </summary>
         /// <param name="line"></param>
         /// <param name="g"></param>
-        public void parseCommands(String line, Graphics g,RichTextBox richTextBox1)
+        public void parseCommands(String line, Graphics g)
         {
             /*String match = @"if\s*\(((?!\s*\{).+)\)";
             Regex reg = new Regex(match);
@@ -131,9 +134,18 @@ namespace Draw_Shapes
                 MessageBox.Show("Matched");
             }
             */
-            if (line.Contains("var"))
+           
+
+           
+            int[] parameter = new int[2];
+            //change the text in lower form and removing the whitespaces from the text.
+            String text = line.ToLower().Trim();
+            //splits the text by the space.
+            String[] splitter = splitTextBySpace(text);
+            //The first text splitted by the space are commands.
+            String commands = splitter[0];
+            if (commands.Equals("var"))
             {
-                
                 isVariable = true;
                 String txt = line.ToLower().Trim();
                 String[] var_splitter = splitVariables(txt);
@@ -144,22 +156,78 @@ namespace Draw_Shapes
                 int v = Convert.ToInt32(variable_value);
                 store_variables.Add(variable_name, v);
             }
-
             if (line.Contains("if"))
             {
-                int linen = CommandLine.lineNumber;
-               for(int i = linen; i == linen+1; i++)
-                {
-                    String[] message = richTextBox1.Lines;
-                    MessageBox.Show(message+"");
-                }
+
                 isVariable = false;
                 isIf = true;
                 IfCommand command = new IfCommand();
+
+                String parameters = command.commandCheck(line);
+                CommandChecker checker = new CommandChecker();
+                DataTable table = new DataTable();
+
+                String[] splitbysign = parameters.Split(signs, StringSplitOptions.None);
+              
+
+
+             if (store_variables.ContainsKey(splitbysign[0]))
+                {
+                    splitbysign[0] = Convert.ToString(store_variables[splitbysign[0]]);
+
+                }
+                bool exp2 = Convert.ToBoolean(table.Compute(parameters, String.Empty));
+                MessageBox.Show(exp2 + "");
+                //String first = store_variables.[splitbysign[0]].ToString();
+
+                if (store_variables.ContainsKey(splitbysign[0])&& store_variables.ContainsKey(splitbysign[1]))
+                {
+                    //bool exp2=false;
+                    splitbysign[0] = store_variables[splitbysign[0]].ToString();
+                    splitbysign[1] = store_variables[splitbysign[1]].ToString();
+                    
+                       // exp2 = Convert.ToBoolean(table.Compute(parameters, String.Empty));
+                    
+                    MessageBox.Show(parameters);
+                }
+                else if (store_variables.ContainsKey(splitbysign[1]))
+                {
+                    splitbysign[1] = store_variables[splitbysign[1]].ToString();
+                  
+                }
+                else
+                {
+                    bool exp1 = Convert.ToBoolean(table.Compute(parameters, String.Empty));
+                    //MessageBox.Show(exp2 + "");
+                }
+               
                 
-                String[] para = command.commandCheck(line);
-                value1 = store_variables[para[0]];
-                value2 = store_variables[para[1]];
+               if (store_variables.ContainsKey(store_variables[splitbysign[0]].ToString()))
+                {
+                    splitbysign[0] = store_variables[splitbysign[0]].ToString();
+                    bool exp = Convert.ToBoolean(table.Compute(splitbysign[0], String.Empty));
+                    MessageBox.Show(exp + "");
+                }
+                 if (store_variables.ContainsKey(store_variables[splitbysign[1]].ToString()))
+                {
+                    splitbysign[1] = store_variables[splitbysign[1]].ToString();
+                    bool exp1 = Convert.ToBoolean(table.Compute(splitbysign[1], String.Empty));
+                    MessageBox.Show(exp1 + "");
+                }
+                
+                else
+                {
+                    bool exp3 = Convert.ToBoolean(table.Compute(parameters, String.Empty));
+                    MessageBox.Show(exp2 + "");
+                }
+               
+
+
+
+
+
+
+
                 if (line.Contains("=="))
                 {
                     if (value1 == value2)
@@ -191,18 +259,11 @@ namespace Draw_Shapes
                     if (value1 < value2)
                         smaller = true;
                 }
-                else 
+                else
                 {
                     MessageBox.Show("Invalid operator ");
                 }
             }
-            int[] parameter = new int[2];
-            //change the text in lower form and removing the whitespaces from the text.
-            String text = line.ToLower().Trim();
-            //splits the text by the space.
-            String[] splitter = splitTextBySpace(text);
-            //The first text splitted by the space are commands.
-            String commands = splitter[0];
             //if the triangle command is typed then this block of code will get executed.
             if (commands.Equals("triangle"))
             { 
@@ -374,11 +435,12 @@ namespace Draw_Shapes
                     }
                     else
                     {
+                        isVariable = false;
                         try
                         {
                             //converts the width and height to integer from string.
-                            int firstParameter = Convert.ToInt32(split_parameters[0]);
-                            int secondParameter = Convert.ToInt32(split_parameters[1]);
+                            firstParameter = Convert.ToInt32(split_parameters[0]);
+                            secondParameter = Convert.ToInt32(split_parameters[1]);
                            
                             //passing the parameters to draw a  rectangle
                             canvas.drawRectangle(colour, xAxis, yAxis, fillOn,isPen, firstParameter, secondParameter, g);                           
@@ -450,6 +512,30 @@ namespace Draw_Shapes
                     errors.Add("Invalid command at line " + DrawAllShapes.line_number); 
                 }
             }
+        }
+
+        public Boolean Evaluate(string expression)
+        {
+            //MessageBox.Show("Hello");
+            DataTable table = new DataTable();
+
+            String[] splitbysign = expression.Split(signs, StringSplitOptions.None);
+            MessageBox.Show(store_variables[splitbysign[0]].ToString());
+            if (store_variables.ContainsKey(splitbysign[0]))
+            {
+                MessageBox.Show("Hello");
+
+                splitbysign[0] = store_variables[splitbysign[0]].ToString();
+                splitbysign[1] = store_variables[splitbysign[1]].ToString();
+
+
+                bool exp = Convert.ToBoolean(table.Compute(expression, String.Empty));
+                
+                return exp;
+
+            }
+            
+            return false;
         }
 
         /// <summary>

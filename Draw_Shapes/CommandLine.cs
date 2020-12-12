@@ -13,6 +13,7 @@ namespace Draw_Shapes
     /// </summary>
     class CommandLine
     {
+
         public static int lineNumber;
         VariableChecker variable_check = new VariableChecker();
         /// <summary>
@@ -41,6 +42,7 @@ namespace Draw_Shapes
             //If run command entered then this block get executed
             if (singleLineCommand.Equals("run"))
             {
+                
                 //if syntaxCheck button is clicked then setting bollean value to false.
                 DrawAllShapes.syntaxCheckerClicked = false;
                 //clears the textBox
@@ -51,7 +53,7 @@ namespace Draw_Shapes
                     
                     lineNumber++;
                         //passed the line of text into the parseCommands method to check the commands are valid or invalid
-                        checker.parseCommands(line, g,richTextBox1);
+                        checker.parseCommands(line, g);
                     
                 }
             }
@@ -76,7 +78,7 @@ namespace Draw_Shapes
             else
             {
                 //passed the text of TextBox into the parseCommands method to check the commands are valid or invalid
-                checker.parseCommands(textBox2.Text, g,richTextBox1);
+                checker.parseCommands(textBox2.Text, g);
             }
         }
     }
