@@ -18,17 +18,23 @@ namespace Draw_Shapes
     /// </summary>
     public class CommandChecker
     {
-       
+        String com;
+        CheckCommands check_commands = new CheckCommands();
+        public IDictionary<String, int> store_variables = new Dictionary<String, int>();
+        int endif,ifline;
+        int linedeff;
         bool equal,greater_equals,smaller_equals,greater,smaller,not_equals = false;
         String[] signs = { "<=", ">=", "<", ">", "==", "!=" };
-        IDictionary<String, int> store_variables = new Dictionary<String,int>();
+    
         private int firstParameter;
         private int secondParameter;
+        private bool expression;
         private bool isVariable = false;
         private bool isIf = false;
         private String para1;
         int value1;
         int value2;
+        
         private String para2;
         /// <summary>
         /// ArrayList is created with static keyword to access this arraylist by a classname.
@@ -146,6 +152,8 @@ namespace Draw_Shapes
             String commands = splitter[0];
             if (commands.Equals("var"))
             {
+                DataTable table = new DataTable();
+                    
                 isVariable = true;
                 String txt = line.ToLower().Trim();
                 String[] var_splitter = splitVariables(txt);
@@ -153,116 +161,38 @@ namespace Draw_Shapes
                 String[] values = splitValues(variables);
                 String variable_name = values[0];
                 String variable_value = values[1];
-                int v = Convert.ToInt32(variable_value);
+                
+                int v = Convert.ToInt32(table.Compute(variable_value, String.Empty));
                 store_variables.Add(variable_name, v);
             }
-            if (line.Contains("if"))
+            if (commands.Equals("if"))
             {
-
+                int line_number = CommandLine.lineNumber;
                 isVariable = false;
                 isIf = true;
                 IfCommand command = new IfCommand();
-
-                String parameters = command.commandCheck(line);
-                CommandChecker checker = new CommandChecker();
-                DataTable table = new DataTable();
-
-                String[] splitbysign = parameters.Split(signs, StringSplitOptions.None);
+                expression = command.commandCheck(line,store_variables);
+                String[] richLines = CommandLine.RichTextBoxLines;
+                if (richLines[line_number].Equals("then"))
+                {
+                    String c = richLines[line_number+1];
+                    if(!richLines[line_number + 2].Equals("endif"))
+                    {
+                        MessageBox.Show("Please put endif");
+                    }
+                }
+                
               
-
-
-             if (store_variables.ContainsKey(splitbysign[0]))
-                {
-                    splitbysign[0] = Convert.ToString(store_variables[splitbysign[0]]);
-
-                }
-                bool exp2 = Convert.ToBoolean(table.Compute(parameters, String.Empty));
-                MessageBox.Show(exp2 + "");
-                //String first = store_variables.[splitbysign[0]].ToString();
-
-                if (store_variables.ContainsKey(splitbysign[0])&& store_variables.ContainsKey(splitbysign[1]))
-                {
-                    //bool exp2=false;
-                    splitbysign[0] = store_variables[splitbysign[0]].ToString();
-                    splitbysign[1] = store_variables[splitbysign[1]].ToString();
-                    
-                       // exp2 = Convert.ToBoolean(table.Compute(parameters, String.Empty));
-                    
-                    MessageBox.Show(parameters);
-                }
-                else if (store_variables.ContainsKey(splitbysign[1]))
-                {
-                    splitbysign[1] = store_variables[splitbysign[1]].ToString();
-                  
-                }
-                else
-                {
-                    bool exp1 = Convert.ToBoolean(table.Compute(parameters, String.Empty));
-                    //MessageBox.Show(exp2 + "");
-                }
                
-                
-               if (store_variables.ContainsKey(store_variables[splitbysign[0]].ToString()))
-                {
-                    splitbysign[0] = store_variables[splitbysign[0]].ToString();
-                    bool exp = Convert.ToBoolean(table.Compute(splitbysign[0], String.Empty));
-                    MessageBox.Show(exp + "");
-                }
-                 if (store_variables.ContainsKey(store_variables[splitbysign[1]].ToString()))
-                {
-                    splitbysign[1] = store_variables[splitbysign[1]].ToString();
-                    bool exp1 = Convert.ToBoolean(table.Compute(splitbysign[1], String.Empty));
-                    MessageBox.Show(exp1 + "");
-                }
-                
-                else
-                {
-                    bool exp3 = Convert.ToBoolean(table.Compute(parameters, String.Empty));
-                    MessageBox.Show(exp2 + "");
-                }
+            }
+
+            if (commands.Equals("endif"))
+            {
+                endif = CommandLine.lineNumber;
+                MessageBox.Show(endif+"");
+                linedeff = endif - ifline;
                
-
-
-
-
-
-
-
-                if (line.Contains("=="))
-                {
-                    if (value1 == value2)
-                        equal = true;
-                }
-                else if (line.Contains(">="))
-                {
-                    if (value1 >= value2)
-                        greater_equals = true;
-
-                }
-                else if (line.Contains("<="))
-                {
-                    if (value1 <= value2)
-                        smaller_equals = true;
-                }
-                else if (line.Contains("!="))
-                {
-                    if (value1 != value2)
-                        not_equals = true;
-                }
-                else if (line.Contains(">"))
-                {
-                    if (value1 > value2)
-                        greater = true;
-                }
-                else if (line.Contains("<"))
-                {
-                    if (value1 < value2)
-                        smaller = true;
-                }
-                else
-                {
-                    MessageBox.Show("Invalid operator ");
-                }
+                MessageBox.Show(linedeff + "");
             }
             //if the triangle command is typed then this block of code will get executed.
             if (commands.Equals("triangle"))
@@ -396,6 +326,7 @@ namespace Draw_Shapes
                     }
                 }
                 //if user type a rectangle command this block will get executed
+                //check_commands.checkCommands(commands).Equals("rectangle")
                 else if (commands.Equals("rectangle"))
                 {
 
@@ -427,9 +358,22 @@ namespace Draw_Shapes
                     
                     else if (isIf == true)
                     {
-                        if (equal||greater_equals||smaller_equals||not_equals||greater||greater_equals)
-                            canvas.drawRectangle(colour, xAxis, yAxis, fillOn, isPen, value1, value2, g);
-                                
+                        if (expression == true)
+                        {
+                            if (store_variables.ContainsKey(split_parameters[0]))
+                            {
+                                firstParameter = Convert.ToInt32(store_variables[split_parameters[0]]);
+                                //MessageBox.Show("" + firstParameter);
+                            }
+
+                            if (store_variables.ContainsKey(split_parameters[1]))
+                            {
+                                secondParameter = Convert.ToInt32(store_variables[split_parameters[1]]);
+                                //MessageBox.Show("" + secondParameter);
+                            }
+                            canvas.drawRectangle(colour, xAxis, yAxis, fillOn, isPen, firstParameter, secondParameter, g);
+                        }
+
                         else
                             MessageBox.Show("Condition doesn't meet");
                     }
@@ -465,9 +409,6 @@ namespace Draw_Shapes
                             int radius = Convert.ToInt32(store_variables[parameters]);
                             canvas.drawCircle(colour, xAxis, yAxis, fillOn, isPen, radius, g);
                         }
-
-                       
-                      
                     }
                     else
                     {
@@ -521,7 +462,7 @@ namespace Draw_Shapes
 
             String[] splitbysign = expression.Split(signs, StringSplitOptions.None);
             MessageBox.Show(store_variables[splitbysign[0]].ToString());
-            if (store_variables.ContainsKey(splitbysign[0]))
+            /*if (store_variables.ContainsKey(splitbysign[0]))
             {
                 MessageBox.Show("Hello");
 
@@ -534,7 +475,7 @@ namespace Draw_Shapes
                 return exp;
 
             }
-            
+            */
             return false;
         }
 

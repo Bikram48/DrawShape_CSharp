@@ -13,7 +13,7 @@ namespace Draw_Shapes
     /// </summary>
     class CommandLine
     {
-
+        public static string[] RichTextBoxLines;
         public static int lineNumber;
         VariableChecker variable_check = new VariableChecker();
         /// <summary>
@@ -35,7 +35,7 @@ namespace Draw_Shapes
             //it transforms the text into small alphabets
             String lower = run_commands.ToLower();
             //reads the lines of text from RichTextBox
-            string[] RichTextBoxLines = richTextBox1.Lines;
+            RichTextBoxLines = richTextBox1.Lines;
             //Takes the commands from command line and removes the whitespace and also transform letter into small alphabet.
             String singleLineCommand = textBox2.Text.Trim().ToLower();
          
@@ -80,6 +80,12 @@ namespace Draw_Shapes
                 //passed the text of TextBox into the parseCommands method to check the commands are valid or invalid
                 checker.parseCommands(textBox2.Text, g);
             }
+
+          
+        }
+        public String[] getLines()
+        {
+            return RichTextBoxLines;
         }
     }
 }
