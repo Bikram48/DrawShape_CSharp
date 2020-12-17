@@ -107,7 +107,7 @@ namespace Draw_Shapes
             //makes boolean value to true if this button is clicked.
             syntaxCheckerClicked = true;
             //clears the error from the arraylist
-            CommandChecker.errors.Clear();
+          //  CommandChecker.errors.Clear();
             //resets the value of linenumber to zero
             line_number = 0;
             //clears  the richtextbox
@@ -122,20 +122,20 @@ namespace Draw_Shapes
                 //increments the value of line number when lines are found in richtextbox
                 line_number++;           
                 //passing the line of text into the parseCommands method to check the commands are valid or invalid
-                checker.parseCommands(line, g);
+               // checker.parseCommands(line, g);
             }
             //if textbox is not empty then this block will get executed
             if (!singleLineCommandBox.Text.Equals(""))
             {
                 line_number++;
                 //passing the line of text into the parseCommands method to check the commands are valid or invalid
-                checker.parseCommands(singleLineCommandBox.Text, g);
+               // checker.parseCommands(singleLineCommandBox.Text, g);
             }
            
             
             
             //checker.parseCommands(textBox2.Text, g);
-            if (CommandChecker.error == true)
+            /*if (CommandChecker.error == true)
             {
                 //counts the total number of errors detected
                 int totalerrors = CommandChecker.errors.Count;
@@ -159,6 +159,7 @@ namespace Draw_Shapes
                 //shows no errors found message in richtextbox
                 errorBox.Text += "\nNo Errors Found";
             }
+            */
            
         }
 

@@ -18,477 +18,310 @@ namespace Draw_Shapes
     /// </summary>
     public class CommandChecker
     {
-        String com;
-        CheckCommands check_commands = new CheckCommands();
-        public IDictionary<String, int> store_variables = new Dictionary<String, int>();
-        int endif,ifline;
-        int linedeff;
-        bool equal,greater_equals,smaller_equals,greater,smaller,not_equals = false;
-        String[] signs = { "<=", ">=", "<", ">", "==", "!=" };
-    
-        private int firstParameter;
-        private int secondParameter;
-        private bool expression;
-        private bool isVariable = false;
-        private bool isIf = false;
-        private String para1;
-        int value1;
-        int value2;
-        
-        private String para2;
-        /// <summary>
-        /// ArrayList is created with static keyword to access this arraylist by a classname.
-        /// Stores all the errors throws by the commands or program.
-        /// </summary>
-        public static ArrayList errors = new ArrayList();
-        /// <summary>
-        /// Uses a public modifier to give access to other classes also.
-        /// Declaired as a static variable which will get accessed  through the class name.
-        /// It returns the true value if errors are detected if not then it returns false.
-        /// </summary>
-        public static Boolean error = false;
-        /// <summary>
-        /// Uses a public modifier to give access to other classes also.
-        /// Declaired as a static variable which will get accessed by through the class name.
-        /// It is a boolean type variable to check if the pen command is get executed or not.
-        /// It returns true if the pen command is executed if not it returns false.
-        /// </summary>
-        public static Boolean isPen=false;
-        /// <summary>
-        /// Uses a private visibility modifier to give access to this class only.
-        /// It's a integer type which will store the values of xAxis from the moveTo command.
-        /// </summary>
-        private  int xAxis;
-        /// <summary>
-        /// Uses a private visibility modifier to give access to this class only.
-        /// It's a integer type which will store the values of yAxis from the moveTo command.
-        /// </summary>
-        private  int yAxis;
-   
-        /// <summary>
-        /// Local variable with the boolean property which will check if the fill command is get executed or not.
-        /// It will return true if the fillOn command is executed if not it will return false.
-        /// </summary>
-        Boolean fillOn = false;
-        /// <summary>
-        /// It is a reference variable of the Color class.
-        /// It store the pen color entered by the user to draw a shapes.
-        /// </summary>
-        Color colour;
-        /// <summary>
-        /// The object of Canvas class is get instantiated.
-        /// Will call the method of Canvas class through the canvas reference variable.
-        /// </summary>
-        Canvas canvas = new Canvas();
-        
-        /// <summary>
-        /// uses public access modifier to give access to other classes also.
-        /// It splits the text by spaces and returns string array with splitted text
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public String[] splitTextBySpace(String text)
+        ArrayList Errors = new ArrayList();
+        public static bool isPen;
+        bool expression;
+        CommandLine commands = new CommandLine();
+        public static IDictionary<String, String> store_variables = new Dictionary<String, String>();
+        public String check_command_type(String command)
         {
-            //storing the splitted text in array
-            String[] splitter = text.Split(' ');
-            //returning array with splitted text
-            return splitter;
+            String type = null;
+            if (command.Contains("if") && !command.Contains("endif"))
+            {
+                type = "if";
+            }
+            else if (command.Contains("then"))
+            {
+                type = "singleif";
+            }
+            else if (command.Contains("while"))
+            {
+                type = "while";
+            }
+            else if (command.Contains("method"))
+            {
+                type = "method";
+            }
+            else if (command.Contains("drawto") || command.Contains("moveto") || command.Contains("pen") || command.Contains("rectangle") || command.Contains("triangle") || command.Contains("circle") || command.Contains("fill"))
+            {
+                type = "drawing_commands";
+            }
+            else if (command.Contains("endif") || command.Contains("endloop") || command.Contains("endMethod"))
+            {
+                type = "end_tag";
+            }
+            else
+            {
+                if (command.Contains("="))
+                {
+                    if (command.Split('=').Length == 2)
+                    {
+                        type = "variable";
+                    }
+                    if (command.Contains("+") || command.Contains("-") || command.Contains("*") || command.Contains("/"))
+                    {
+                        type = "variableoperation";
+                    }
+                }
+
+            }
+            return type;
         }
 
-        public String[] splitVariables(String text)
+        public void check_if_command(String command, String[] lines, int count_line, Graphics g)
         {
-            String[] splitter = text.Split(' ');
-            return splitter;
-        }
-
-        public String[] splitValues(String parameter)
-        {
-            String[] split_parameter = parameter.Split('=');
-            return split_parameter;
-        }
-
-        /// <summary>
-        /// uses public access modifier to give access to other classes also.
-        /// It splits the parameters by comma and returns string array with splitted parameter
-        /// </summary>
-        /// <param name="parameter"></param>
-        /// <returns></returns>
-        public String[] splitParameterByComma(String parameter)
-        {
-            //storing the splitted parameters in array
-            String[] split_parameters = parameter.Split(',');
-            //returning an array with splitted parameter
-            return split_parameters;
-        }
-
-       
-        /// <summary>
-        /// This method takes the text from the richTextBox and textBox and it 
-        /// split the text by the spaces and commas to get the commands and the parameter.
-        /// The main purpose of creating this method is to check if the commands typed
-        /// by user are valid if they are valid then commands are passed to the Shape abstract
-        /// class to generate a appropriate output.
-        /// </summary>
-        /// <param name="line"></param>
-        /// <param name="g"></param>
-        public void parseCommands(String line, Graphics g)
-        {
-            /*String match = @"if\s*\(((?!\s*\{).+)\)";
-            Regex reg = new Regex(match);
-            if (reg.IsMatch(line))
-            {
-                MessageBox.Show("Matched");
-            }
-            */
-           
-
-           
-            int[] parameter = new int[2];
-            //change the text in lower form and removing the whitespaces from the text.
-            String text = line.ToLower().Trim();
-            //splits the text by the space.
-            String[] splitter = splitTextBySpace(text);
-            //The first text splitted by the space are commands.
-            String commands = splitter[0];
-            if (commands.Equals("var"))
-            {
-                DataTable table = new DataTable();
-                    
-                isVariable = true;
-                String txt = line.ToLower().Trim();
-                String[] var_splitter = splitVariables(txt);
-                String variables = var_splitter[1];
-                String[] values = splitValues(variables);
-                String variable_name = values[0];
-                String variable_value = values[1];
-                
-                int v = Convert.ToInt32(table.Compute(variable_value, String.Empty));
-                store_variables.Add(variable_name, v);
-            }
-            if (commands.Equals("if"))
-            {
-                int line_number = CommandLine.lineNumber;
-                isVariable = false;
-                isIf = true;
-                IfCommand command = new IfCommand();
-                expression = command.commandCheck(line,store_variables);
-                String[] richLines = CommandLine.RichTextBoxLines;
-                if (richLines[line_number].Equals("then"))
-                {
-                    String c = richLines[line_number+1];
-                    if(!richLines[line_number + 2].Equals("endif"))
-                    {
-                        MessageBox.Show("Please put endif");
-                    }
-                }
-                
-              
-               
-            }
-
-            if (commands.Equals("endif"))
-            {
-                endif = CommandLine.lineNumber;
-                MessageBox.Show(endif+"");
-                linedeff = endif - ifline;
-               
-                MessageBox.Show(linedeff + "");
-            }
-            //if the triangle command is typed then this block of code will get executed.
-            if (commands.Equals("triangle"))
-            { 
-                //calls the method drawTriangle from canvas class to draw a triangle.
-                canvas.drawTriangle(colour, xAxis, yAxis, fillOn,isPen, g);
-            }
-            //If there is no commands entered then return nothing
-            if (commands.Equals(""))
-            {
-                return;
-            }
-            //try block starts
-            try
-            {
-                //The second text splitted by the space are parameters.
-                String parameters = splitter[1];
-                //splitting the parameters by the comma
-                String[] split_parameters = splitParameterByComma(parameters);
-               //if moveto command is executed then this block will be called
-                if (commands.Equals("moveto"))
-                {
-                    //if many parameters are passed then the system requires then this block will get executed.
-                    if (split_parameters.Length != 2)
-                    {
-                        //if invalid parameter is entered then error becomes true
-                        error = true;
-                        //storing errors in arraylist
-                        errors.Add("Invalid parameters at line "+DrawAllShapes.line_number);
-                    }
-                    else if (isVariable)
-                    {
-                        if (store_variables.ContainsKey(split_parameters[0]))
-                        {
-                            xAxis = Convert.ToInt32(store_variables[split_parameters[0]]);
-                            //MessageBox.Show("" + firstParameter);
-                        }
-
-                        if (store_variables.ContainsKey(split_parameters[1]))
-                        {
-                            yAxis = Convert.ToInt32(store_variables[split_parameters[1]]);
-                            //MessageBox.Show("" + secondParameter);
-                        }
-                    }
-                    else
-                    {
-                      
-                        try
-                        {
-                            //converting the parameters from string to integer
-                            xAxis = Convert.ToInt32(split_parameters[0]);
-                            yAxis = Convert.ToInt32(split_parameters[1]);
-                            //creates a pen
-                            Pen p = new Pen(new SolidBrush(Color.Red), 2);
-                        }
-                        //catch the exception thrown by the try block
-                        catch (FormatException e)
-                        {
-                            //if non numberic values is entered then error becomes true
-                            error = true;
-                            //storing errors in arraylist
-                            errors.Add("Non numeric values at line " + DrawAllShapes.line_number);
-                        }
-                    }
-                }
-                //if user type a drawto command this block will get executed
-                else if (commands.Equals("drawto"))
-                {
-                    //if many parameters are passed then the system requires then this block will get executed.
-                    if (split_parameters.Length != 2)
-                    {
-                        //if invalid parameter is entered then error becomes true
-                        error = true;
-                        //storing errors in arraylist
-                        errors.Add("Invalid parameters at line " + DrawAllShapes.line_number);
-                    }
-                    else if (isVariable)
-                    {
-                        if (store_variables.ContainsKey(split_parameters[0]))
-                        {
-                            firstParameter = Convert.ToInt32(store_variables[split_parameters[0]]);
-                            //MessageBox.Show("" + firstParameter);
-                        }
-
-                        if (store_variables.ContainsKey(split_parameters[1]))
-                        {
-                            secondParameter = Convert.ToInt32(store_variables[split_parameters[1]]);
-                            //MessageBox.Show("" + secondParameter);
-                        }
-                    }
-                    else
-                    {
-                        try
-                        {
-                            //converting the parameters from string to integer
-                            int firstParameter = Convert.ToInt32(split_parameters[0]);
-                            int secondParameter = Convert.ToInt32(split_parameters[1]);
-                            //passed the parameters required to draw a line
-                            canvas.drawLine(colour, xAxis, yAxis, fillOn, firstParameter, secondParameter, g);
-                            xAxis = firstParameter;
-                            yAxis = secondParameter;
-                        }
-                        //catch the exception thrown by the try block
-                        catch (FormatException e)
-                        {
-                            //if Non nummeric values  is entered then error becomes true
-                            error = true;
-                            //storing errors in arraylist
-                            errors.Add("Non nummeric values at line " + DrawAllShapes.line_number);
-                        }
-                    }
-                }
-                //if user type a pen command this block will get executed
-                else if (commands.Equals("pen"))
-                {
-
-                    //if pen command executed then isPen boolean value becomes true
-                    isPen = true;    
-                    //Instantiating the object of PenColor class
-                    PenColor colors = new PenColor();
-                    //passing colors to getPenColor method of PenColor class 
-                    colour = colors.getPenColor(parameters);
-                }
-                //if user type a fill command this block will get executed
-                else if (commands.Equals("fill"))
-                {
-                    if (parameters.Equals("on"))
-                    {
-                        //if fill command is on then make the fillOn boolean value to true
-                        fillOn = true;
-                    }
-                }
-                //if user type a rectangle command this block will get executed
-                //check_commands.checkCommands(commands).Equals("rectangle")
-                else if (commands.Equals("rectangle"))
-                {
-
-                    if (split_parameters.Length != 2)
-                    {
-                        //if invalid parameter is entered then error becomes true
-                        error = true;
-                        //storing errors in arraylist
-                        errors.Add("Invalid parameters at line " + DrawAllShapes.line_number);
-                    }
-                    else if (isVariable)
-                    {
-                        
-                        if (store_variables.ContainsKey(split_parameters[0]))
-                        {
-                            firstParameter = Convert.ToInt32(store_variables[split_parameters[0]]);
-                            //MessageBox.Show("" + firstParameter);
-                        }
-
-                        if (store_variables.ContainsKey(split_parameters[1]))
-                        {
-                            secondParameter = Convert.ToInt32(store_variables[split_parameters[1]]);
-                            //MessageBox.Show("" + secondParameter);
-                        }
-                        
-                        
-                       canvas.drawRectangle(colour, xAxis, yAxis, fillOn, isPen, firstParameter, secondParameter, g);
-                    }
-                    
-                    else if (isIf == true)
-                    {
-                        if (expression == true)
-                        {
-                            if (store_variables.ContainsKey(split_parameters[0]))
-                            {
-                                firstParameter = Convert.ToInt32(store_variables[split_parameters[0]]);
-                                //MessageBox.Show("" + firstParameter);
-                            }
-
-                            if (store_variables.ContainsKey(split_parameters[1]))
-                            {
-                                secondParameter = Convert.ToInt32(store_variables[split_parameters[1]]);
-                                //MessageBox.Show("" + secondParameter);
-                            }
-                            canvas.drawRectangle(colour, xAxis, yAxis, fillOn, isPen, firstParameter, secondParameter, g);
-                        }
-
-                        else
-                            MessageBox.Show("Condition doesn't meet");
-                    }
-                    else
-                    {
-                        isVariable = false;
-                        try
-                        {
-                            //converts the width and height to integer from string.
-                            firstParameter = Convert.ToInt32(split_parameters[0]);
-                            secondParameter = Convert.ToInt32(split_parameters[1]);
-                           
-                            //passing the parameters to draw a  rectangle
-                            canvas.drawRectangle(colour, xAxis, yAxis, fillOn,isPen, firstParameter, secondParameter, g);                           
-                        }
-                        catch (FormatException e)
-                        {
-                            //if Non nummeric values  is entered then error becomes true
-                            error = true;
-                            //storing errors in arraylist
-                            errors.Add("Non nummeric values at line " + DrawAllShapes.line_number);
-                        }
-                    }
-                }
-        
-                //if user type a circle command this block will get executed
-                else if (commands.Equals("circle"))
-                {
-                    if (isVariable)
-                    {
-                        if (store_variables.ContainsKey(parameters))
-                        {
-                            int radius = Convert.ToInt32(store_variables[parameters]);
-                            canvas.drawCircle(colour, xAxis, yAxis, fillOn, isPen, radius, g);
-                        }
-                    }
-                    else
-                    {
-                        try
-                        {
-                            //converting from string to integer
-                            int radius = Convert.ToInt32(parameters);
-                            //draws the cricle shape
-                            canvas.drawCircle(colour, xAxis, yAxis, fillOn, isPen, radius, g);
-                        }
-                        catch (FormatException e)
-                        {
-                            //if Non nummeric values  is entered then error becomes true
-                            error = true;
-                            //storing errors in arraylist
-                            errors.Add("Non nummeric values at line " + DrawAllShapes.line_number);
-                        }
-                    }
-
-                }            
-                //if user type a command which is not valid then this block executes
-                else
-                {
-                    //if invalid command is entered then error becomes true
-                    error = true;
-                    //storing errors in arraylist
-                    errors.Add("Invalid command at line " + DrawAllShapes.line_number);
-                }
-            }
-            catch (IndexOutOfRangeException e)
-            {
-                //if commands is trianlge then make error to false
-                if (commands.Equals("triangle"))
-                {
-                    error = false;
-                }              
-                else
-                {
-                    //if invalid command is entered then error becomes true
-                    error = true;
-                    //storing errors in arraylist
-                    errors.Add("Invalid command at line " + DrawAllShapes.line_number); 
-                }
-            }
-        }
-
-        public Boolean Evaluate(string expression)
-        {
-            //MessageBox.Show("Hello");
             DataTable table = new DataTable();
+            String one;
+            String two;
+            String[] signs = { "<=", ">=", "<", ">", "==", "!=" };
+            String[] cmd = command.Split(' ');
+            String parameters = cmd[1];
+            String[] splitbysign = parameters.Split(signs, StringSplitOptions.None);
 
-            String[] splitbysign = expression.Split(signs, StringSplitOptions.None);
-            MessageBox.Show(store_variables[splitbysign[0]].ToString());
-            /*if (store_variables.ContainsKey(splitbysign[0]))
+            if (cmd[0].Equals("if"))
             {
-                MessageBox.Show("Hello");
+                if (store_variables.ContainsKey(splitbysign[0]) && store_variables.ContainsKey(splitbysign[1]))
+                {
+                    one = store_variables[splitbysign[0]].ToString();
+                    two = store_variables[splitbysign[1]].ToString();
+                }
+                else if (store_variables.ContainsKey(splitbysign[0]) && !store_variables.ContainsKey(splitbysign[1]))
+                {
 
-                splitbysign[0] = store_variables[splitbysign[0]].ToString();
-                splitbysign[1] = store_variables[splitbysign[1]].ToString();
+                    one = store_variables[splitbysign[0]].ToString();
+                    two = splitbysign[1];
 
+                }
+                else if (!store_variables.ContainsKey(splitbysign[0]) && store_variables.ContainsKey(splitbysign[1]))
+                {
+                    one = splitbysign[0];
+                    two = store_variables[splitbysign[1]].ToString();
 
-                bool exp = Convert.ToBoolean(table.Compute(expression, String.Empty));
-                
-                return exp;
+                }
 
+                else
+                {
+                    one = splitbysign[0].ToString();
+                    two = splitbysign[1].ToString();
+                }
+
+                String replaced = parameters.Replace(splitbysign[0], one).Replace(splitbysign[1], two);
+
+                expression = Convert.ToBoolean(table.Compute(replaced, String.Empty));
+
+                if (expression == true)
+                {
+                    if (lines[count_line].Equals("then"))
+                    {
+                        string command_type = check_command_type(lines[count_line + 1]);
+                        if (command_type.Equals("drawing_commands"))
+                        {
+                            commands.draw_commands(lines[count_line + 1], g);
+                        }
+                    }
+                    else
+                    {
+                        for (int i = count_line; i < lines.Length; i++)
+                        {
+                            if (!(lines[i].Equals("endif")))
+                            {
+                                string command_types = check_command_type(lines[i]);
+                                if (command_types.Equals("drawing_commands"))
+                                {
+                                    //MessageBox.Show("Drawing commands");
+                                    commands.draw_commands(lines[i], g);
+                                }
+                                else
+                                {
+                                    break;
+                                }
+
+                            }
+                        }
+                    }
+                }
             }
-            */
-            return false;
+
         }
 
-        /// <summary>
-        /// If reset command is get executed from the commandline then this method will be called to reset
-        /// the position of xAxis and yAxis to 0,0
-        /// </summary>
-        public void Reset()
+        public void check_while_command(string command, String[] lines, int count_line, Graphics g)
         {
-            //sets xAxis to zero
-            xAxis = 0;
-            //sets yAxis to zero
-            yAxis = 0;
+            DataTable table = new DataTable();
+            String one;
+            String two;
+            String[] signs = { "<=", ">=", "<", ">", "==", "!=" };
+            String[] splitter = command.Split(' ');
+            String parameters = splitter[1];
+            String[] splitbysign = parameters.Split(signs, StringSplitOptions.None);
+            if (splitter[0].Equals("while"))
+            {
+                if (store_variables.ContainsKey(splitbysign[0]) && store_variables.ContainsKey(splitbysign[1]))
+                {
+                    one = store_variables[splitbysign[0]].ToString();
+                    two = store_variables[splitbysign[1]].ToString();
+                }
+                else if (store_variables.ContainsKey(splitbysign[0]) && !store_variables.ContainsKey(splitbysign[1]))
+                {
+                    one = store_variables[splitbysign[0]].ToString();
+                    two = splitbysign[1];
+                }
+                else if (!store_variables.ContainsKey(splitbysign[0]) && store_variables.ContainsKey(splitbysign[1]))
+                {
+                    one = splitbysign[0];
+                    two = store_variables[splitbysign[1]].ToString();
+
+                }
+
+                else
+                {
+                    one = splitbysign[0].ToString();
+                    two = splitbysign[1].ToString();
+                }
+                String replaced = parameters.Replace(splitbysign[0], one).Replace(splitbysign[1], two);
+                expression = Convert.ToBoolean(table.Compute(replaced, String.Empty));
+
+                if (expression)
+                {
+                    int loop;
+                    int loop_count = 0;
+
+                    if (store_variables.ContainsKey(splitbysign[0]))
+                    {
+                        loop = Convert.ToInt32(store_variables[splitbysign[0]]);
+                        loop_count = Convert.ToInt32(splitbysign[1]);
+
+
+                        for (int count = loop; count < loop_count; count++)
+                        {
+                            for (int i = count_line; i < lines.Length; i++)
+                            {
+                                // MessageBox.Show(loop + "");
+                                if (!(lines[i].Equals("endloop")))
+                                {
+
+                                    string command_types = check_command_type(lines[i]);
+                                    if (command_types.Equals("drawing_commands"))
+                                    {
+                                        //MessageBox.Show("Drawing commands");
+                                        commands.draw_commands(lines[i], g);
+                                    }
+
+                                    else if (command_types.Equals("variableoperation"))
+                                    {
+                                        run_variable_operation(lines[i]);
+                                    }
+
+                                    else
+                                    {
+                                        MessageBox.Show("No variable");
+                                    }
+
+                                }
+
+                            }
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+
+        public void check_variable(string command)
+        {
+            String one;
+            String two;
+            char[] operations = { '+', '-', '*', '/' };
+            DataTable table = new DataTable();
+            String[] cmd = command.Split('=');
+            String variable_name = cmd[0];
+            String variable_value = cmd[1];
+
+            if (!store_variables.ContainsKey(variable_name))
+            {
+                store_variables.Add(variable_name, variable_value);
+            }
+
+        }
+
+        public void run_variable_operation(String command)
+        {
+            DataTable table = new DataTable();
+            char[] operations = { '+', '-', '*', '/' };
+            String[] cmd = command.Split('=');
+            String variable_name = cmd[0];
+            String variable_value = cmd[1];
+            String[] splitbysigns = variable_value.Split(operations, StringSplitOptions.None);
+            if (command.Contains("+"))
+            {
+                if (store_variables.ContainsKey(splitbysigns[0]) && !store_variables.ContainsKey(splitbysigns[1]))
+                {
+                    int one = Convert.ToInt32(store_variables[splitbysigns[0]]);
+                    int two = Convert.ToInt32(splitbysigns[1]);
+                    int total = one + two;
+                    store_variables.Remove(splitbysigns[0]);
+                    store_variables.Add(splitbysigns[0], total.ToString());
+                }
+                if (!store_variables.ContainsKey(splitbysigns[0]) && store_variables.ContainsKey(splitbysigns[1]))
+                {
+                    int total = Convert.ToInt32(splitbysigns[0]) + Convert.ToInt32(store_variables[splitbysigns[1]]);
+                    store_variables.Remove(splitbysigns[0]);
+                    store_variables.Add(splitbysigns[0], total.ToString());
+                }
+            }
+            else if (command.Contains("-"))
+            {
+                if (store_variables.ContainsKey(splitbysigns[0]) && !store_variables.ContainsKey(splitbysigns[1]))
+                {
+                    int total = Convert.ToInt32(store_variables[splitbysigns[0]]) - Convert.ToInt32(splitbysigns[1]);
+                    store_variables.Remove(splitbysigns[0]);
+                    store_variables.Add(splitbysigns[0], total.ToString());
+                }
+                if (!store_variables.ContainsKey(splitbysigns[0]) && store_variables.ContainsKey(splitbysigns[1]))
+                {
+                    int total = Convert.ToInt32(splitbysigns[0]) - Convert.ToInt32(store_variables[splitbysigns[1]]);
+                    store_variables.Remove(splitbysigns[0]);
+                    store_variables.Add(splitbysigns[0], total.ToString());
+                }
+            }
+            else if (command.Contains("*"))
+            {
+                if (store_variables.ContainsKey(splitbysigns[0]) && !store_variables.ContainsKey(splitbysigns[1]))
+                {
+                    int total = Convert.ToInt32(store_variables[splitbysigns[0]]) * Convert.ToInt32(splitbysigns[1]);
+                    store_variables.Remove(splitbysigns[0]);
+                    store_variables.Add(splitbysigns[0], total.ToString());
+                }
+                if (!store_variables.ContainsKey(splitbysigns[0]) && store_variables.ContainsKey(splitbysigns[1]))
+                {
+                    int total = Convert.ToInt32(splitbysigns[0]) * Convert.ToInt32(store_variables[splitbysigns[1]]);
+                    store_variables.Remove(splitbysigns[0]);
+                    store_variables.Add(splitbysigns[0], total.ToString());
+                }
+            }
+            else if (command.Contains("/"))
+            {
+                if (store_variables.ContainsKey(splitbysigns[0]) && !store_variables.ContainsKey(splitbysigns[1]))
+                {
+                    int total = (Convert.ToInt32(store_variables[splitbysigns[0]])) / (Convert.ToInt32(splitbysigns[1]));
+                    store_variables.Remove(splitbysigns[0]);
+                    store_variables.Add(splitbysigns[0], total.ToString());
+                }
+                if (!store_variables.ContainsKey(splitbysigns[0]) && store_variables.ContainsKey(splitbysigns[1]))
+                {
+                    int total = Convert.ToInt32(splitbysigns[0]) / Convert.ToInt32(store_variables[splitbysigns[1]]);
+                    store_variables.Remove(splitbysigns[0]);
+                    store_variables.Add(splitbysigns[0], total.ToString());
+                }
+            }
+            // String values = table.Compute(variable_value, String.Empty).ToString();
+            //MessageBox.Show(values);
+            if (!store_variables.ContainsKey(variable_name))
+            {
+                store_variables.Add(variable_name, variable_value);
+            }
+
         }
     }
 }

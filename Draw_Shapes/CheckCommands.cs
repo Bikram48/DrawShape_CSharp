@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Draw_Shapes
 {
     class CheckCommands
     {
-        String commands = null;
-        public String checkCommands(String command)
+
+        public void checkCommands(String command)
         {
             if (command.Contains("rectangle"))
             {
-                commands = "rectangle";
+                MessageBox.Show("rectangle");
             }
-            return commands;
         }
     }
 }

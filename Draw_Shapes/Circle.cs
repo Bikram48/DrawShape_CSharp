@@ -85,7 +85,7 @@ namespace Draw_Shapes
             else
             {
                 //if pen has a color then it gets executed.
-                if (CommandChecker.isPen == true)
+                if (isPen == true)
                 {
                     //makes the pen
                     Pen p = new Pen(colour, 2);
