@@ -182,14 +182,14 @@ namespace Draw_Shapes
 
                 if (expression)
                 {
-                    int loop;
+                    int loop=0;
                     int loop_count = 0;
 
                     if (store_variables.ContainsKey(splitbysign[0]))
                     {
                         loop = Convert.ToInt32(store_variables[splitbysign[0]]);
                         loop_count = Convert.ToInt32(splitbysign[1]);
-
+                    }
 
                         for (int count = loop; count < loop_count; count++)
                         {
@@ -202,7 +202,6 @@ namespace Draw_Shapes
                                     string command_types = check_command_type(lines[i]);
                                     if (command_types.Equals("drawing_commands"))
                                     {
-                                        //MessageBox.Show("Drawing commands");
                                         commands.draw_commands(lines[i], g);
                                     }
 
@@ -210,17 +209,20 @@ namespace Draw_Shapes
                                     {
                                         run_variable_operation(lines[i]);
                                     }
-
                                     else
                                     {
-                                        MessageBox.Show("No variable");
+                                        break;
                                     }
 
                                 }
+                            else
+                            {
+                                break;
+                            }
 
                             }
                         }
-                    }
+                    
 
                 }
             }

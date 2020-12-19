@@ -61,15 +61,9 @@ namespace Draw_Shapes
                     count_line++;
                     String draw = richTextBoxLines[i];
                     String command_type = check_cmd.check_command_type(draw);
-                    if (command_type.Equals("end_tag"))
-                    {
-                        complex_command = false;
-                    }
-                    if (command_type.Equals("endloop"))
-                    {
-                        complex_command = false;
-                    }
-                    if (command_type.Equals("variable") || command_type.Equals("if") || command_type.Equals("while"))
+                  
+                    
+                    if (command_type.Equals("variable") || command_type.Equals("if") || command_type.Equals("while")|| command_type.Equals("end_tag"))
                     {
                         if (command_type.Equals("variable"))
                         {
@@ -95,6 +89,11 @@ namespace Draw_Shapes
                         if (command_type.Equals("method"))
                         {
                             complex_command = true;
+                        }
+
+                        if (command_type.Equals("end_tag"))
+                        {
+                            complex_command = false ;
                         }
                     }
 
