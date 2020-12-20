@@ -18,6 +18,9 @@ namespace Draw_Shapes
     /// </summary>
     public class CommandChecker
     {
+        IDictionary<String, String> method_signature = new Dictionary<String, String>();
+        public static String methodName;
+        public static ArrayList line_of_commands = new ArrayList();
         ArrayList Errors = new ArrayList();
         public static bool isPen;
         bool expression;
@@ -46,7 +49,7 @@ namespace Draw_Shapes
             {
                 type = "drawing_commands";
             }
-            else if (command.Contains("endif") || command.Contains("endloop") || command.Contains("endMethod"))
+            else if (command.Contains("endif") || command.Contains("endloop") || command.Contains("endmethod"))
             {
                 type = "end_tag";
             }
@@ -182,7 +185,7 @@ namespace Draw_Shapes
 
                 if (expression)
                 {
-                    int loop=0;
+                    int loop = 0;
                     int loop_count = 0;
 
                     if (store_variables.ContainsKey(splitbysign[0]))
@@ -191,39 +194,37 @@ namespace Draw_Shapes
                         loop_count = Convert.ToInt32(splitbysign[1]);
                     }
 
-                        for (int count = loop; count < loop_count; count++)
+                    for (int count = loop; count < loop_count; count++)
+                    {
+                        for (int i = count_line; i < lines.Length; i++)
                         {
-                            for (int i = count_line; i < lines.Length; i++)
+                            // MessageBox.Show(loop + "");
+                            if (!(lines[i].Equals("endloop")))
                             {
-                                // MessageBox.Show(loop + "");
-                                if (!(lines[i].Equals("endloop")))
+
+                                string command_types = check_command_type(lines[i]);
+                                if (command_types.Equals("drawing_commands"))
                                 {
-
-                                    string command_types = check_command_type(lines[i]);
-                                    if (command_types.Equals("drawing_commands"))
-                                    {
-                                        commands.draw_commands(lines[i], g);
-                                    }
-
-                                    else if (command_types.Equals("variableoperation"))
-                                    {
-                                        run_variable_operation(lines[i]);
-                                    }
-                                    else
-                                    {
-                                        break;
-                                    }
-
+                                    commands.draw_commands(lines[i], g);
                                 }
+
+                                else if (command_types.Equals("variableoperation"))
+                                {
+                                    run_variable_operation(lines[i]);
+                                }
+                                else
+                                {
+                                    break;
+                                }
+
+                            }
                             else
                             {
                                 break;
                             }
 
-                            }
                         }
-                    
-
+                    }
                 }
             }
 
@@ -324,6 +325,103 @@ namespace Draw_Shapes
                 store_variables.Add(variable_name, variable_value);
             }
 
+        }
+
+        public bool checkMethod(String command, String[] lines, int count_line, Graphics g)
+        {
+            
+            char[] brackets = { '(', ')' };
+
+            //[\s\S]*?[)]
+            // ([A - Z]\w +)\(int([a - z]\w +)[\s\S]+?, int([a - z]\w +)[\s\S]+?, string([a - z]\w +)
+            string method_syntax = @"([a-z]\s)([a-z]\w{3,10}\S)([(][)])";
+            Regex regex = new Regex(method_syntax);
+            if (regex.IsMatch(command))
+            {
+
+                String[] splitter = command.Split(' ');
+                String[] parameter = splitter[1].Split(brackets, StringSplitOptions.None);
+                methodName = parameter[0] + "()";
+              
+                if (splitter[0].Equals("method"))
+                {
+
+                    for (int i = count_line; i < lines.Length; i++)
+                    {
+                        if (!lines[i].Equals("endmethod"))
+                        {
+                            string command_types = check_command_type(lines[i]);
+                            if (command_types.Equals("drawing_commands"))
+                            {
+                                line_of_commands.Add(lines[i]);
+                            }
+                           
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                }
+                return true;
+            }
+            return false;
+
+        }
+
+        public bool methodcall(String[] lines,int count_line,Graphics g)
+        {
+            char[] brackets = { '(', ')' };
+            string syntax = @"([a-z]\w{3,10}\S)([(][)])";
+            Regex regex = new Regex(syntax);
+            lines[count_line - 1] = "";
+  
+            for (int i=-0;i<lines.Length;i++)
+            {
+                //String command_type = check_command_type(lines[i]);
+                if (regex.IsMatch(lines[i]))
+                {
+                    if (lines[i].Contains(methodName))
+                    {
+                        return true;
+                    }
+
+                }
+             
+            }
+                /* try
+                 {
+                     MessageBox.Show(command);
+                     string syntax = @"(([a-z]\w{3,10}\S)([(][)])";
+                     Regex regex = new Regex(syntax);
+
+                     if (regex.IsMatch(command))
+                     {
+                         MessageBox.Show("Totally metched");
+                         char[] brackets = { '(', ')' };
+                         String[] splitter = command.Split(' ');
+                         String commands = splitter[0];
+                         String[] parameter = splitter[1].Split(brackets, StringSplitOptions.None);
+                         method_signature.Add("methodcallname", parameter[0] + "()");
+                         if (method_signature["methodname"].Equals(method_signature["methodcallname"]))
+                         {
+
+                             method_signature["methodname"] = "";
+                             return true;
+                         }
+                         return false;
+                     }
+                 }
+                 catch (System.ArgumentException)
+                 {
+
+                 }
+
+             }
+
+                */
+            
+            return false;
         }
     }
 }

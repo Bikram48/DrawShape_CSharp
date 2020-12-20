@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -63,7 +64,7 @@ namespace Draw_Shapes
                     String command_type = check_cmd.check_command_type(draw);
                   
                     
-                    if (command_type.Equals("variable") || command_type.Equals("if") || command_type.Equals("while")|| command_type.Equals("end_tag"))
+                    if (command_type.Equals("variable") || command_type.Equals("if") || command_type.Equals("while")|| command_type.Equals("end_tag")||command_type.Equals("method"))
                     {
                         if (command_type.Equals("variable"))
                         {
@@ -89,6 +90,19 @@ namespace Draw_Shapes
                         if (command_type.Equals("method"))
                         {
                             complex_command = true;
+                            if (check_cmd.checkMethod(draw, richTextBoxLines, count_line, g))
+                            {
+                                if (check_cmd.methodcall(richTextBoxLines, count_line,g))
+                                {
+                                    complex_command = true;
+                                   foreach(String lines in CommandChecker.line_of_commands)
+                                    {
+                                        draw_commands(lines,g);
+                                    }
+                                }
+                              
+                            }
+                          
                         }
 
                         if (command_type.Equals("end_tag"))
