@@ -35,7 +35,7 @@ namespace Draw_Shapes
         /// /// The methods and properties of CommandChecker will be called by using the reference variable 
         /// of this CommandChecker class.
         /// </summary>
-        CommandChecker check_cmd = new CommandChecker();
+
         /// <summary>
         /// Instantiating an object of CommandLine class.
         /// The methods and properties of CommandLine will be called by using the reference variable 
@@ -104,138 +104,8 @@ namespace Draw_Shapes
         /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
-            /* //makes boolean value to true if this button is clicked.
-             syntaxCheckerClicked = true;
-             //clears the error from the arraylist
-           //  CommandChecker.errors.Clear();
-             //resets the value of linenumber to zero
-             line_number = 0;
-             //clears  the richtextbox
-             errorBox.Clear();
-             //reads the lines of text from RichTextBox
-             string[] RichTextBoxLines = multiLineCommandBox.Lines;
-             //takes the commands from the singleline command box and it removes the whitespace and transform the letter into small alphabet
-             String singleLineCommand = singleLineCommandBox.Text.Trim().ToLower();
-             //Taking all the lines of text from richtextbox
-             foreach (string line in RichTextBoxLines)
-             {
-                 //increments the value of line number when lines are found in richtextbox
-                 line_number++;           
-                 //passing the line of text into the parseCommands method to check the commands are valid or invalid
-                // checker.parseCommands(line, g);
-             }
-             //if textbox is not empty then this block will get executed
-             if (!singleLineCommandBox.Text.Equals(""))
-             {
-                 line_number++;
-                 //passing the line of text into the parseCommands method to check the commands are valid or invalid
-                // checker.parseCommands(singleLineCommandBox.Text, g);
-             }
-            */
-            syntaxCheckerClicked = true;
-            CommandLine.errors.Clear();
-            bool complex_command = false;
-            int count_line = 0;
-            line_number = 0;
-            errorBox.Clear();
-            String[] richTextBoxLines = multiLineCommandBox.Text.Trim().ToLower().Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-
-            //if syntaxCheck button is clicked then setting bollean value to false.
-            DrawAllShapes.syntaxCheckerClicked = false;
-            //clears the textBox
-            singleLineCommandBox.Clear();
-            //Taking all the lines of text from richtextbox
-            for (int i = 0; i < richTextBoxLines.Length; i++)
-            {
-                count_line++;
-                line_number++;
-                String draw = richTextBoxLines[i];
-
-                String command_type = check_cmd.check_command_type(draw);
-              
-                if (command_type.Equals("variable") || command_type.Equals("if") || command_type.Equals("while") || command_type.Equals("end_tag") || command_type.Equals("method"))
-                {
-                    syntaxCheckerClicked = true;
-                    if (command_type.Equals("variable"))
-                    {
-
-                        check_cmd.check_variable(draw);
-
-                    }
-                    if (command_type.Equals("if"))
-                    {
-                        complex_command = true;
-                        check_cmd.check_if_command(draw, richTextBoxLines, count_line, g);
-                    }
-
-                    if (command_type.Equals("while"))
-                    {
-
-                        complex_command = true;
-                        check_cmd.check_while_command(draw, richTextBoxLines, count_line, g);
-
-                    }
-
-                    if (command_type.Equals("method"))
-                    {
-                        complex_command = true;
-                        if (check_cmd.checkMethod(draw, richTextBoxLines, count_line, g))
-                        {
-                            if (check_cmd.methodcall(richTextBoxLines, count_line, g))
-                            {
-                                complex_command = true;
-                                foreach (String lines in CommandChecker.line_of_commands)
-                                {
-                                    commands.draw_commands(lines, g);
-                                }
-                            }
-
-                        }
-
-                    }
-
-                    if (command_type.Equals("end_tag"))
-                    {
-                        complex_command = false;
-                    }
-                }
-
-
-                if (!complex_command)
-                {
-                    syntaxCheckerClicked = true;
-                    commands.draw_commands(draw, g);
-                }
-
-            }
-
-
-            //checker.parseCommands(textBox2.Text, g);
-            if (CommandLine.error == true)
-            {
-                //counts the total number of errors detected
-                int totalerrors = CommandLine.errors.Count;
-                //printing the total number of errors
-                textBox1.Text = totalerrors + " Errors";
-                //showing all the errors in error box
-                for (int i = 0; i < CommandLine.errors.Count; i++)
-                {
-                    errorBox.Text += "\n"+ CommandLine.errors[i]+"\n";
-                    //Thread.Sleep(1000);
-                }
-                
-            }
-            //if there are no errors detected then this block will get executed
-           if(CommandLine.error==false)
-            {
-                //set total error to zero
-                int totalerrors = CommandLine.errors.Count;
-                //showing zero errors in textbox
-                textBox1.Text = totalerrors + " Errors";
-                //shows no errors found message in richtextbox
-                errorBox.Text += "\nNo Errors Found";
-            }
             
+          
 
         }
 

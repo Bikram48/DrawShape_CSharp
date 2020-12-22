@@ -32,44 +32,73 @@ namespace Draw_Shapes
         public String check_command_type(String command)
         {
             String type = null;
-            if (command.Contains("if") && !command.Contains("endif"))
+            try
             {
-                type = "if";
-            }
-            else if (command.Contains("then"))
-            {
-                type = "singleif";
-            }
-            else if (command.Contains("while"))
-            {
-                type = "while";
-            }
-            else if (command.Contains("method"))
-            {
-                type = "method";
-            }
-            else if (command.Contains("drawto") || command.Contains("moveto") || command.Contains("pen") || command.Contains("rectangle") || command.Contains("triangle") || command.Contains("circle") || command.Contains("fill"))
-            {
-                type = "drawing_commands";
-            }
-            else if (command.Contains("endif") || command.Contains("endloop") || command.Contains("endmethod"))
-            {
-                type = "end_tag";
-            }
-            else if (command.Contains("="))
-            {
-                if (command.Split('=').Length == 2)
+                if (command.Contains("if") && !command.Contains("endif"))
                 {
-                    type = "variable";
+                    if (command.Split(' ').Length == 2)
+                    {
+                        type = "if";
+                    }
+                    else
+                    {
+                        type = "error";
+                        throw new ErrorInCommandsException("If syntax you entered is not valid");
+                    }
                 }
-                if (command.Contains("+") || command.Contains("-") || command.Contains("*") || command.Contains("/"))
+                else if (command.Contains("then"))
                 {
-                    type = "variableoperation";
+                    type = "singleif";
                 }
+                else if (command.Contains("while"))
+                {
+                    type = "while";
+                }
+                else if (command.Contains("method"))
+                {
+                    type = "method";
+                }
+                else if (command.Contains("drawto") || command.Contains("moveto") || command.Contains("pen") || command.Contains("rectangle") || command.Contains("triangle") || command.Contains("circle") || command.Contains("fill"))
+                {
+                    type = "drawing_commands";
+                }
+                else if (command.Contains("endif") || command.Contains("endloop") || command.Contains("endmethod"))
+                {
+                    type = "end_tag";
+                }
+                else if (command.Contains("="))
+                {
+                    if (command.Split('=').Length == 2)
+                    {
+                        type = "variable";
+                    }
+                    if (command.Split('=').Length != 2)
+                    {
+                        type = "error";
+                        throw new InvalidVariableException("Invalid variable syntax at line " + DrawAllShapes.line_number);
+                    }
+                    if (command.Contains("+") || command.Contains("-") || command.Contains("*") || command.Contains("/"))
+                    {
+                        type = "variableoperation";
+                    }
+                }
+                else
+                {
+                    type = "error";
+                }
+
+
+          
             }
-            else
+            catch (InvalidVariableException e)
             {
-                type = "error";
+                CommandLine.error = true;
+                CommandLine.errors.Add(e.Message);
+            }
+            catch(ErrorInCommandsException e)
+            {
+                CommandLine.error = true;
+                CommandLine.errors.Add(e.Message);
             }
             return type;
         }
@@ -80,166 +109,210 @@ namespace Draw_Shapes
             String one;
             String two;
             String[] signs = { "<=", ">=", "<", ">", "==", "!=" };
-            String[] cmd = command.Split(' ');
+            String[] cmd = command.Split(' ').Select(p=>p.Trim()).ToArray();
             String parameters = cmd[1];
-            String[] splitbysign = parameters.Split(signs, StringSplitOptions.None);
-
-            if (cmd[0].Equals("if"))
+            String[] splitbysign = parameters.Split(signs, StringSplitOptions.RemoveEmptyEntries).Select(p=>p.Trim()).ToArray();
+            try
             {
-                if (store_variables.ContainsKey(splitbysign[0]) && store_variables.ContainsKey(splitbysign[1]))
+                if (!signs.Any(parameters.Contains))
                 {
-                    one = store_variables[splitbysign[0]].ToString();
-                    two = store_variables[splitbysign[1]].ToString();
+                    throw new ErrorInCommandsException("Invalid operator at if condition line number " + DrawAllShapes.line_number);
                 }
-                else if (store_variables.ContainsKey(splitbysign[0]) && !store_variables.ContainsKey(splitbysign[1]))
-                {
-
-                    one = store_variables[splitbysign[0]].ToString();
-                    two = splitbysign[1];
-
-                }
-                else if (!store_variables.ContainsKey(splitbysign[0]) && store_variables.ContainsKey(splitbysign[1]))
-                {
-                    one = splitbysign[0];
-                    two = store_variables[splitbysign[1]].ToString();
-
-                }
-
                 else
                 {
-                    one = splitbysign[0].ToString();
-                    two = splitbysign[1].ToString();
-                }
-
-                String replaced = parameters.Replace(splitbysign[0], one).Replace(splitbysign[1], two);
-
-                expression = Convert.ToBoolean(table.Compute(replaced, String.Empty));
-
-                if (expression == true)
-                {
-                    if (lines[count_line].Equals("then"))
+                    if (cmd[0].Equals("if"))
                     {
-                        string command_type = check_command_type(lines[count_line + 1]);
-                        if (command_type.Equals("drawing_commands"))
+                        if (store_variables.ContainsKey(splitbysign[0]) && store_variables.ContainsKey(splitbysign[1]))
                         {
-                            commands.draw_commands(lines[count_line + 1], g);
+                            one = store_variables[splitbysign[0]].ToString();
+                            two = store_variables[splitbysign[1]].ToString();
+                        }
+                        else if (store_variables.ContainsKey(splitbysign[0]) && !store_variables.ContainsKey(splitbysign[1]))
+                        {
+
+                            one = store_variables[splitbysign[0]].ToString();
+                            two = splitbysign[1];
+
+                        }
+                        else if (!store_variables.ContainsKey(splitbysign[0]) && store_variables.ContainsKey(splitbysign[1]))
+                        {
+                            one = splitbysign[0];
+                            two = store_variables[splitbysign[1]].ToString();
+
+                        }
+
+                        else
+                        {
+                            one = splitbysign[0].ToString();
+                            two = splitbysign[1].ToString();
+                        }
+
+                        String replaced = parameters.Replace(splitbysign[0], one).Replace(splitbysign[1], two);
+
+                        expression = Convert.ToBoolean(table.Compute(replaced, String.Empty));
+
+                        if (expression == true)
+                        {
+                            if (lines[count_line].Equals("then"))
+                            {
+                                string command_type = check_command_type(lines[count_line + 1]);
+                                if (command_type.Equals("drawing_commands"))
+                                {
+                                    commands.draw_commands(lines[count_line + 1], g);
+                                }
+
+                            }
+                            else
+                            {
+                                for (int i = count_line; i < lines.Length; i++)
+                                {
+                                    if (!(lines[i].Equals("endif")))
+                                    {
+
+                                        string command_types = check_command_type(lines[i]);
+                                        if (command_types.Equals("drawing_commands"))
+                                        {
+                                          
+                                            //MessageBox.Show("Drawing commands");
+                                            line_of_commands.Add(lines[i]);
+                                            //commands.draw_commands(lines[i], g);
+                                        }
+
+                                    }
+
+                                  
+                                }
+                            }
+                        }
+                        else
+                        {
+                            throw new ErrorInCommandsException("Sorry the condition didn't met at line number " + DrawAllShapes.line_number);
                         }
                     }
                     else
                     {
-                        for (int i = count_line; i < lines.Length; i++)
-                        {
-                            if (!(lines[i].Equals("endif")))
-                            {
-                                string command_types = check_command_type(lines[i]);
-                                if (command_types.Equals("drawing_commands"))
-                                {
-                                    //MessageBox.Show("Drawing commands");
-                                    commands.draw_commands(lines[i], g);
-                                }
-                                else
-                                {
-                                    break;
-                                }
-
-                            }
-                        }
+                        throw new ErrorInCommandsException("Invalid command at line " + DrawAllShapes.line_number);
                     }
                 }
-                else
-                {
-                    CommandLine.error = true;
-                    CommandLine.errors.Add("Sorry the condition didn't met at line number " + DrawAllShapes.line_number);
-                }
+            }
+            catch(ErrorInCommandsException e)
+            {
+                CommandLine.error = true;
+                ErrorRepository.errorsList.Add(e.Message);
+            }
+            catch(IndexOutOfRangeException e)
+            {
+
             }
 
         }
 
         public void check_while_command(string command, String[] lines, int count_line, Graphics g)
         {
+          
             DataTable table = new DataTable();
             String one;
             String two;
             String[] signs = { "<=", ">=", "<", ">", "==", "!=" };
             String[] splitter = command.Split(' ');
             String parameters = splitter[1];
-            String[] splitbysign = parameters.Split(signs, StringSplitOptions.None);
-            if (splitter[0].Equals("while"))
+            String[] splitbysign = parameters.Split(signs, StringSplitOptions.RemoveEmptyEntries).Select(p => p.Trim()).ToArray();
+            try
             {
-                if (store_variables.ContainsKey(splitbysign[0]) && store_variables.ContainsKey(splitbysign[1]))
+                if (!signs.Any(parameters.Contains))
                 {
-                    one = store_variables[splitbysign[0]].ToString();
-                    two = store_variables[splitbysign[1]].ToString();
+                    throw new ErrorInCommandsException("Invalid operator at if condition line number " + DrawAllShapes.line_number);
                 }
-                else if (store_variables.ContainsKey(splitbysign[0]) && !store_variables.ContainsKey(splitbysign[1]))
-                {
-                    one = store_variables[splitbysign[0]].ToString();
-                    two = splitbysign[1];
-                }
-                else if (!store_variables.ContainsKey(splitbysign[0]) && store_variables.ContainsKey(splitbysign[1]))
-                {
-                    one = splitbysign[0];
-                    two = store_variables[splitbysign[1]].ToString();
-
-                }
-
                 else
                 {
-                    one = splitbysign[0].ToString();
-                    two = splitbysign[1].ToString();
-                }
-                String replaced = parameters.Replace(splitbysign[0], one).Replace(splitbysign[1], two);
-                expression = Convert.ToBoolean(table.Compute(replaced, String.Empty));
-
-                if (expression)
-                {
-                    int loop = 0;
-                    int loop_count = 0;
-
-                    if (store_variables.ContainsKey(splitbysign[0]))
+                    if (splitter[0].Equals("while"))
                     {
-                        loop = Convert.ToInt32(store_variables[splitbysign[0]]);
-                        loop_count = Convert.ToInt32(splitbysign[1]);
-                    }
-
-                    for (int count = loop; count <= loop_count; count++)
-                    {
-                        for (int i = count_line; i < lines.Length; i++)
+                        if (store_variables.ContainsKey(splitbysign[0]) && store_variables.ContainsKey(splitbysign[1]))
                         {
-                            // MessageBox.Show(loop + "");
-                            if (!(lines[i].Equals("endloop")))
-                            {
-
-                                string command_types = check_command_type(lines[i]);
-                                if (command_types.Equals("drawing_commands"))
-                                {
-                                    commands.draw_commands(lines[i], g);
-                                }
-
-                                else if (command_types.Equals("variableoperation"))
-                                {
-                                    run_variable_operation(lines[i]);
-                                }
-                                else
-                                {
-                                    break;
-                                }
-
-                            }
-                            else
-                            {
-                                break;
-                            }
+                            one = store_variables[splitbysign[0]].ToString();
+                            two = store_variables[splitbysign[1]].ToString();
+                        }
+                        else if (store_variables.ContainsKey(splitbysign[0]) && !store_variables.ContainsKey(splitbysign[1]))
+                        {
+                            one = store_variables[splitbysign[0]].ToString();
+                            two = splitbysign[1];
+                        }
+                        else if (!store_variables.ContainsKey(splitbysign[0]) && store_variables.ContainsKey(splitbysign[1]))
+                        {
+                            one = splitbysign[0];
+                            two = store_variables[splitbysign[1]].ToString();
 
                         }
-                        count = Convert.ToInt32(store_variables[splitbysign[0]]);
+
+                        else
+                        {
+                            one = splitbysign[0].ToString();
+                            two = splitbysign[1].ToString();
+                        }
+                        String replaced = parameters.Replace(splitbysign[0], one).Replace(splitbysign[1], two);
+                        expression = Convert.ToBoolean(table.Compute(replaced, String.Empty));
+
+                        if (expression==true)
+                        {
+                            int loop = 0;
+                            int loop_count = 0;
+
+                            if (store_variables.ContainsKey(splitbysign[0]))
+                            {
+                                loop = Convert.ToInt32(store_variables[splitbysign[0]]);
+                                loop_count = Convert.ToInt32(splitbysign[1]);
+                            }
+
+                            for (int count = loop; count <= loop_count; count++)
+                            {
+                                for (int i = count_line; i < lines.Length; i++)
+                                {
+                                    // MessageBox.Show(loop + "");
+                                    if (!(lines[i].Equals("endloop")))
+                                    {
+
+                                        string command_types = check_command_type(lines[i]);
+                                        if (command_types.Equals("drawing_commands"))
+                                        {
+                                            commands.draw_commands(lines[i], g);
+                                        }
+
+                                        if (command_types.Equals("variableoperation"))
+                                        {
+                                            run_variable_operation(lines[i]);
+                                        }
+                                        
+                                    }
+                                    else
+                                    {
+                                        
+                                        break;
+                                    }
+
+                                }
+                                count = Convert.ToInt32(store_variables[splitbysign[0]]);
+                            }
+                        }
+                        else
+                        {
+                    
+                            throw new ErrorInCommandsException("Sorry the condition didn't met at line number " + DrawAllShapes.line_number);
+                        }
+                    }
+                    else
+                    {
+                        throw new ErrorInCommandsException("Invalid command at line " + DrawAllShapes.line_number);
                     }
                 }
-                else
-                {
-                    CommandLine.error = true;
-                    CommandLine.errors.Add("Sorry the condition didn't met at line number " + DrawAllShapes.line_number);
-                }
+            }
+            catch (ErrorInCommandsException e)
+            {
+                CommandLine.error = true;
+                ErrorRepository.errorsList.Add(e.Message);
+            }
+            catch (IndexOutOfRangeException e)
+            {
+               
             }
 
         }
@@ -247,125 +320,152 @@ namespace Draw_Shapes
 
         public void check_variable(string command)
         {
-            String one;
-            String two;
-            String[] cmd = command.Split('=');
-            String variable_name = cmd[0];
-            String variable_value = cmd[1];
-            CommandLine.isvar = true;
-            if (Regex.IsMatch(variable_value, @"([<>\?\*\\\""/\|!()@%^*+=,])+"))
+            try
             {
-                CommandLine.error = true;
-                CommandLine.errors.Add("Invalid operator at line number " + DrawAllShapes.line_number);
-            }
-            else if (variable_name.Equals(variable_value))
-            {
-                CommandLine.error = true;
-                CommandLine.errors.Add("Invalid variable value at line number " + DrawAllShapes.line_number);
-            }
-            else if (variable_value.Equals(""))
-            {
-                CommandLine.error = true;
-                CommandLine.errors.Add("Please add value of the variable at line number " + DrawAllShapes.line_number);
-            }
-            else
-            {
-                if (!store_variables.ContainsKey(variable_name))
+                String one;
+                String two;
+                String[] cmd = command.Split('=').Select(p => p.Trim()).ToArray();
+                String variable_name = cmd[0];
+                String variable_value = cmd[1];
+                CommandLine.isvar = true;
+                if (Regex.IsMatch(variable_value, @"([<>\?\*\\\""/\|!()@%^*+=,$])+"))
                 {
-                    if (store_variables.ContainsKey(variable_value))
+                    throw new InvalidVariableException("Invalid operator at line number " + DrawAllShapes.line_number);
+                }
+                else if (variable_name.Equals(variable_value))
+                {
+                    throw new InvalidVariableException("Invalid variable value at line number " + DrawAllShapes.line_number);
+                }
+                else if (variable_value.Equals(""))
+                {
+                    throw new InvalidVariableException("Please add value of the variable at line number " + DrawAllShapes.line_number);
+                }
+                else
+                {
+                    if (!store_variables.ContainsKey(variable_name))
                     {
-                        variable_value = store_variables[variable_value];
-                        store_variables.Add(variable_name, variable_value);
-                    }
-                    else
-                    {
-                        store_variables.Add(variable_name, variable_value);
+                        if (store_variables.ContainsKey(variable_value))
+                        {
+                            variable_value = store_variables[variable_value];
+                            store_variables.Add(variable_name, variable_value);
+                        }
+                        else
+                        {
+                            if (Regex.IsMatch(variable_value, @"^[a-zA-Z]+$"))
+                            {
+                                if (!store_variables.ContainsKey(variable_value))
+                                {
+                                    throw new InvalidVariableException("Please declare the variable first. Error at line " + DrawAllShapes.line_number);
+                                }
+                            }
+                            else
+                            {
+                                store_variables.Add(variable_name, variable_value);
+                            }
+                        }
+                       
                     }
                 }
+            }
+            catch(InvalidVariableException e)
+            {
+                CommandLine.error = true;
+                ErrorRepository.errorsList.Add(e.Message);
             }
 
         }
 
         public void run_variable_operation(String command)
         {
+            CommandLine.isvar = true;
             DataTable table = new DataTable();
             String[] operations = { "+", "-", "*", "/" };
             String[] cmd = command.Split('=');
             String variable_name = cmd[0];
             String variable_value = cmd[1];
-            String[] splitbysigns = variable_value.Split(operations, StringSplitOptions.None);
-            if (operations.Any(variable_value.Contains))
+            String[] splitbysigns = variable_value.Split(operations, StringSplitOptions.RemoveEmptyEntries).Select(p=>p.Trim()).ToArray();
+            try
             {
-                if (command.Contains("+"))
+              
+                if (operations.Any(variable_value.Contains))
                 {
-                    if (store_variables.ContainsKey(splitbysigns[0]) && !store_variables.ContainsKey(splitbysigns[1]))
+                    if (command.Contains("+"))
                     {
-                        int one = Convert.ToInt32(store_variables[splitbysigns[0]]);
-                        int two = Convert.ToInt32(splitbysigns[1]);
-                        int total = one + two;
-                        store_variables.Remove(splitbysigns[0]);
-                        store_variables.Add(splitbysigns[0], total.ToString());
+                        if (store_variables.ContainsKey(splitbysigns[0]) && !store_variables.ContainsKey(splitbysigns[1]))
+                        {
+                            int one = Convert.ToInt32(store_variables[splitbysigns[0]]);
+                            int two = Convert.ToInt32(splitbysigns[1]);
+                            int total = one + two;
+                            store_variables.Remove(splitbysigns[0]);
+                            store_variables.Add(variable_name, total.ToString());
+                        }
+                        if (!store_variables.ContainsKey(splitbysigns[0]) && store_variables.ContainsKey(splitbysigns[1]))
+                        {
+                            int total = Convert.ToInt32(splitbysigns[0]) + Convert.ToInt32(store_variables[splitbysigns[1]]);
+                            store_variables.Remove(splitbysigns[0]);
+                            store_variables.Add(variable_name, total.ToString());
+                        }
                     }
-                    if (!store_variables.ContainsKey(splitbysigns[0]) && store_variables.ContainsKey(splitbysigns[1]))
+                    else if (command.Contains("-"))
                     {
-                        int total = Convert.ToInt32(splitbysigns[0]) + Convert.ToInt32(store_variables[splitbysigns[1]]);
-                        store_variables.Remove(splitbysigns[0]);
-                        store_variables.Add(splitbysigns[0], total.ToString());
+                        if (store_variables.ContainsKey(splitbysigns[0]) && !store_variables.ContainsKey(splitbysigns[1]))
+                        {
+                            int total = Convert.ToInt32(store_variables[splitbysigns[0]]) - Convert.ToInt32(splitbysigns[1]);
+                            store_variables.Remove(splitbysigns[0]);
+                            store_variables.Add(variable_name, total.ToString());
+                        }
+                        if (!store_variables.ContainsKey(splitbysigns[0]) && store_variables.ContainsKey(splitbysigns[1]))
+                        {
+                            int total = Convert.ToInt32(splitbysigns[0]) - Convert.ToInt32(store_variables[splitbysigns[1]]);
+                            store_variables.Remove(splitbysigns[0]);
+                            store_variables.Add(variable_name, total.ToString());
+                        }
+                    }
+                    else if (command.Contains("*"))
+                    {
+                        if (store_variables.ContainsKey(splitbysigns[0]) && !store_variables.ContainsKey(splitbysigns[1]))
+                        {
+                            int total = Convert.ToInt32(store_variables[splitbysigns[0]]) * Convert.ToInt32(splitbysigns[1]);
+                            store_variables.Remove(splitbysigns[0]);
+                            store_variables.Add(variable_name, total.ToString());
+                        }
+                        if (!store_variables.ContainsKey(splitbysigns[0]) && store_variables.ContainsKey(splitbysigns[1]))
+                        {
+                            int total = Convert.ToInt32(splitbysigns[0]) * Convert.ToInt32(store_variables[splitbysigns[1]]);
+                            store_variables.Remove(splitbysigns[0]);
+                            store_variables.Add(variable_name, total.ToString());
+                        }
+                    }
+                    else if (command.Contains("/"))
+                    {
+                        if (store_variables.ContainsKey(splitbysigns[0]) && !store_variables.ContainsKey(splitbysigns[1]))
+                        {
+                            int total = (Convert.ToInt32(store_variables[splitbysigns[0]])) / (Convert.ToInt32(splitbysigns[1]));
+                            store_variables.Remove(splitbysigns[0]);
+                            store_variables.Add(variable_name, total.ToString());
+                        }
+                        if (!store_variables.ContainsKey(splitbysigns[0]) && store_variables.ContainsKey(splitbysigns[1]))
+                        {
+                            int total = Convert.ToInt32(splitbysigns[0]) / Convert.ToInt32(store_variables[splitbysigns[1]]);
+                            store_variables.Remove(splitbysigns[0]);
+                            store_variables.Add(variable_name, total.ToString());
+                        }
                     }
                 }
-                else if (command.Contains("-"))
+                else
                 {
-                    if (store_variables.ContainsKey(splitbysigns[0]) && !store_variables.ContainsKey(splitbysigns[1]))
-                    {
-                        int total = Convert.ToInt32(store_variables[splitbysigns[0]]) - Convert.ToInt32(splitbysigns[1]);
-                        store_variables.Remove(splitbysigns[0]);
-                        store_variables.Add(splitbysigns[0], total.ToString());
-                    }
-                    if (!store_variables.ContainsKey(splitbysigns[0]) && store_variables.ContainsKey(splitbysigns[1]))
-                    {
-                        int total = Convert.ToInt32(splitbysigns[0]) - Convert.ToInt32(store_variables[splitbysigns[1]]);
-                        store_variables.Remove(splitbysigns[0]);
-                        store_variables.Add(splitbysigns[0], total.ToString());
-                    }
+                    throw new InvalidVariableException("Invalid operator at line " + DrawAllShapes.line_number);
                 }
-                else if (command.Contains("*"))
+                if (!store_variables.ContainsKey(variable_name))
                 {
-                    if (store_variables.ContainsKey(splitbysigns[0]) && !store_variables.ContainsKey(splitbysigns[1]))
-                    {
-                        int total = Convert.ToInt32(store_variables[splitbysigns[0]]) * Convert.ToInt32(splitbysigns[1]);
-                        store_variables.Remove(splitbysigns[0]);
-                        store_variables.Add(splitbysigns[0], total.ToString());
-                    }
-                    if (!store_variables.ContainsKey(splitbysigns[0]) && store_variables.ContainsKey(splitbysigns[1]))
-                    {
-                        int total = Convert.ToInt32(splitbysigns[0]) * Convert.ToInt32(store_variables[splitbysigns[1]]);
-                        store_variables.Remove(splitbysigns[0]);
-                        store_variables.Add(splitbysigns[0], total.ToString());
-                    }
+                    store_variables.Add(variable_name, variable_value);
                 }
-                else if (command.Contains("/"))
-                {
-                    if (store_variables.ContainsKey(splitbysigns[0]) && !store_variables.ContainsKey(splitbysigns[1]))
-                    {
-                        int total = (Convert.ToInt32(store_variables[splitbysigns[0]])) / (Convert.ToInt32(splitbysigns[1]));
-                        store_variables.Remove(splitbysigns[0]);
-                        store_variables.Add(splitbysigns[0], total.ToString());
-                    }
-                    if (!store_variables.ContainsKey(splitbysigns[0]) && store_variables.ContainsKey(splitbysigns[1]))
-                    {
-                        int total = Convert.ToInt32(splitbysigns[0]) / Convert.ToInt32(store_variables[splitbysigns[1]]);
-                        store_variables.Remove(splitbysigns[0]);
-                        store_variables.Add(splitbysigns[0], total.ToString());
-                    }
-                }
+                
             }
-            else
+            catch(InvalidVariableException e)
             {
-                throw new InvalidVariableException("Invalid operator at line " + DrawAllShapes.line_number);
-            }
-            if (!store_variables.ContainsKey(variable_name))
-            {
-                store_variables.Add(variable_name, variable_value);
+                CommandLine.error = true;
+                ErrorRepository.errorsList.Add(e.Message);
             }
 
         }
@@ -378,7 +478,7 @@ namespace Draw_Shapes
             if (regex.IsMatch(command))
             {
                 String[] splitter = command.Split(' ');
-                String[] parameter = splitter[1].Split(brackets, StringSplitOptions.None);
+                String[] parameter = splitter[1].Split(brackets, StringSplitOptions.RemoveEmptyEntries).Select(p=>p.Trim()).ToArray();
                 methodName = parameter[0];
 
                 if (splitter[0].Equals("method"))
@@ -408,7 +508,7 @@ namespace Draw_Shapes
                 String[] splitter = command.Split(' ');
                 if (splitter[0].Equals("method"))
                 {
-                    singleparameter = splitter[1].Split(new String[] { "(", ")" }, StringSplitOptions.RemoveEmptyEntries);
+                    singleparameter = splitter[1].Split(new String[] { "(", ")" }, StringSplitOptions.RemoveEmptyEntries).Select(p=>p.Trim()).ToArray();
                     String[] parameter = splitter[1].Split('(');
                     method_signature = parameter[0];
                     string methodPlaceholder = "method";

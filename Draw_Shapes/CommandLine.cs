@@ -39,6 +39,7 @@ namespace Draw_Shapes
         /// <param name="g">Graphics reference</param>
         public void commandLineCommands(TextBox textBox2,RichTextBox richTextBox1,Panel panel1,Graphics g,RichTextBox richTextBox2,TextBox textBox1,RichTextBox richTextBox3)
         {
+            bool end_command = false;
             ComplexCommand complex = new ComplexCommand();
             CommandChecker check_cmd = new CommandChecker();
             //It removes the whitespace from the commands using Trim method
@@ -54,7 +55,9 @@ namespace Draw_Shapes
                 bool complex_command = false;
                 int count_line = 0;
                 String[] richTextBoxLines = richTextBox1.Text.Trim().ToLower().Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-
+                CommandLine.errors.Clear();
+                DrawAllShapes.line_number = 0;
+                richTextBox3.Clear();
                 //if syntaxCheck button is clicked then setting bollean value to false.
                 DrawAllShapes.syntaxCheckerClicked = false;
                 //clears the textBox
@@ -62,22 +65,23 @@ namespace Draw_Shapes
                 //Taking all the lines of text from richtextbox
                 for (int i = 0; i < richTextBoxLines.Length; i++)
                 {
+                    DrawAllShapes.line_number++;
                     count_line++;
                     String draw = richTextBoxLines[i];
                     String command_type = check_cmd.check_command_type(draw);
+
+
                   
-                    
-                    if (command_type.Equals("variable") || command_type.Equals("if") || command_type.Equals("while")|| command_type.Equals("end_tag")||command_type.Equals("method")|| command_type.Equals("variableoperation"))
+                    if (command_type.Equals("variable") || command_type.Equals("if") || command_type.Equals("end_tag")|| command_type.Equals("while")||command_type.Equals("method")|| command_type.Equals("variableoperation"))
                     {
                         if (command_type.Equals("variable"))
                         {
-                           
                             isvar = true;
                             check_cmd.check_variable(draw);
                         }
                         if (command_type.Equals("variableoperation"))
                         {
-                          
+                            isvar = true;
                             check_cmd.run_variable_operation(draw);
                         }
                         if (command_type.Equals("if"))
@@ -88,10 +92,8 @@ namespace Draw_Shapes
 
                         if (command_type.Equals("while"))
                         {
-
                             complex_command = true;
                             check_cmd.check_while_command(draw, richTextBoxLines, count_line, g);
-
                         }
 
                         if (command_type.Equals("method"))
@@ -111,18 +113,61 @@ namespace Draw_Shapes
                             }
                           
                         }
-
                         if (command_type.Equals("end_tag"))
                         {
-                            complex_command = false ;
+                            complex_command = false;
+                            foreach (String lines in CommandChecker.line_of_commands)
+                            {
+                                draw_commands(lines, g);
+                            }
+                            
                         }
+
+
+                       
                     }
+
 
                     if (!complex_command)
                     {
-                        draw_commands(draw, g);
+                            draw_commands(draw, g);
                     }
 
+                }
+
+                //checker.parseCommands(textBox2.Text, g);
+                if (CommandLine.error == true)
+                {
+                    ErrorRepository errors = new ErrorRepository();
+                    for(Iterator iterator = errors.getIterator(); iterator.hasNext();)
+                    {
+                       String name = (String)iterator.Next();
+                        richTextBox3.Text += "\n" + name + "\n";
+                    }
+
+                   /* //counts the total number of errors detected
+                    int totalerrors = CommandLine.errors.Count;
+                    //printing the total number of errors
+                    textBox1.Text = totalerrors + " Errors";
+                    //showing all the errors in error box
+                     for (int i = 0; i < CommandLine.errors.Count; i++)
+                     {
+                         richTextBox3.Text += "\n" + CommandLine.errors[i] + "\n";
+                         //Thread.Sleep(1000);
+                     }
+                   */
+                    
+                  
+                }
+                //if there are no errors detected then this block will get executed
+                if (CommandLine.error == false)
+                {
+                    //set total error to zero
+                    int totalerrors = CommandLine.errors.Count;
+                    //showing zero errors in textbox
+                    textBox1.Text = totalerrors + " Errors";
+                    //shows no errors found message in richtextbox
+                    richTextBox3.Text += "\nNo Errors Found";
                 }
             }
             //If clear command entered then this block get executed
@@ -164,7 +209,7 @@ namespace Draw_Shapes
                     if (line.Length != 1)
                     {
                         error = true;
-                        errors.Add("Invalid parameters at line " + DrawAllShapes.line_number);
+                        ErrorRepository.errorsList.Add("Invalid parameters at line " + DrawAllShapes.line_number);
                     }
                     else
                     {
@@ -182,7 +227,7 @@ namespace Draw_Shapes
                     if (parameter.Length != 2)
                     {
                         error = true;
-                        errors.Add("Invalid parameters at line " + DrawAllShapes.line_number);
+                        ErrorRepository.errorsList.Add("Invalid parameters at line " + DrawAllShapes.line_number);
                     }
                     xAxis = parameters[0];
                     yAxis = parameters[1];
@@ -192,7 +237,7 @@ namespace Draw_Shapes
                     if (parameter.Length != 2)
                     {
                         error = true;
-                        errors.Add("Invalid parameters at line " + DrawAllShapes.line_number);
+                        ErrorRepository.errorsList.Add("Invalid parameters at line " + DrawAllShapes.line_number);
                     }
                     canvas.drawLine(pen, xAxis, yAxis, isPen, parameters[0], parameters[1], g);
                     xAxis = parameters[0];
@@ -212,7 +257,7 @@ namespace Draw_Shapes
                     else
                     {
                         error = true;
-                        errors.Add("Please add string values in line number " + DrawAllShapes.line_number);
+                        ErrorRepository.errorsList.Add("Please add string values in line number " + DrawAllShapes.line_number);
                     }
                 }
                 else if (commands.Equals("fill"))
@@ -233,7 +278,7 @@ namespace Draw_Shapes
                     else
                     {
                         error = true;
-                        errors.Add("Please add string values in line number " + DrawAllShapes.line_number);
+                        ErrorRepository.errorsList.Add("Please add string values in line number " + DrawAllShapes.line_number);
                     }
                 }
                 else if (commands.Equals("rectangle"))
@@ -241,7 +286,7 @@ namespace Draw_Shapes
                     if (parameter.Length != 2)
                     {
                         error = true;
-                        errors.Add("Invalid parameters at line " + DrawAllShapes.line_number);
+                        ErrorRepository.errorsList.Add("Invalid parameters at line " + DrawAllShapes.line_number);
                     }
                     canvas.drawRectangle(pen, xAxis, yAxis, fillOn, isPen, parameters[0], parameters[1], g);
                 }
@@ -269,7 +314,7 @@ namespace Draw_Shapes
                     catch (FormatException)
                     {
                         error = true;
-                        errors.Add("Invalid parameters at line " + DrawAllShapes.line_number);
+                        ErrorRepository.errorsList.Add("Invalid parameters at line " + DrawAllShapes.line_number);
                     }
                 }
                 else
@@ -279,10 +324,10 @@ namespace Draw_Shapes
             }
             catch (System.IndexOutOfRangeException e)
             {
-                if (!isvar)
+                if (isvar==false)
                 {
                     error = true;
-                    errors.Add("Invalid command at line " + DrawAllShapes.line_number);
+                    ErrorRepository.errorsList.Add("Invalid command at line " + DrawAllShapes.line_number);
                 }
                 
             }

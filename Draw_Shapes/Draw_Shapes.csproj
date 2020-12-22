@@ -59,9 +59,12 @@
       <DependentUpon>DrawAllShapes.cs</DependentUpon>
     </Compile>
     <Compile Include="ErrorInCommandsException.cs" />
+    <Compile Include="ErrorRepository.cs" />
     <Compile Include="GradientPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Iterator.cs" />
+    <Compile Include="Container.cs" />
     <Compile Include="InvalidCommandParametersException.cs" />
     <Compile Include="InvalidVariableException.cs" />
     <Compile Include="LoadFile.cs" />
