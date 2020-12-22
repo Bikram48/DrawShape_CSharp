@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -14,7 +15,9 @@ namespace Draw_Shapes
     /// </summary>
     class CommandLine
     {
-        bool isvar = false;
+        public static Boolean error = false;
+        public static ArrayList errors = new ArrayList();
+        public static bool isvar = false;
         public static Boolean isPen = false;
         Boolean fillOn = false;
         Color pen;
@@ -64,14 +67,18 @@ namespace Draw_Shapes
                     String command_type = check_cmd.check_command_type(draw);
                   
                     
-                    if (command_type.Equals("variable") || command_type.Equals("if") || command_type.Equals("while")|| command_type.Equals("end_tag")||command_type.Equals("method"))
+                    if (command_type.Equals("variable") || command_type.Equals("if") || command_type.Equals("while")|| command_type.Equals("end_tag")||command_type.Equals("method")|| command_type.Equals("variableoperation"))
                     {
                         if (command_type.Equals("variable"))
                         {
-
+                           
+                            isvar = true;
                             check_cmd.check_variable(draw);
-
-
+                        }
+                        if (command_type.Equals("variableoperation"))
+                        {
+                          
+                            check_cmd.run_variable_operation(draw);
                         }
                         if (command_type.Equals("if"))
                         {
@@ -147,47 +154,95 @@ namespace Draw_Shapes
        
         public void draw_commands(String command, Graphics g)
         {
-            try
-            {
+            try { 
                 int radius;
                 ComplexCommand complex = new ComplexCommand();
                 String[] line = command.ToLower().Trim().Split(' ');
                 String commands = line[0];
                 if (commands.Equals("triangle"))
                 {
-                    canvas.drawTriangle(pen, xAxis, yAxis, fillOn, isPen, g);
+                    if (line.Length != 1)
+                    {
+                        error = true;
+                        errors.Add("Invalid parameters at line " + DrawAllShapes.line_number);
+                    }
+                    else
+                    {
+                        canvas.drawTriangle(pen, xAxis, yAxis, fillOn, isPen, g);
+                    }
                 }
+
                 String value = line[1];
                 String[] parameter = line[1].Split(',');
                 int[] parameters = complex.check_values(parameter);
-                //if(commands)
-
+            //if(commands)
+           
                 if (commands.Equals("moveto"))
                 {
+                    if (parameter.Length != 2)
+                    {
+                        error = true;
+                        errors.Add("Invalid parameters at line " + DrawAllShapes.line_number);
+                    }
                     xAxis = parameters[0];
                     yAxis = parameters[1];
                 }
                 else if (commands.Equals("drawto"))
                 {
+                    if (parameter.Length != 2)
+                    {
+                        error = true;
+                        errors.Add("Invalid parameters at line " + DrawAllShapes.line_number);
+                    }
                     canvas.drawLine(pen, xAxis, yAxis, isPen, parameters[0], parameters[1], g);
                     xAxis = parameters[0];
                     yAxis = parameters[1];
                 }
                 else if (commands.Equals("pen"))
                 {
-                    isPen = true;
-                    String pen_color = complex.checkStringVariables(value);
-                    pen = colour.getPenColor(pen_color);
+                    String check = @"^[a-zA-Z]+$";
+                    Regex regex = new Regex(check);
+                    if (regex.IsMatch(value))
+                    {
+                        MessageBox.Show("Meth");
+                        isPen = true;
+                        String pen_color = complex.checkStringVariables(value);
+                        pen = colour.getPenColor(pen_color);
+                    }
+                    else
+                    {
+                        error = true;
+                        errors.Add("Please add string values in line number " + DrawAllShapes.line_number);
+                    }
                 }
                 else if (commands.Equals("fill"))
                 {
-                    if (complex.checkStringVariables(value).Equals("on"))
+                    String check = @"^[a-zA-Z]+$";
+                    Regex regex = new Regex(check);
+                    if (regex.IsMatch(value))
                     {
-                        fillOn = true;
+                        if (complex.checkStringVariables(value).Equals("on"))
+                        {
+                            fillOn = true;
+                        }
+                        else
+                        {
+                            fillOn = false;
+                        }
+                    }
+                    else
+                    {
+                        error = true;
+                        errors.Add("Please add string values in line number " + DrawAllShapes.line_number);
                     }
                 }
                 else if (commands.Equals("rectangle"))
                 {
+                    if (parameter.Length != 2)
+                    {
+                        error = true;
+                        errors.Add("Invalid parameters at line " + DrawAllShapes.line_number);
+                    }
                     canvas.drawRectangle(pen, xAxis, yAxis, fillOn, isPen, parameters[0], parameters[1], g);
                 }
                 /*else if (commands.Equals("triangle"))
@@ -198,15 +253,24 @@ namespace Draw_Shapes
                 */
                 else if (commands.Equals("circle"))
                 {
-                    if (CommandChecker.store_variables.ContainsKey(value))
+                   
+                    try
                     {
-                        radius = Convert.ToInt32(CommandChecker.store_variables[value]);
+                        if (CommandChecker.store_variables.ContainsKey(value))
+                        {
+                            radius = Convert.ToInt32(CommandChecker.store_variables[value]);
+                        }
+                        else
+                        {
+                            radius = Convert.ToInt32(value);
+                        }
+                        canvas.drawCircle(pen, xAxis, yAxis, fillOn, isPen, radius, g);
                     }
-                    else
+                    catch (FormatException)
                     {
-                        radius = Convert.ToInt32(value);
+                        error = true;
+                        errors.Add("Invalid parameters at line " + DrawAllShapes.line_number);
                     }
-                    canvas.drawCircle(pen, xAxis, yAxis, fillOn, isPen, radius, g);
                 }
                 else
                 {
@@ -215,7 +279,12 @@ namespace Draw_Shapes
             }
             catch (System.IndexOutOfRangeException e)
             {
-
+                if (!isvar)
+                {
+                    error = true;
+                    errors.Add("Invalid command at line " + DrawAllShapes.line_number);
+                }
+                
             }
 
         }

@@ -53,6 +53,11 @@ namespace Draw_Shapes
                 //sets pen color to green
                 colour = Color.Green;
             }
+            else
+            {
+                CommandLine.error = true;
+                CommandLine.errors.Add("Invalid color name at line " + DrawAllShapes.line_number);
+            }
             //returning the color for the pen
             return colour;
         }

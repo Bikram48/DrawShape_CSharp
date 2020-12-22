@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Draw_Shapes
 {
@@ -41,6 +42,11 @@ namespace Draw_Shapes
                     parameters[0] = Convert.ToInt32(parameter1);
                     parameters[1] = Convert.ToInt32(parameter2);
                 }
+            }
+            catch(FormatException e)
+            {
+                CommandLine.error = true;
+                CommandLine.errors.Add("Non nummeric values at line " + DrawAllShapes.line_number);
             }
             catch (System.IndexOutOfRangeException e)
             {
