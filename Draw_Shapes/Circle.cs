@@ -12,7 +12,7 @@ namespace Draw_Shapes
     /// It implements the abstract method of base class Shapes.
     /// It also contains the additional properties which will be required to draw a circle.
     /// </summary>
-    class Circle :Shapes
+    class Circle : Shapes
     {
         /// <summary>
         ///  Uses private modifier to give access inside this class only.
@@ -35,7 +35,7 @@ namespace Draw_Shapes
         /// <param name="yAxis">yAxis of moveTo command</param>
         /// <param name="fillOn">color fill on/off</param>
         /// <param name="radius">Circle radius</param>
-        public Circle(Color colour, int xAxis, int yAxis, Boolean fillOn,int radius):base(colour,xAxis,yAxis,fillOn)
+        public Circle(Color colour, int xAxis, int yAxis, Boolean fillOn, int radius) : base(colour, xAxis, yAxis, fillOn)
         {
             //sets the radius of circle
             this.radius = radius;
@@ -48,10 +48,10 @@ namespace Draw_Shapes
         /// <param name="colour">Pen color</param>
         /// <param name="fillOn">color fill on/off</param>
         /// <param name="list">xAxis,yAxis and Radius</param>
-        public override void set(Color colour, Boolean fillOn,Boolean isPen, params int[] list)
+        public override void set(Color colour, Boolean fillOn, Boolean isPen, params int[] list)
         {
             //passing values into the base class method set
-            base.set(colour, fillOn,isPen, list[0], list[1]);
+            base.set(colour, fillOn, isPen, list[0], list[1]);
             //sets the radius of the circle
             this.radius = list[2];
         }
@@ -100,7 +100,7 @@ namespace Draw_Shapes
                     //draws the rectangle in canvas.
                     g.DrawEllipse(p, xAxis - radius, yAxis - radius, radius + radius, radius + radius);
                 }
-            }         
+            }
         }
     }
 }

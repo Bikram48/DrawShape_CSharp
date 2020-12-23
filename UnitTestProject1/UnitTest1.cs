@@ -72,28 +72,5 @@ namespace UnitTestProject1
             Assert.AreEqual(pencolor, expected);
         }
 
-        /// <summary>
-        /// This is the method from VariableChecker class which will be later implemented on the component2.
-        /// </summary>
-        [TestMethod]
-        public void TestCheckALlVariables()
-        {
-            VariableChecker check = new VariableChecker();
-            String expectedVariable = "ifelse";
-            
-            Assert.AreEqual(check.checkAllVariables("else"), expectedVariable);
-        }
-
-        /// <summary>
-        /// This is the method from VariableChecker class which will be later implemented on the component2.
-        /// </summary>
-        [TestMethod]
-        public void TestReadAllVariables()
-        {
-            VariableChecker check = new VariableChecker();
-            String expectedVariable = "ifelse";
-
-            Assert.AreEqual(check.readAllVairables("else"), expectedVariable);
-        }
     }
 }

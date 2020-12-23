@@ -51,7 +51,7 @@ namespace Draw_Shapes
         /// <param name="xAxis">xAxis of moveTo</param>
         /// <param name="yAxis">yAxis of moveTo</param>
         /// <param name="fillOn">color fill on/off</param>
-        public Shapes(Color colour,int xAxis,int yAxis,Boolean fillOn)
+        public Shapes(Color colour, int xAxis, int yAxis, Boolean fillOn)
         {
             this.colour = colour;
             this.xAxis = xAxis;
@@ -65,19 +65,19 @@ namespace Draw_Shapes
         /// </summary>
         /// <param name="g">Graphics reference</param>
         public abstract void draw(Graphics g);
-       
+
         /// <summary>
         /// It sets the properties of this class.
         /// </summary>
         /// <param name="colour">Pen color</param>
         /// <param name="fillOn">color fill on/off</param>
         /// <param name="list">array which store xAxis and yAxis</param>
-        public virtual void set(Color colour, bool fillOn,bool isPen, params int[] list)
+        public virtual void set(Color colour, bool fillOn, bool isPen, params int[] list)
         {
             //sets the color property
             this.colour = colour;
             //sets the xAxis property
-            this.xAxis =list[0];
+            this.xAxis = list[0];
             //sets the yAxis property
             this.yAxis = list[1];
             //sets the fillOn property

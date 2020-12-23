@@ -70,8 +70,6 @@ namespace Draw_Shapes
                     String draw = richTextBoxLines[i];
                     String command_type = check_cmd.check_command_type(draw);
 
-
-                  
                     if (command_type.Equals("variable") || command_type.Equals("if") || command_type.Equals("end_tag")|| command_type.Equals("while")||command_type.Equals("method")|| command_type.Equals("variableoperation"))
                     {
                         if (command_type.Equals("variable"))
@@ -86,14 +84,32 @@ namespace Draw_Shapes
                         }
                         if (command_type.Equals("if"))
                         {
-                            complex_command = true;
-                            check_cmd.check_if_command(draw, richTextBoxLines, count_line, g);
+                            try
+                            {
+                                complex_command = true;
+                                if (check_cmd.check_if_command(draw))
+                                {
+                                    check_cmd.run_if_command(richTextBoxLines, count_line, g);
+                                }
+                                else
+                                {
+                                    throw new ErrorInCommandsException("Sorry the condition didn't met at line number " + DrawAllShapes.line_number);
+                                }
+                            }
+                            catch (ErrorInCommandsException e)
+                            {
+                                CommandLine.error = true;
+                                ErrorRepository.errorsList.Add(e.Message);
+                            }
                         }
 
                         if (command_type.Equals("while"))
                         {
                             complex_command = true;
-                            check_cmd.check_while_command(draw, richTextBoxLines, count_line, g);
+                            if(check_cmd.check_while_command(draw))
+                            {
+                                check_cmd.run_while_command(draw,richTextBoxLines, count_line, g);
+                            }
                         }
 
                         if (command_type.Equals("method"))
@@ -103,13 +119,12 @@ namespace Draw_Shapes
                             {
                                 if (check_cmd.methodcall(richTextBoxLines, count_line,g))
                                 {
-                                    complex_command = true;
+                                   complex_command = true;
                                    foreach(String lines in CommandChecker.line_of_commands)
                                     {
                                         draw_commands(lines,g);
                                     }
                                 }
-                              
                             }
                           
                         }
@@ -119,18 +134,14 @@ namespace Draw_Shapes
                             foreach (String lines in CommandChecker.line_of_commands)
                             {
                                 draw_commands(lines, g);
-                            }
-                            
+                            } 
                         }
-
-
-                       
                     }
 
 
                     if (!complex_command)
                     {
-                            draw_commands(draw, g);
+                           draw_commands(draw, g);
                     }
 
                 }
@@ -185,13 +196,13 @@ namespace Draw_Shapes
             else if (singleLineCommand.Equals("reset"))
             {
                 //resets the X and Y co-ordinates to 0,0 using reset method from CommandChecker class.
-                //checker.Reset();
+                Reset();
             }
             //if commands are entered in a single commandline box then this code get executed
             else
             {
                 //passed the text of TextBox into the parseCommands method to check the commands are valid or invalid
-                //checker.parseCommands(textBox2.Text, g);
+                draw_commands(textBox2.Text, g);
             }
 
           
@@ -249,7 +260,6 @@ namespace Draw_Shapes
                     Regex regex = new Regex(check);
                     if (regex.IsMatch(value))
                     {
-                        MessageBox.Show("Meth");
                         isPen = true;
                         String pen_color = complex.checkStringVariables(value);
                         pen = colour.getPenColor(pen_color);
@@ -290,6 +300,7 @@ namespace Draw_Shapes
                     }
                     canvas.drawRectangle(pen, xAxis, yAxis, fillOn, isPen, parameters[0], parameters[1], g);
                 }
+               
                 /*else if (commands.Equals("triangle"))
                 {
                     MessageBox.Show("triangle");
@@ -332,6 +343,18 @@ namespace Draw_Shapes
                 
             }
 
+        }
+
+        /// <summary>
+        /// If reset command is get executed from the commandline then this method will be called to reset
+        /// the position of xAxis and yAxis to 0,0
+        /// </summary>
+        public void Reset()
+        {
+            //sets xAxis to zero
+            xAxis = 0;
+            //sets yAxis to zero
+            yAxis = 0;
         }
     }
 }

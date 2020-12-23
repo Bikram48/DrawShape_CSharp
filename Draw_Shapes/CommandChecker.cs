@@ -58,7 +58,7 @@ namespace Draw_Shapes
                 {
                     type = "method";
                 }
-                else if (command.Contains("drawto") || command.Contains("moveto") || command.Contains("pen") || command.Contains("rectangle") || command.Contains("triangle") || command.Contains("circle") || command.Contains("fill"))
+                else if (command.Contains("drawto") || command.Contains("moveto") || command.Contains("pen") || command.Contains("rectangle") || command.Contains("triangle") || command.Contains("circle") || command.Contains("fill")||command.Contains("polygon"))
                 {
                     type = "drawing_commands";
                 }
@@ -103,7 +103,7 @@ namespace Draw_Shapes
             return type;
         }
 
-        public void check_if_command(String command, String[] lines, int count_line, Graphics g)
+        public bool check_if_command(String command)
         {
             DataTable table = new DataTable();
             String one;
@@ -150,50 +150,14 @@ namespace Draw_Shapes
                         String replaced = parameters.Replace(splitbysign[0], one).Replace(splitbysign[1], two);
 
                         expression = Convert.ToBoolean(table.Compute(replaced, String.Empty));
-
-                        if (expression == true)
-                        {
-                            if (lines[count_line].Equals("then"))
-                            {
-                                string command_type = check_command_type(lines[count_line + 1]);
-                                if (command_type.Equals("drawing_commands"))
-                                {
-                                    commands.draw_commands(lines[count_line + 1], g);
-                                }
-
-                            }
-                            else
-                            {
-                                for (int i = count_line; i < lines.Length; i++)
-                                {
-                                    if (!(lines[i].Equals("endif")))
-                                    {
-
-                                        string command_types = check_command_type(lines[i]);
-                                        if (command_types.Equals("drawing_commands"))
-                                        {
-                                          
-                                            //MessageBox.Show("Drawing commands");
-                                            line_of_commands.Add(lines[i]);
-                                            //commands.draw_commands(lines[i], g);
-                                        }
-
-                                    }
-
-                                  
-                                }
-                            }
-                        }
-                        else
-                        {
-                            throw new ErrorInCommandsException("Sorry the condition didn't met at line number " + DrawAllShapes.line_number);
-                        }
+                        
                     }
                     else
                     {
                         throw new ErrorInCommandsException("Invalid command at line " + DrawAllShapes.line_number);
                     }
                 }
+              
             }
             catch(ErrorInCommandsException e)
             {
@@ -204,10 +168,44 @@ namespace Draw_Shapes
             {
 
             }
-
+            return expression;
         }
 
-        public void check_while_command(string command, String[] lines, int count_line, Graphics g)
+        public void run_if_command(String[] lines, int count_line, Graphics g)
+        {
+            if (lines[count_line].Equals("then"))
+            {
+                string command_type = check_command_type(lines[count_line + 1]);
+                if (command_type.Equals("drawing_commands"))
+                {
+                    commands.draw_commands(lines[count_line + 1], g);
+                }
+
+            }
+            else
+            {
+                for (int i = count_line; i < lines.Length; i++)
+                {
+                    if (!(lines[i].Equals("endif")))
+                    {
+
+                        string command_types = check_command_type(lines[i]);
+                        if (command_types.Equals("drawing_commands"))
+                        {
+
+                            //MessageBox.Show("Drawing commands");
+                            line_of_commands.Add(lines[i]);
+                            //commands.draw_commands(lines[i], g);
+                        }
+
+                    }
+
+
+                }
+            }
+        }
+
+        public bool check_while_command(string command)
         {
           
             DataTable table = new DataTable();
@@ -251,53 +249,6 @@ namespace Draw_Shapes
                         }
                         String replaced = parameters.Replace(splitbysign[0], one).Replace(splitbysign[1], two);
                         expression = Convert.ToBoolean(table.Compute(replaced, String.Empty));
-
-                        if (expression==true)
-                        {
-                            int loop = 0;
-                            int loop_count = 0;
-
-                            if (store_variables.ContainsKey(splitbysign[0]))
-                            {
-                                loop = Convert.ToInt32(store_variables[splitbysign[0]]);
-                                loop_count = Convert.ToInt32(splitbysign[1]);
-                            }
-
-                            for (int count = loop; count <= loop_count; count++)
-                            {
-                                for (int i = count_line; i < lines.Length; i++)
-                                {
-                                    // MessageBox.Show(loop + "");
-                                    if (!(lines[i].Equals("endloop")))
-                                    {
-
-                                        string command_types = check_command_type(lines[i]);
-                                        if (command_types.Equals("drawing_commands"))
-                                        {
-                                            commands.draw_commands(lines[i], g);
-                                        }
-
-                                        if (command_types.Equals("variableoperation"))
-                                        {
-                                            run_variable_operation(lines[i]);
-                                        }
-                                        
-                                    }
-                                    else
-                                    {
-                                        
-                                        break;
-                                    }
-
-                                }
-                                count = Convert.ToInt32(store_variables[splitbysign[0]]);
-                            }
-                        }
-                        else
-                        {
-                    
-                            throw new ErrorInCommandsException("Sorry the condition didn't met at line number " + DrawAllShapes.line_number);
-                        }
                     }
                     else
                     {
@@ -314,7 +265,53 @@ namespace Draw_Shapes
             {
                
             }
+            return expression;
+        }
 
+        public void run_while_command(String command,String[] lines, int count_line, Graphics g)
+        {
+            String[] signs = { "<=", ">=", "<", ">", "==", "!=" };
+            String[] splitter = command.Split(' ');
+            String parameters = splitter[1];
+            String[] splitbysign = parameters.Split(signs, StringSplitOptions.RemoveEmptyEntries).Select(p => p.Trim()).ToArray();
+            int loop = 0;
+            int loop_count = 0;
+
+            if (store_variables.ContainsKey(splitbysign[0]))
+            {
+                loop = Convert.ToInt32(store_variables[splitbysign[0]]);
+                loop_count = Convert.ToInt32(splitbysign[1]);
+            }
+
+            for (int count = loop; count <= loop_count; count++)
+            {
+                for (int i = count_line; i < lines.Length; i++)
+                {
+                    // MessageBox.Show(loop + "");
+                    if (!(lines[i].Equals("endloop")))
+                    {
+
+                        string command_types = check_command_type(lines[i]);
+                        if (command_types.Equals("drawing_commands"))
+                        {
+                            commands.draw_commands(lines[i], g);
+                        }
+
+                        if (command_types.Equals("variableoperation"))
+                        {
+                            run_variable_operation(lines[i]);
+                        }
+
+                    }
+                    else
+                    {
+
+                        break;
+                    }
+
+                }
+                count = Convert.ToInt32(store_variables[splitbysign[0]]);
+            }
         }
 
 
@@ -355,7 +352,7 @@ namespace Draw_Shapes
                             {
                                 if (!store_variables.ContainsKey(variable_value))
                                 {
-                                    throw new InvalidVariableException("Please declare the variable first. Error at line " + DrawAllShapes.line_number);
+                                    throw new InvalidVariableException("Please declare the variable first. Error at line ");
                                 }
                             }
                             else
@@ -456,8 +453,11 @@ namespace Draw_Shapes
                 {
                     throw new InvalidVariableException("Invalid operator at line " + DrawAllShapes.line_number);
                 }
+             
+             
                 if (!store_variables.ContainsKey(variable_name))
                 {
+                    variable_value = table.Compute(variable_value, String.Empty).ToString();
                     store_variables.Add(variable_name, variable_value);
                 }
                 
@@ -478,7 +478,7 @@ namespace Draw_Shapes
             if (regex.IsMatch(command))
             {
                 String[] splitter = command.Split(' ');
-                String[] parameter = splitter[1].Split(brackets, StringSplitOptions.RemoveEmptyEntries).Select(p=>p.Trim()).ToArray();
+                String[] parameter = splitter[1].Split(brackets, StringSplitOptions.RemoveEmptyEntries).Select(p => p.Trim()).ToArray();
                 methodName = parameter[0];
 
                 if (splitter[0].Equals("method"))
@@ -508,7 +508,7 @@ namespace Draw_Shapes
                 String[] splitter = command.Split(' ');
                 if (splitter[0].Equals("method"))
                 {
-                    singleparameter = splitter[1].Split(new String[] { "(", ")" }, StringSplitOptions.RemoveEmptyEntries).Select(p=>p.Trim()).ToArray();
+                    singleparameter = splitter[1].Split(new String[] { "(", ")" }, StringSplitOptions.RemoveEmptyEntries).Select(p => p.Trim()).ToArray();
                     String[] parameter = splitter[1].Split('(');
                     method_signature = parameter[0];
                     string methodPlaceholder = "method";
@@ -647,5 +647,7 @@ namespace Draw_Shapes
 
             return false;
         }
+
+
     }
 }

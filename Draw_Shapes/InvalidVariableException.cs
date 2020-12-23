@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Draw_Shapes
 {
-    class InvalidVariableException:Exception
+    public class InvalidVariableException:Exception
     {
         public InvalidVariableException()
         {

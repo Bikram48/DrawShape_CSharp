@@ -28,9 +28,9 @@ namespace Draw_Shapes
         /// <summary>
         /// Default constructor declaired.
         /// </summary>
-        public Rectangle():base()
+        public Rectangle() : base()
         {
-          
+
         }
         /// <summary>
         /// Parameterized constructor is declaired to the set the value of properties.
@@ -41,7 +41,7 @@ namespace Draw_Shapes
         /// <param name="fillOn">color fill on/off</param>
         /// <param name="width">Rectangle width</param>
         /// <param name="height">Rectangle height</param>
-        public Rectangle(Color colour,int xAxis, int yAxis,Boolean fillOn,int width,int height) : base(colour,xAxis,yAxis,fillOn)
+        public Rectangle(Color colour, int xAxis, int yAxis, Boolean fillOn, int width, int height) : base(colour, xAxis, yAxis, fillOn)
         {
             //sets the width of rectangle
             this.width = width;
@@ -55,17 +55,17 @@ namespace Draw_Shapes
         /// <param name="colour">Pen color</param>
         /// <param name="fillOn">color fill on/off</param>
         /// <param name="list">xAxis,yAxis,width and height</param>
-        public override void set(Color colour,Boolean fillOn,Boolean isPen,params int[] list)
+        public override void set(Color colour, Boolean fillOn, Boolean isPen, params int[] list)
         {
             //sending values into the base class method set.
-            base.set(colour, fillOn,isPen,list[0],list[1]);
+            base.set(colour, fillOn, isPen, list[0], list[1]);
             //sets the width of rectangle
             this.width = list[2];
             //sets the height of rectangle
             this.height = list[3];
         }
-        
-      
+
+
         /// <summary>
         /// Uses the public visibility modifier to give access to other classes also.
         /// This method draws the rectangle in canvas.
@@ -74,7 +74,7 @@ namespace Draw_Shapes
         public override void draw(Graphics g)
         {
             //if fill command is executed then this block of code will get executed.
-            if (fillOn==true)
+            if (fillOn == true)
             {
                 //checks if pen command is entered. If entered then the back color will be set with the same color of pen.
                 if (isPen == true)
@@ -91,7 +91,7 @@ namespace Draw_Shapes
                     //fills the rectangle with black color.
                     g.FillRectangle(sb, xAxis, yAxis, width, height);
                 }
-                
+
             }
             //if fill command isn't entered then this code will get executed.
             else
