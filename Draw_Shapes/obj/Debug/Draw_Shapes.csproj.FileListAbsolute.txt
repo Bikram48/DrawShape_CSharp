@@ -33,3 +33,4 @@ D:\C#\component1(Bikramchand 77202514)\Draw_Shapes\obj\Debug\Draw_Shapes.csproj.
 D:\C#\component1(Bikramchand 77202514)\Draw_Shapes\obj\Debug\Draw_Shapes.csproj.CoreCompileInputs.cache
 D:\C#\component1(Bikramchand 77202514)\Draw_Shapes\obj\Debug\Draw_Shapes.exe
 D:\C#\component1(Bikramchand 77202514)\Draw_Shapes\obj\Debug\Draw_Shapes.pdb
+D:\c#\csharp_projects\Draw_Shapes\bin\Debug\Draw_Shapes.xml

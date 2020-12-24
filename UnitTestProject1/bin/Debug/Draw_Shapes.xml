@@ -1,0 +1,872 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Draw_Shapes</name>
+    </assembly>
+    <members>
+        <member name="T:Draw_Shapes.Canvas">
+             <summary>
+             This <c>Draw_Shapes</c> class contains a various types of methods to draw a shapes in a canvas.
+             This class first checks if the shape exists on the system through ShapeFactory class. If exist then it makes
+             the object of that shape and calls the draw method to draw the shapes.
+             The methods in these class takes the parameters which will be needed to draw the
+             shapes and it passed those parameter to shape classes (rectangle,Triangle,Circle) to draw the shapes.
+             </summary>
+            <remarks>
+            This class get the parameters like colour,xAxsis,yAxis,g which will be appropriate for all the shapes.
+             </remarks>
+        </member>
+        <member name="F:Draw_Shapes.Canvas.shape">
+            <summary>
+            Instantiates an object of ShapeFacotry class.
+            ShapeFactory is a factory design pattern which returns the object of the shape if existed.
+            </summary>
+        </member>
+        <member name="M:Draw_Shapes.Canvas.drawRectangle(System.Drawing.Color,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Int32,System.Int32,System.Drawing.Graphics)">
+            <summary>
+            If the shape is rectangle then this method helps to get the parameters requires 
+            for the rectangle class.
+            </summary>
+            <param name="colour">Pen color</param>
+            <param name="xAxis">xAxis from moveTo command</param>
+            <param name="yAxis">yAxis from moveTo command</param>
+            <param name="fillOn">color fill on/off</param>
+            <param name="width">Rectangle widht</param>
+            <param name="height">Rectangle height</param>
+            <param name="g">Graphics reference</param>
+        </member>
+        <member name="M:Draw_Shapes.Canvas.drawCircle(System.Drawing.Color,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Int32,System.Drawing.Graphics)">
+            <summary>
+            If the shape is circle then this method helps to get the parameters requires 
+            for the circle class.
+            </summary>
+            <param name="colour">Pen color</param>
+            <param name="xAxis">xAxis from moveTo command</param>
+            <param name="yAxis">yAxis from moveTo command</param>
+            <param name="fillOn">color fill on/off</param>
+            <param name="radius">Circle radius</param>
+            <param name="g">Graphics reference</param>
+        </member>
+        <member name="M:Draw_Shapes.Canvas.drawTriangle(System.Drawing.Color,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Drawing.Graphics)">
+            <summary>
+            If the shape is triangle then this method helps to get the parameters requires 
+            for the triangle class.
+            </summary>
+            <param name="colour">Pen color</param>
+            <param name="xAxis">xAxis from moveTo command</param>
+            <param name="yAxis">yAxis from moveTo command</param>
+            <param name="fillOn">color fill on/off</param>
+            <param name="g">Graphics reference</param>
+        </member>
+        <member name="M:Draw_Shapes.Canvas.drawLine(System.Drawing.Color,System.Int32,System.Int32,System.Boolean,System.Int32,System.Int32,System.Drawing.Graphics)">
+            <summary>
+            Uses public visibility modifier to give access to other classes also.
+            Draws the line when the drawTo command is executed in the commandLine.
+            </summary>
+            <param name="colour">Pen color</param>
+            <param name="xAxis">xAxis from moveTo command</param>
+            <param name="yAxis">yAxis from moveTo command</param>
+            <param name="fillOn">color fill on/off</param>
+            <param name="point1">First point</param>
+            <param name="point2">Second point</param>
+            <param name="g">Graphics reference</param>
+        </member>
+        <member name="T:Draw_Shapes.Circle">
+             <summary>
+             This class is extended from the Shape abstract class.
+             It implements the abstract method of base class Shapes.
+             It also contains the additional properties which will be required to draw a circle.
+             </summary>
+             <remarks>
+                 <para>Radius is declaired to give a radius to the circle</para>
+             </remarks>
+            See <see cref="!:abstract"/> to know about the abstract classes
+        </member>
+        <member name="F:Draw_Shapes.Circle.radius">
+            <summary>
+             Uses private modifier to give access inside this class only.
+             It stores the radius of the circle.
+            </summary>
+        </member>
+        <member name="M:Draw_Shapes.Circle.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:Draw_Shapes.Circle.#ctor(System.Drawing.Color,System.Int32,System.Int32,System.Boolean,System.Int32)">
+            <summary>
+            Parameterized constructor is declaired to the set the value of properties.
+            </summary>
+            <param name="colour">Pen color</param>
+            <param name="xAxis">xAxis of moveTo command</param>
+            <param name="yAxis">yAxis of moveTo command</param>
+            <param name="fillOn">color fill on/off</param>
+            <param name="radius">Circle radius</param>
+        </member>
+        <member name="M:Draw_Shapes.Circle.set(System.Drawing.Color,System.Boolean,System.Boolean,System.Int32[])">
+            <summary>
+            Overrides the set method of base class.
+            It sets the values for the properties
+            </summary>
+            <param name="colour">Pen color</param>
+            <param name="fillOn">color fill on/off</param>
+            <param name="list">xAxis,yAxis and Radius</param>
+        </member>
+        <member name="M:Draw_Shapes.Circle.draw(System.Drawing.Graphics)">
+            <summary>
+            Uses the public visibility modifier to give access to other classes also.
+            It draws the circle in canvas using DrawEllipse method
+            </summary>
+            <param name="g"></param>
+        </member>
+        <member name="T:Draw_Shapes.CommandChecker">
+            <summary>
+            This class checks if the user typed a valid commands in the system.
+            If user typed a valid commands then the commands get executed and  calls the appropriate methods of other classes.
+            This class <c>Draw_Shapes</c> is also useful when complex commands like while loop,variables,method and if get executed in the commandbox.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.CommandChecker.singleParameter">
+            <summary>
+            <c>singleParameter</c> is a string array which splits the text by the brackets and holds the single parameter passed in the method signature.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.CommandChecker.numberOfParameters">
+            <summary>
+            String array which splits the commands by commas and holds the number of parameters passed in the parameterized method signature.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.CommandChecker.methodName">
+            <summary>
+            Uses a static keyword to give access it by using a class name.
+            Stores the name of the method passed inside the commandbox.
+            It will be useful when calling method because we need to match the name of the method declaration to the name of the method called.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.CommandChecker.line_of_commands">
+            <summary>
+            Uses a static keyword to give access it by using a class name.
+            ArrayList datastructure is called to store the lines between the  method and endmethod commands and if and endif commands.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.CommandChecker.expression">
+            <summary>
+            Boolean datatype is used which returns true and false only.
+            This is a local variable which has a defaul value false.
+            This boolean variable returns true when the expression meet on if and while conditions and it return false when condition doesn't meet.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.CommandChecker.commands">
+            <summary>
+            Creates an object of <c>CommandLine</c> class.
+            The reference of the CommandLine object will be used to access all the methods and properties inside the CommandLine class who has a public access modifier.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.CommandChecker.store_variables">
+             <summary>
+             A dictionary called store_variabels is declaired to store the variables which are passed in the commandline box.
+             In c# dictionary is used to store the values in a key,value pair. A key cannot be duplicated but value can be duplicate.
+            To get the value of variable we need to use the key of dictionary.
+            See<see cref="T:System.Collections.IDictionary"/> to know more about dictionary
+             </summary>
+        </member>
+        <member name="M:Draw_Shapes.CommandChecker.CheckCommandTypes(System.String)">
+             <summary>
+             Uses a public access modifier.
+             This method takes a command as a parameter and check which command is this and if the command matches to any of the if condition then
+             it returns the types of the commands. 
+             It returns error commandtype when command didn't match on any of the condition.
+             </summary>
+             <param name="command">Lines from the richTextBox</param>
+             <returns>
+                 Type of the commands
+             </returns>
+            <exception cref="T:Draw_Shapes.InvalidVariableException">Thrown when command syntax didn't match</exception>
+        </member>
+        <member name="M:Draw_Shapes.CommandChecker.CheckIfCondition(System.String)">
+            <summary>
+            Uses a public access modifier.
+            Checks the condition on if signature and returns true when condition matches and false when condition didn't match.
+            Datatable has been used to check the condition of if command.
+            </summary>
+            <param name="command">The line where if found</param>
+            <returns>
+            true when condition did match.
+            </returns>
+            <exception cref="T:Draw_Shapes.ErrorInCommandsException">Thrown when invalid if syntax is get executed</exception>
+        </member>
+        <member name="M:Draw_Shapes.CommandChecker.RunIfCommand(System.String[],System.Int32,System.Drawing.Graphics)">
+            <summary>
+            Uses a public access modifier.
+            Runs the lines between the if command and endif command when condition meet on if command.
+            If then command found after the if command then single line of will only get executed and if endif found then the commands between if and endif will get executed.
+            </summary>
+            <param name="lines">lines of richtextbox</param>
+            <param name="count_line">Line counter</param>
+            <param name="g">reference of Graphics to draw into the panel.</param>
+        </member>
+        <member name="M:Draw_Shapes.CommandChecker.CheckWhileCondition(System.String)">
+            <summary>
+            Uses a public access modifier.
+            Runs the lines between the while command and endloop command when condition meet on while command.
+            Datatable class compute method has been used to check the condition of while command.
+            </summary>
+            <param name="command">Line where while condition found</param>
+            <returns>true if condition meet</returns>
+            <exception cref="T:Draw_Shapes.ErrorInCommandsException">
+                throw when invalid operator or invalid while syntax get found
+            </exception>
+        </member>
+        <member name="M:Draw_Shapes.CommandChecker.RunWhileCommand(System.String,System.String[],System.Int32,System.Drawing.Graphics)">
+            <summary>
+            Uses a public access modifier.
+            Runs the lines starting from the while command till the endLoop command.
+            It repeats the lines between while and enloop command till the condition didn't get false.
+            </summary>
+            <param name="command">line where while found</param>
+            <param name="lines">lines of richtextbox</param>
+            <param name="count_line">Line counter</param>
+            <param name="g">reference of Graphics to draw into the panel.</param>
+        </member>
+        <member name="M:Draw_Shapes.CommandChecker.CheckVariables(System.String)">
+            <summary>
+            Uses a public access modifier.
+            Takes the line where equals operator get found as a parameter and checks if the command is actually a variable.\
+            If command is actually a variable then it adds the variable name and variable value into the dictionary as a ke,value pair
+            </summary>
+            <param name="command">Line where equals sign found</param>
+            <exception cref="T:Draw_Shapes.InvalidVariableException">
+                Throw when invalid variables are found
+            </exception>
+        </member>
+        <member name="M:Draw_Shapes.CommandChecker.RunVariableOperations(System.String)">
+            <summary>
+            Uses a public access modifier.
+            Performs the operation when operators  are found.
+            If the operation is done then the dictionary key will be updated with the new value.
+            </summary>
+            <remarks>
+                Valid operators +,-,* and /
+            </remarks>
+            <param name="command">the line where valid operators like +,- are found</param>
+            <exception cref="T:Draw_Shapes.InvalidVariableException">
+                throw when invalid operators are found.
+            </exception>
+        </member>
+        <member name="M:Draw_Shapes.CommandChecker.RunMethod(System.String,System.String[],System.Int32,System.Drawing.Graphics)">
+            <summary>
+            Uses a public access modifier.
+            Checks if the method is a parameterized or parameterless command using a Regex. If method is one of them then the code will run appropriately.
+            If all required things get matched then the lines starting from method command to the endmethod will be added into the arraylist and will 
+            get executed when method is called inside the command box.
+            This method returns true when condition for the parameterless or parameterized methods are meet.
+            </summary>
+            <param name="command">line where method signature found</param>
+            <param name="lines">lines of richtextbox</param>
+            <param name="count_line">Line counter</param>
+            <param name="g">reference of Graphics to draw into the panel.</param>
+            <returns>true when parameterless or parameterized method are get matched.</returns>
+        </member>
+        <member name="M:Draw_Shapes.CommandChecker.ParameterizedMethod(System.String[])">
+            <summary>
+            Uses a public access modifier.
+            This method adds the parameters passed in the method to the dictionary as a key and the value will be null initially. The values will only be added to the key
+            when values are passed from the method call.
+            params keyword is used in a parameter are when we don't know how many actually parameters are there.
+            </summary>
+            <param name="parameters">parameters passed in parameterized method signature</param>
+        </member>
+        <member name="M:Draw_Shapes.CommandChecker.methodcall(System.String[],System.Int32,System.Drawing.Graphics)">
+            <summary>
+            Uses a public access modifier.
+            This is a method where actually method call part are done.
+            This method first checks which method is called using a Regex and if method founds with the actuall name and parameter then that method will be called and lines 
+            inside those method will get executed.
+            If the parameterized method gets called then the value inside the parameter field will be added into the key of parameters passed in the method declaration.
+            </summary>
+            <param name="lines"></param>
+            <param name="count_line"></param>
+            <param name="g"></param>
+            <returns>true if method called signature are matched to the method declaired signature</returns>
+        </member>
+        <member name="T:Draw_Shapes.CommandLine">
+            <summary>
+            It takes the commands from the commandLine and performs some actions on it.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.CommandLine.xAxis">
+            <summary>
+            Uses a private visibility modifier to give access to this class only.
+            It's a integer type which will store the values of xAxis from the moveTo command.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.CommandLine.yAxis">
+            <summary>
+            Uses a private visibility modifier to give access to this class only.
+            It's a integer type which will store the values of yAxis from the moveTo command.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.CommandLine.error">
+            <summary>
+            Uses a public modifier to give access to other classes also.
+            Declaired as a static variable which will get accessed  through the class name.
+            It returns the true value if errors are detected if not then it returns false.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.CommandLine.errors">
+            <summary>
+            ArrayList is created with static keyword to access this arraylist by a classname.
+            Stores all the errors throws by the commands or program.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.CommandLine.isvar">
+             <summary>
+            Uses a public modifier to give access to other classes also.
+             Declaired as a static variable which will get accessed by through the class name.
+            It is a boolean type variable to check if the variable command is get executed or not.
+             </summary>
+        </member>
+        <member name="F:Draw_Shapes.CommandLine.isPen">
+            <summary>
+            Uses a public modifier to give access to other classes also.
+            Declaired as a static variable which will get accessed by through the class name.
+            It is a boolean type variable to check if the pen command is get executed or not.
+            It returns true if the pen command is executed if not it returns false.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.CommandLine.fillOn">
+            <summary>
+            Local variable with the boolean property which will check if the fill command is get executed or not.
+            It will return true if the fillOn command is executed if not it will return false.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.CommandLine.pen">
+            <summary>
+            It is a reference variable of the Color class.
+            It store the pen color entered by the user to draw a shapes.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.CommandLine.colour">
+            <summary>
+            Creates the object of PenColor class
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.CommandLine.canvas">
+            <summary>
+            The object of Canvas class is get instantiated.
+            Will call the method of Canvas class through the canvas reference variable.
+            </summary>
+        </member>
+        <member name="M:Draw_Shapes.CommandLine.commandLineCommands(System.Windows.Forms.TextBox,System.Windows.Forms.RichTextBox,System.Windows.Forms.Panel,System.Drawing.Graphics,System.Windows.Forms.RichTextBox,System.Windows.Forms.TextBox,System.Windows.Forms.RichTextBox)">
+            <summary>
+            Uses a public access modifier.
+            It checks for the commands of commandLine and if commands exists then it 
+            performs the actions based on the codes.
+            This method is also used to read the lines of richtextbox.
+            </summary>
+            <param name="textBox2">CommandLine texts</param>
+            <param name="richTextBox1">RichTextBox texts</param>
+            <param name="panel1">Panel</param>
+            <param name="g">Graphics reference</param>
+        </member>
+        <member name="M:Draw_Shapes.CommandLine.draw_commands(System.String,System.Drawing.Graphics)">
+            <summary>
+            Use public access modifier.
+            This method is run when only commandtype returns the drawing Commands type.
+            It is responsible to get the required parameters to draw the shapes.
+            If valid commands are entered for the shape then it passes the parameters to the canvas class to draw the shapes.
+            </summary>
+            <param name="command">Line with the command</param>
+            <param name="g">Reference of graphics</param>
+            <exception cref="T:System.IndexOutOfRangeException">
+                throw when invaid array index is used
+            </exception>
+            
+        </member>
+        <member name="M:Draw_Shapes.CommandLine.Reset">
+            <summary>
+            If reset command is get executed from the commandline then this method will be called to reset
+            the position of xAxis and yAxis to 0,0
+            </summary>
+        </member>
+        <member name="T:Draw_Shapes.ComplexCommand">
+            <summary>
+            This class checks if the parameters are variable or simple integer values passed by the user.
+            If the parameters are variable then the values are passed into the parameter variable from the dictionary.
+            If there are no variable in parameters then the parameters are simply stored into the index of parameter.
+            </summary>
+        </member>
+        <member name="M:Draw_Shapes.ComplexCommand.check_values(System.String[])">
+            <summary>
+            checks if the values are variables or simple integer type.
+            </summary>
+            <param name="parameter">parameters</param>
+            <returns></returns>
+        </member>
+        <member name="M:Draw_Shapes.ComplexCommand.checkStringVariables(System.String)">
+            <summary>
+            Uses public access modifier.
+            Checks if the variable stores the string value. 
+            This method is created mainly for storing the values of pen and fill commands. 
+            </summary>
+            <param name="value">values for pen and fill command</param>
+            <returns></returns>
+        </member>
+        <member name="T:Draw_Shapes.DrawAllShapes">
+            <summary>
+            This class contains all the gui parts requires for the frontend design.
+            This class is extended from the Form class to inherits all the properties and methods from base class.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "F:Draw_Shapes.DrawAllShapes.g" -->
+        <member name="F:Draw_Shapes.DrawAllShapes.line_number">
+            <summary>
+            Static variable is created to stores the line number on which the error is generated.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.DrawAllShapes.syntaxCheckerClicked">
+            <summary>
+            Checks if syntax Check button is clicked.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.DrawAllShapes.commands">
+            <summary>
+            Instantiating an object of CommandChekcer class
+            /// The methods and properties of CommandChecker will be called by using the reference variable 
+            of this CommandChecker class.
+            </summary>
+            <summary>
+            Instantiating an object of CommandLine class.
+            The methods and properties of CommandLine will be called by using the reference variable 
+            of this CommandLine class.
+            </summary>
+        </member>
+        <member name="M:Draw_Shapes.DrawAllShapes.#ctor">
+            <summary>
+            Constructor of this class.
+            </summary>
+        </member>
+        <member name="M:Draw_Shapes.DrawAllShapes.textBox2_KeyDown(System.Object,System.Windows.Forms.KeyEventArgs)">
+            <summary>
+            This event will occurs when a key is pressed inside the textBox while the control has focus.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Draw_Shapes.DrawAllShapes.openFileToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary>
+            When user clicks on the openfile menu then this event will occured.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Draw_Shapes.DrawAllShapes.saveFileToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary>
+            When user clicks on the savefile menu then this event will occured.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Draw_Shapes.DrawAllShapes.button1_Click(System.Object,System.EventArgs)">
+            <summary>
+            When user clicks a syntax check button to validate the commands then this event will occur.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Draw_Shapes.DrawAllShapes.button1_MouseHover(System.Object,System.EventArgs)">
+            <summary>
+            If mouse is hovered into the button then this event will occur
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Draw_Shapes.DrawAllShapes.button1_MouseLeave(System.Object,System.EventArgs)">
+            <summary>
+            If mouse leaves from the  button then this event will occur
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Draw_Shapes.DrawAllShapes.exitToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary>
+            If user click on the exit button then this event will occur.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="F:Draw_Shapes.DrawAllShapes.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Draw_Shapes.DrawAllShapes.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Draw_Shapes.DrawAllShapes.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:Draw_Shapes.ErrorInCommandsException">
+            <summary>
+            This is the user defined exception class which is extended from the base class called Exception.
+            This exception will be thrown when invalid commands are passed into the commandBox.
+            </summary>
+        </member>
+        <member name="T:Draw_Shapes.ErrorRepository">
+            <summary>
+            This is the concrete class which implements all the methods of Container interface.
+            This class also contains a inner class called ErrorIterator which implements the Iterator interface.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.ErrorRepository.errorsList">
+            <summary>
+            Arraylist which stores the possible errors generated by the program.
+            </summary>
+        </member>
+        <member name="M:Draw_Shapes.ErrorRepository.getIterator">
+            <summary>
+            This method returns the object of inner class ErrorIterator.
+            This method also calls the constructor of ErorIterator class.
+            </summary>
+            <returns>object of ErrorIterator class</returns>
+        </member>
+        <member name="T:Draw_Shapes.ErrorRepository.ErrorIterator">
+            <summary>
+            This is the inner class which implements the methods of Iterator interface.
+            </summary>
+        </member>
+        <member name="M:Draw_Shapes.ErrorRepository.ErrorIterator.hasNext">
+            <summary>
+            This method checks if element has got items in the collection based on an incrementing position number.
+            This method is overrided from the Iterator interface.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Draw_Shapes.ErrorRepository.ErrorIterator.Next">
+            <summary>
+            This method is overrided from the Iterator interface.
+            This method returns an object from collection  which can be later casted to an expected type.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Draw_Shapes.Iterator">
+            <summary>
+            Uses a public visibility modifier
+            This is a interface class which contains the abstract methods hasNext() and Next() which are unimplemented but
+            will be later implemented in child class called ErrorIterator.
+            </summary>
+        </member>
+        <member name="M:Draw_Shapes.Iterator.hasNext">
+            <summary>
+            This method checks if element has got items in the collection based on an incrementing position number.
+            This is a abstract method which is implemented in the child class ErrorIterator.
+            </summary>
+            <returns>true if collection has items</returns>
+        </member>
+        <member name="M:Draw_Shapes.Iterator.Next">
+            <summary>
+            This method returns an object from collection  which can be later casted to an expected type.
+            This is a abstract method which is implemented in the child class ErrorIterator.
+            </summary>
+            <returns>an object from the collection</returns>
+        </member>
+        <member name="T:Draw_Shapes.Container">
+            <summary>
+            This is the interface which methods are implemented in child class called ErrorRepository
+            </summary>
+        </member>
+        <member name="T:Draw_Shapes.InvalidCommandParametersException">
+            <summary>
+            This is the user defined exception class which is extended from the base class called Exception.
+            This exception will be thrown when invalid parameters are passed into the commands.
+            </summary>
+        </member>
+        <member name="T:Draw_Shapes.InvalidVariableException">
+            <summary>
+            This is the user defined exception class which is extended from the base class called Exception.
+            This exception will be thrown when invalid variables are passed into the commandBox.
+            </summary>
+        </member>
+        <member name="T:Draw_Shapes.LoadFile">
+            <summary>
+            This class is used to load the commands from the text file.
+            </summary>
+        </member>
+        <member name="M:Draw_Shapes.LoadFile.fileLoading(System.Windows.Forms.RichTextBox)">
+            <summary>
+            THis method loads the files containing commands into the program and it also
+            read those commands line by line and embed it into the richTextBox.
+            </summary>
+            <param name="richTextBox1"></param>
+        </member>
+        <member name="T:Draw_Shapes.PenColor">
+            <summary>
+            This class is mainly used to get the color for the pen.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.PenColor.colour">
+            <summary>
+            Reference of the Color class
+            </summary>
+        </member>
+        <member name="M:Draw_Shapes.PenColor.getPenColor(System.String)">
+            <summary>
+            This method takes the String parameter and returns the color for the pen.
+            </summary>
+            <param name="parameters"></param>
+            <returns>colour</returns>
+        </member>
+        <member name="F:Draw_Shapes.Polygon.point1">
+            <summary>
+            Local variables are declaired to store the points to draw a triangle
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.Polygon.point2">
+            <summary>
+            Local variables are declaired to store the points to draw a triangle
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.Polygon.point3">
+            <summary>
+            Local variables are declaired to store the points to draw a triangle
+            </summary>
+        </member>
+        <member name="M:Draw_Shapes.Polygon.set(System.Drawing.Color,System.Boolean,System.Boolean,System.Int32[])">
+            <summary>
+            Sets the properties on parent abstract class Shapes.
+            </summary>
+            <param name="colour">Pen color</param>
+            <param name="fillOn">To fill the shapes with color</param>
+            <param name="list">xAxis,yAxis</param>      
+        </member>
+        <member name="M:Draw_Shapes.Program.Main">
+            <summary>
+            The main entry point for the application.
+            </summary>
+        </member>
+        <member name="T:Draw_Shapes.Rectangle">
+            <summary>
+            This class is extended from the Shape abstract class.
+            It implements the abstract method of base class Shapes.
+            It also contains the additional properties which will be required to draw a rectangle.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.Rectangle.width">
+            <summary>
+            Uses private modifier to give access inside this class only.
+            Stores the width of rectangle.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.Rectangle.height">
+            <summary>
+            Uses private modifier to give access inside this class only.
+            Stores the height of the rectangle.
+            </summary>
+        </member>
+        <member name="M:Draw_Shapes.Rectangle.#ctor">
+            <summary>
+            Default constructor declaired.
+            </summary>
+        </member>
+        <member name="M:Draw_Shapes.Rectangle.#ctor(System.Drawing.Color,System.Int32,System.Int32,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            Parameterized constructor is declaired to the set the value of properties.
+            </summary>
+            <param name="colour">Pen color</param>
+            <param name="xAxis">xAxis of moveTo command</param>
+            <param name="yAxis">yAxis of moveTo command</param>
+            <param name="fillOn">color fill on/off</param>
+            <param name="width">Rectangle width</param>
+            <param name="height">Rectangle height</param>
+        </member>
+        <member name="M:Draw_Shapes.Rectangle.set(System.Drawing.Color,System.Boolean,System.Boolean,System.Int32[])">
+            <summary>
+            Overrides the set method of base class.
+            It sets the value of properties.
+            </summary>
+            <param name="colour">Pen color</param>
+            <param name="fillOn">color fill on/off</param>
+            <param name="list">xAxis,yAxis,width and height</param>
+        </member>
+        <member name="M:Draw_Shapes.Rectangle.draw(System.Drawing.Graphics)">
+            <summary>
+            Uses the public visibility modifier to give access to other classes also.
+            This method draws the rectangle in canvas.
+            </summary>
+            <param name="g">Graphics reference</param>
+        </member>
+        <member name="T:Draw_Shapes.SaveFile">
+            <summary>
+            This class is used to saves the commands entered into the richTextBox by the user in the text based file.
+            </summary>
+        </member>
+        <member name="M:Draw_Shapes.SaveFile.fileSave(System.Windows.Forms.RichTextBox)">
+            <summary>
+            This method helps to save the commands in the textfile.
+            </summary>
+            <param name="richTextBox1">RichTextBox</param>
+        </member>
+        <member name="T:Draw_Shapes.ShapeFactory">
+            <summary>
+            This is the design patterns which is used to create the objects of the shapes
+            which are passed as a parameter in the method.
+            </summary>
+        </member>
+        <member name="M:Draw_Shapes.ShapeFactory.checkShapes(System.String)">
+            <summary>
+            Checks if the shapes are existed and creates the object of the shapes if they are existed.
+            </summary>
+            <param name="shapeType">Shapes</param>
+            <returns></returns>
+        </member>
+        <member name="T:Draw_Shapes.Shapes">
+            <summary>
+            Abstract class which contains abstract methods and non-abstract methods.
+            Abstract methods are later on implemented on the child classes and also child classes
+            overrides the method of this base class.
+            This class also contains some properties which will be used by the child classes.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.Shapes.colour">
+            <summary>
+            Uses the protected access modifier to give access to the child classes.
+            stores the pen color.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.Shapes.xAxis">
+            <summary>
+            Uses the protected access modifier to give access to the child classes.
+            It takes the xAxis from the moveto command
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.Shapes.yAxis">
+            <summary>
+            Uses the protected access modifier to give access to the child classes.
+            It takes the yAxis from the moveto command
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.Shapes.fillOn">
+            <summary>
+            Uses the protected access modifier to give access to the child classes.
+            returns true if fill is on if not then it returns false.
+            </summary>
+        </member>
+        <member name="M:Draw_Shapes.Shapes.#ctor">
+            <summary>
+            A default constructor is declaired
+            </summary>
+        </member>
+        <member name="M:Draw_Shapes.Shapes.#ctor(System.Drawing.Color,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Parameterized constructor is declaired to set the properties.
+            </summary>
+            <param name="colour">Pen color</param>
+            <param name="xAxis">xAxis of moveTo</param>
+            <param name="yAxis">yAxis of moveTo</param>
+            <param name="fillOn">color fill on/off</param>
+        </member>
+        <member name="M:Draw_Shapes.Shapes.draw(System.Drawing.Graphics)">
+            <summary>
+            It is a abstract method which will be used to draw the shapes in canvas.
+            It will be implemented on the child classes.
+            </summary>
+            <param name="g">Graphics reference</param>
+        </member>
+        <member name="M:Draw_Shapes.Shapes.set(System.Drawing.Color,System.Boolean,System.Boolean,System.Int32[])">
+            <summary>
+            It sets the properties of this class.
+            </summary>
+            <param name="colour">Pen color</param>
+            <param name="fillOn">color fill on/off</param>
+            <param name="list">array which store xAxis and yAxis</param>
+        </member>
+        <member name="M:Draw_Shapes.Shapes.setX(System.Int32)">
+            <summary>
+            This method is created for the testing purpose
+            </summary>
+            <param name="xAxis"></param>
+        </member>
+        <member name="M:Draw_Shapes.Shapes.getX">
+            <summary>
+            This method is created for the testing purpose
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Draw_Shapes.Triangle">
+            <summary>
+            This class contains the properties and methods to draw a triangle in the canvas.
+            Triangle class is extends the Shapes abstract class and it implements all the
+            abstract methods here.
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.Triangle.point1">
+            <summary>
+            Local variables are declaired to store the points to draw a triangle
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.Triangle.point2">
+            <summary>
+            Local variables are declaired to store the points to draw a triangle
+            </summary>
+        </member>
+        <member name="F:Draw_Shapes.Triangle.point3">
+            <summary>
+            Local variables are declaired to store the points to draw a triangle
+            </summary>
+        </member>
+        <member name="M:Draw_Shapes.Triangle.set(System.Drawing.Color,System.Boolean,System.Boolean,System.Int32[])">
+            <summary>
+            Sets the properties on parent abstract class Shapes.
+            </summary>
+            <param name="colour">Pen color</param>
+            <param name="fillOn">To fill the shapes with color</param>
+            <param name="list">xAxis,yAxis</param>      
+        </member>
+        <member name="M:Draw_Shapes.Triangle.draw(System.Drawing.Graphics)">
+            <summary>
+            Draws the triangle in canvas.
+            Overrides the draw method of base abstract class Shapes.
+            </summary>
+            <param name="g">Graphics</param>
+        </member>
+        <member name="F:Draw_Shapes.Welcome_Page.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Draw_Shapes.Welcome_Page.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Draw_Shapes.Welcome_Page.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:Draw_Shapes.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Draw_Shapes.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Draw_Shapes.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+    </members>
+</doc>
