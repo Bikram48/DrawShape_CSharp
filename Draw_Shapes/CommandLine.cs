@@ -67,8 +67,9 @@ namespace Draw_Shapes
         /// The object of Canvas class is get instantiated.
         /// Will call the method of Canvas class through the canvas reference variable.
         /// </summary>
-        Canvas canvas = new Canvas(); 
-
+        Canvas canvas = new Canvas();
+        //check if there are any end tags
+        bool end_command = false;
 
         /// <summary>
         /// Uses a public access modifier.
@@ -82,8 +83,7 @@ namespace Draw_Shapes
         /// <param name="g">Graphics reference</param>
         public void commandLineCommands(TextBox textBox2,RichTextBox richTextBox1,Panel panel1,Graphics g,RichTextBox richTextBox2,TextBox textBox1,RichTextBox richTextBox3)
         {
-            //check if there are any end tags
-            bool end_command = false;
+            
             //Creates the object of ComplexCommand class
             ComplexCommand complex = new ComplexCommand();
             //Creates the object of CommandChecker class
@@ -98,18 +98,15 @@ namespace Draw_Shapes
             //If run command entered then this block get executed
             if (singleLineCommand.Equals("run"))
             {
+                CommandChecker.store_variables.Clear();
                 //checks if complex command like while,if,var are found
                 bool complex_command = false;
                 //counts the lines of richtextbox
                 int count_line = 0;
                 //Storing the lines of richtextbox line by line
                 String[] richTextBoxLines = richTextBox1.Text.Trim().ToLower().Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-                //clearing the arraylist
-                CommandLine.errors.Clear();
                 //resetting the line number to zero
                 DrawAllShapes.line_number = 0;
-                //clears the richtextbox
-                richTextBox3.Clear();
                 //if syntaxCheck button is clicked then setting bollean value to false.
                 DrawAllShapes.syntaxCheckerClicked = false;
                 //clears the textBox
@@ -161,7 +158,7 @@ namespace Draw_Shapes
                                 else
                                 {
                                     //throws the exception
-                                    throw new ErrorInCommandsException("Sorry the condition didn't met at line number " + DrawAllShapes.line_number);
+                                    throw new ErrorInCommandsException("Sorry condition doesn't meet at line " + DrawAllShapes.line_number);
                                 }
                             }
                             //catches the thrown exception
@@ -176,6 +173,8 @@ namespace Draw_Shapes
                         //if commandtype is equals to while then this block get executed
                         if (command_type.Equals("while"))
                         {
+                            try 
+                            { 
                             //if command is while then make complex command true
                             complex_command = true;
                             //if condition is meet in while command
@@ -184,34 +183,62 @@ namespace Draw_Shapes
                                 //runs the lines inside the while and endloop
                                 check_cmd.RunWhileCommand(draw,richTextBoxLines, count_line, g);
                             }
+                            else
+                            {
+                                throw new ErrorInCommandsException("Sorry condition doesn't meet at line " + DrawAllShapes.line_number);
+                            }
+                            }
+                            //catches the thrown exception
+                            catch (ErrorInCommandsException e)
+                            {
+                                //makes error is true
+                                CommandLine.error = true;
+                                //adds errors into the arraylist
+                                ErrorRepository.errorsList.Add(e.Message);
+                            }
                         }
 
                         //if commandtype is equals to variable then this block get executed
                         if (command_type.Equals("method"))
                         {
-                            //if command is method then make complex command true
-                            complex_command = true;
-                            //checks if the valid method is declaired
-                            if (check_cmd.RunMethod(draw, richTextBoxLines, count_line, g))
+                            try
                             {
-                                //checks if the method is called
-                                if (check_cmd.methodcall(richTextBoxLines, count_line,g))
+                                //if command is method then make complex command true
+                                complex_command = true;
+                                //checks if the valid method is declaired
+                                if (check_cmd.RunMethod(draw, richTextBoxLines, count_line, g))
                                 {
-                                    //makes complex command to true
-                                   complex_command = true;
-                                    //retrieving the lines of commands from the arraylist
-                                   foreach(String lines in CommandChecker.line_of_commands)
+                                    //checks if the method is called
+                                    if (check_cmd.methodcall(richTextBoxLines, count_line, g))
                                     {
-                                        //passing commands into the drawcommands method
-                                        draw_commands(lines,g);
+                                        //makes complex command to true
+                                        complex_command = true;
+                                        //retrieving the lines of commands from the arraylist
+                                        foreach (String lines in CommandChecker.line_of_commands)
+                                        {
+                                            //passing commands into the drawcommands method
+                                            draw_commands(lines, g);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        throw new ErrorInCommandsException("Please call the method first ");
                                     }
                                 }
                             }
-                          
+                            //catches the thrown exception
+                            catch (ErrorInCommandsException e)
+                            {
+                                //makes error is true
+                                CommandLine.error = true;
+                                //adds errors into the arraylist
+                                ErrorRepository.errorsList.Add(e.Message);
+                            }
                         }
                         //if commandtype is equals to variable then this block get executed
                         if (command_type.Equals("end_tag"))
                         {
+                            end_command = true;
                             //if command is end_tag then make complex command true
                             complex_command = false;
                             //retrieving the lines of commands from the arraylist
@@ -221,6 +248,7 @@ namespace Draw_Shapes
                                 draw_commands(lines, g);
                             } 
                         }
+                       
                     }
 
                     //if there are no any complex commands then pass simple commands into draw commands method 
@@ -229,30 +257,6 @@ namespace Draw_Shapes
                         draw_commands(draw, g);
                     }
 
-                }
-
-                //if any errors found then this block get executed
-                if (CommandLine.error == true)
-                {
-                    //Creating the object of ErrorRepository class
-                    ErrorRepository errors = new ErrorRepository();
-                    //iterating the commands
-                    for(Iterator iterator = errors.getIterator(); iterator.hasNext();)
-                    {
-                       String name = (String)iterator.Next();
-                        //showing errors into the error box
-                        richTextBox3.Text += "\n" + name + "\n";
-                    }
-                }
-                //if there are no errors detected then this block will get executed
-                if (CommandLine.error == false)
-                {
-                    //set total error to zero
-                    int totalerrors = CommandLine.errors.Count;
-                    //showing zero errors in textbox
-                    textBox1.Text = totalerrors + " Errors";
-                    //shows no errors found message in richtextbox
-                    richTextBox3.Text += "\nNo Errors Found";
                 }
             }
             //If clear command entered then this block get executed
@@ -312,22 +316,13 @@ namespace Draw_Shapes
                 //if the triangle command is typed then this block of code will get executed.
                 if (commands.Equals("triangle"))
                 {
-                    //if the length of line is not equals  1 then the exception will be thrown
-                    if (line.Length != 1)
-                    {
-                        //Makes error is true
-                        error = true;
-                        //Adds errors into the arraylist
-                        ErrorRepository.errorsList.Add("Invalid parameters at line " + DrawAllShapes.line_number);
-                    }
-                    else
-                    {
-                        //calls the method drawTriangle from canvas class to draw a triangle.
-                        canvas.drawTriangle(pen, xAxis, yAxis, fillOn, isPen, g);
-                    }
+                    //calls the method drawTriangle from canvas class to draw a triangle.
+                    canvas.drawTriangle(pen, xAxis, yAxis, fillOn, isPen, g);
+                    
                 }
                 //takes the value 
                 String value = line[1];
+                
                 //splitting the parameter by comma
                 String[] parameter = line[1].Split(',');
                 //stores both variable values or simple values passed by the user
@@ -433,10 +428,13 @@ namespace Draw_Shapes
                     //passing the parameters to draw a  rectangle
                     canvas.drawRectangle(pen, xAxis, yAxis, fillOn, isPen, parameters[0], parameters[1], g);
                 }
+                else if (commands.Equals("polygon"))
+                {
+                    canvas.drawPolygon(pen, xAxis, yAxis, fillOn, isPen,g,parameter);
+                }
                 //if user type a circle command this block will get executed
                 else if (commands.Equals("circle"))
                 {
-                   
                     try
                     {
                         //checks if the value of radius is stored into the vairable
@@ -469,14 +467,13 @@ namespace Draw_Shapes
             //catchs the IndexOutOfRangeException exception
             catch (System.IndexOutOfRangeException e)
             {
-                if (isvar==false)
+                if (isvar == false)
                 {
-                    //makes error is true
-                    error = true;
-                    //Adds errors into the arraylist
-                    ErrorRepository.errorsList.Add("Invalid command at line " + DrawAllShapes.line_number);
+                     //makes error is true
+                     error = true;
+                     //Adds errors into the arraylist
+                     //ErrorRepository.errorsList.Add("Invalid command at line " + DrawAllShapes.line_number);
                 }
-                
             }
 
         }

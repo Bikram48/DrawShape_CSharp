@@ -39,6 +39,10 @@ namespace Draw_Shapes
             {
                 return new Triangle();
             }
+            else if (shapeType.Equals("POLYGON"))
+            {
+                return new Polygon();
+            }
           
             //throws an exception if invalid shape are found.
             else

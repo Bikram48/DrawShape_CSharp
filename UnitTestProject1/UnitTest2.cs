@@ -5,91 +5,108 @@ using System.Linq;
 
 namespace UnitTestProject1
 {
+    /// <summary>
+    /// This class tests the important methods for the component2.
+    /// </summary>
     [TestClass]
     public class UnitTest2
     {
-       
+        /// <summary>
+        /// Checksif the condition of if command is true.
+        /// </summary>
         [TestMethod]
         public void CheckIfCondition()
         {
+            //creates the object of CommandChecker class
             CommandChecker checker = new CommandChecker();
+            //storing the if signature in a variable
             String valid_condition = "if 2<3";
-            Assert.IsTrue(checker.check_if_command(valid_condition));
+            //returns true if the condition meet
+            Assert.IsTrue(checker.CheckIfCondition(valid_condition));
+            //passing a invalid condition to check
             String invalid_condition = "if 2>3";
-            Assert.IsFalse(checker.check_if_command(invalid_condition));
+            //returns false because invalid condtion is passed
+            Assert.IsFalse(checker.CheckIfCondition(invalid_condition));
         }
-
+        /// <summary>
+        /// Check the condition of while command
+        /// </summary>
         [TestMethod]
         public void CheckWhileCondition()
         {
+            //creates the object of CommandChecker class
             CommandChecker checker = new CommandChecker();
+            //passing valid while condition to check
             String valid_condition = "while 2<3";
-            Assert.IsTrue(checker.check_while_command(valid_condition));
+            //returns true when condition matched
+            Assert.IsTrue(checker.CheckWhileCondition(valid_condition));
             String invalid_condition = "while 2>3";
-            Assert.IsFalse(checker.check_while_command(invalid_condition));
+            Assert.IsFalse(checker.CheckWhileCondition(invalid_condition));
         }
-
+        /// <summary>
+        /// Tests the command type
+        /// </summary>
         [TestMethod]
         public void TestCheckCommandType()
         {
+            //creates the object of CommandChecker class
             CommandChecker checker = new CommandChecker();
+            //expected command is if
             String expected1 = "if";
-            Assert.AreEqual(checker.check_command_type("if 2>3"),expected1);
+            //checking if the returned value and expected value met
+            Assert.AreEqual(checker.CheckCommandTypes("if 2>3"),expected1);
+            //expected command is while
             String expected2 = "while";
-            Assert.AreEqual(checker.check_command_type("while x>y"), expected2);
+            //checking if the returned value and expected value met
+            Assert.AreEqual(checker.CheckCommandTypes("while x>y"), expected2);
             String expected3 = "method";
-            Assert.AreEqual(checker.check_command_type("method mymethod()"), expected3);
+            Assert.AreEqual(checker.CheckCommandTypes("method mymethod()"), expected3);
         }
 
+        /// <summary>
+        /// Test if variable is valid or invalid
+        /// </summary>
         [TestMethod]
         public void TestVariables()
         {
+            //creates the object of CommandChecker class
             CommandChecker checker = new CommandChecker();
             String variable = "x=2";
             String[] splitter = variable.Split('=');
             String variable_name = splitter[0];
             String variable_value = splitter[1];
-            checker.check_variable(variable);
+            checker.CheckVariables(variable);
             Assert.IsTrue(CommandChecker.store_variables.ContainsKey(variable_name));
             Assert.AreEqual(CommandChecker.store_variables[variable_name], variable_value);
         }
 
+        /// <summary>
+        /// Test if the operation are working fine on variables
+        /// </summary>
         [TestMethod]
         public void TestVariableOperation()
         {
+            //creates the object of CommandChecker class
             CommandChecker checker = new CommandChecker();
+            //passing a command for the addition operation
             String command = "y=100+100";
+            //expected value 
             String expected = "200";
+            //valid operation signs
             String[] operations = { "+", "-", "*", "/" };
+            //splitting the command by equals
             String[] cmd = command.Split('=');
+            //stores the variable name
             String variable_name = cmd[0];
+            //stores the variable value
             String variable_value = cmd[1];
+            //splitting text by the signs
             String[] splitbysigns = variable_value.Split(operations, StringSplitOptions.RemoveEmptyEntries).Select(p => p.Trim()).ToArray();
-            checker.run_variable_operation(command);
+            //passing command for the variable operation
+            checker.RunVariableOperations(command);
+            //checks expected value is matched
             Assert.AreEqual(CommandChecker.store_variables[variable_name], expected);
         }
 
-       
-
-        /// <summary>
-        /// This is the method from VariableChecker class which will be later implemented on the component2.
-        /// </summary>
-        [TestMethod]
-        //[ExpectedException(typeof(InvalidVariableException), "Please declare the variable first. Error at line")]
-        public void TestCheckALlVariables()
-        {
-            CommandChecker checker = new CommandChecker();
-            String input = "x$100";
-            checker.check_variable("x=x");
-            var ex = Assert.ThrowsException<InvalidVariableException>(() => checker.check_variable(input));
-            Assert.AreSame(ex.Message, "Please declare the variable first. Error at line");
-            /*VariableChecker check = new VariableChecker();
-            String expectedVariable = "ifelse";
-            
-            Assert.AreEqual(check.checkAllVariables("else"), expectedVariable);
-            */
-        }
-
-       
     }
 }

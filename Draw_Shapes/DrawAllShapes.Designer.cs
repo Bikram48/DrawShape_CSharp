@@ -55,7 +55,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(953, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(1184, 25);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -112,7 +112,7 @@
             this.gradientPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gradientPanel1.Location = new System.Drawing.Point(0, 0);
             this.gradientPanel1.Name = "gradientPanel1";
-            this.gradientPanel1.Size = new System.Drawing.Size(953, 576);
+            this.gradientPanel1.Size = new System.Drawing.Size(1184, 638);
             this.gradientPanel1.TabIndex = 5;
             this.gradientPanel1.TopColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             // 
@@ -121,7 +121,7 @@
             this.textBox1.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.textBox1.Font = new System.Drawing.Font("Lucida Fax", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.ForeColor = System.Drawing.Color.Black;
-            this.textBox1.Location = new System.Drawing.Point(456, 484);
+            this.textBox1.Location = new System.Drawing.Point(454, 536);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(60, 20);
             this.textBox1.TabIndex = 10;
@@ -145,9 +145,9 @@
             this.canvasBox.BackColor = System.Drawing.Color.White;
             this.canvasBox.Font = new System.Drawing.Font("Cambria", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.canvasBox.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.canvasBox.Location = new System.Drawing.Point(264, 75);
+            this.canvasBox.Location = new System.Drawing.Point(351, 75);
             this.canvasBox.Name = "canvasBox";
-            this.canvasBox.Size = new System.Drawing.Size(686, 401);
+            this.canvasBox.Size = new System.Drawing.Size(830, 450);
             this.canvasBox.TabIndex = 0;
             this.canvasBox.Tag = "";
             // 
@@ -157,7 +157,7 @@
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.Font = new System.Drawing.Font("Calisto MT", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button3.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.button3.Location = new System.Drawing.Point(548, 49);
+            this.button3.Location = new System.Drawing.Point(762, 49);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(84, 24);
             this.button3.TabIndex = 8;
@@ -170,7 +170,7 @@
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Font = new System.Drawing.Font("Calisto MT", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.button2.Location = new System.Drawing.Point(665, 482);
+            this.button2.Location = new System.Drawing.Point(852, 531);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 25);
             this.button2.TabIndex = 7;
@@ -182,9 +182,9 @@
             this.errorBox.BackColor = System.Drawing.Color.Black;
             this.errorBox.Font = new System.Drawing.Font("Modern No. 20", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.errorBox.ForeColor = System.Drawing.Color.Maroon;
-            this.errorBox.Location = new System.Drawing.Point(403, 495);
+            this.errorBox.Location = new System.Drawing.Point(351, 549);
             this.errorBox.Name = "errorBox";
-            this.errorBox.Size = new System.Drawing.Size(547, 69);
+            this.errorBox.Size = new System.Drawing.Size(830, 77);
             this.errorBox.TabIndex = 6;
             this.errorBox.Text = "";
             // 
@@ -195,7 +195,7 @@
             this.syntaxChecker.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.syntaxChecker.Font = new System.Drawing.Font("Calisto MT", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.syntaxChecker.ForeColor = System.Drawing.SystemColors.Control;
-            this.syntaxChecker.Location = new System.Drawing.Point(264, 511);
+            this.syntaxChecker.Location = new System.Drawing.Point(183, 588);
             this.syntaxChecker.Name = "syntaxChecker";
             this.syntaxChecker.Size = new System.Drawing.Size(133, 38);
             this.syntaxChecker.TabIndex = 5;
@@ -212,7 +212,7 @@
             this.multiLineCommandBox.ForeColor = System.Drawing.Color.MidnightBlue;
             this.multiLineCommandBox.Location = new System.Drawing.Point(3, 75);
             this.multiLineCommandBox.Name = "multiLineCommandBox";
-            this.multiLineCommandBox.Size = new System.Drawing.Size(255, 450);
+            this.multiLineCommandBox.Size = new System.Drawing.Size(333, 493);
             this.multiLineCommandBox.TabIndex = 1;
             this.multiLineCommandBox.Text = "";
             // 
@@ -220,10 +220,10 @@
             // 
             this.singleLineCommandBox.BackColor = System.Drawing.SystemColors.ButtonShadow;
             this.singleLineCommandBox.Font = new System.Drawing.Font("Lucida Fax", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.singleLineCommandBox.Location = new System.Drawing.Point(3, 531);
+            this.singleLineCommandBox.Location = new System.Drawing.Point(3, 588);
             this.singleLineCommandBox.Multiline = true;
             this.singleLineCommandBox.Name = "singleLineCommandBox";
-            this.singleLineCommandBox.Size = new System.Drawing.Size(255, 38);
+            this.singleLineCommandBox.Size = new System.Drawing.Size(163, 38);
             this.singleLineCommandBox.TabIndex = 3;
             this.singleLineCommandBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox2_KeyDown);
             // 
@@ -231,7 +231,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(953, 576);
+            this.ClientSize = new System.Drawing.Size(1184, 638);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.gradientPanel1);
             this.Name = "DrawAllShapes";

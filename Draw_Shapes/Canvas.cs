@@ -129,7 +129,18 @@ namespace Draw_Shapes
             //end of if block
         }
 
-       
-       
+        public void drawPolygon(Color colour, int xAxis, int yAxis, Boolean fillOn, Boolean isPen, Graphics g,String[] points)
+        {
+            int[] point=new int[points.Length];
+            int index = 0;
+            foreach(String item in points)
+            {
+                point[index] = Convert.ToInt32(item);
+                index++;
+            }
+            Shapes s3 = shape.checkShapes("polygon");
+            s3.set(colour, fillOn, isPen, point);
+            s3.draw(g);
+        }
     }
 }

@@ -396,40 +396,51 @@ namespace Draw_Shapes
         /// <param name="g">reference of Graphics to draw into the panel.</param>
         public void RunIfCommand(String[] lines, int count_line, Graphics g)
         {
-            //if then command is found on the nextline of if command
-            if (lines[count_line].Equals("then"))
+            try
             {
-                //checking the command types by passing a line next to the then command
-                string command_type = CheckCommandTypes(lines[count_line + 1]);
-                //if drawing_command are returned by command_type
-                if (command_type.Equals("drawing_commands"))
+                //if then command is found on the nextline of if command
+                if (lines[count_line].Equals("then"))
                 {
-                    //drawing the shapes in canvas
-                    commands.draw_commands(lines[count_line + 1], g);
-                }
-
-            }
-            //if then command is not found on the nextline of if command
-            else
-            {
-                //starts for loop to loop the all the lines inside the richtexbox
-                for (int i = count_line; i < lines.Length; i++)
-                {
-                    //run the loop untill the endif command found in the line
-                    if (!(lines[i].Equals("endif")))
+                    //checking the command types by passing a line next to the then command
+                    string command_type = CheckCommandTypes(lines[count_line + 1]);
+                    //if drawing_command are returned by command_type
+                    if (command_type.Equals("drawing_commands"))
                     {
-                        //checking a commandtype
-                        string command_types = CheckCommandTypes(lines[i]);
-                        //if drawing_command are returned by command_type then the commands will be added into the arraylist
-                        if (command_types.Equals("drawing_commands"))
-                        {
-                            //adding lines of command into arraylist
-                            line_of_commands.Add(lines[i]);
-                            //commands.draw_commands(lines[i], g);
-                        }
-
+                        //drawing the shapes in canvas
+                        commands.draw_commands(lines[count_line + 1], g);
                     }
+
                 }
+                //if then command is not found on the nextline of if command
+                else
+                {
+                    //starts for loop to loop the all the lines inside the richtexbox
+                    for (int i = count_line; i < lines.Length; i++)
+                    {
+                        //run the loop untill the endif command found in the line
+                        if (!(lines[i].Equals("endif")))
+                        {
+                            //checking a commandtype
+                            string command_types = CheckCommandTypes(lines[i]);
+                            //if drawing_command are returned by command_type then the commands will be added into the arraylist
+                            if (command_types.Equals("drawing_commands"))
+                            {
+                                //adding lines of command into arraylist
+                                line_of_commands.Add(lines[i]);
+                                //commands.draw_commands(lines[i], g);
+                            }
+
+                        }
+                    }
+                
+                }
+            }
+            catch(IndexOutOfRangeException e)
+            {
+                //sets error boolean to true
+                CommandLine.error = true;
+                //adding errors to the arraylist
+                ErrorRepository.errorsList.Add("No then keyword found in next line ");
             }
         }
 
@@ -474,110 +485,6 @@ namespace Draw_Shapes
                     //checks if command is equals to while
                     if (splitter[0].Equals("while"))
                     {
-                        if (command.Contains("=="))
-                        {
-                            equals = true;
-                            //if firstaparameter and secondparameter are stored as a key in variable dictionary then setting the values into them
-                            if (store_variables.ContainsKey(splitbysign[0]) && store_variables.ContainsKey(splitbysign[1]))
-                            {
-                                //sets the values of firstParameter stored in the variable
-                                firstParameter = store_variables[splitbysign[0]].ToString();
-                                //sets the values of secondParameter stored in the variable
-                                secondParameter = store_variables[splitbysign[1]].ToString();
-                                if (firstParameter == secondParameter)
-                                {
-                                    expression = true;
-                                }
-                            }
-                            //if firstaparameter  is stored as a key in variable dictionary then setting the values into it
-                            else if (store_variables.ContainsKey(splitbysign[0]) && !store_variables.ContainsKey(splitbysign[1]))
-                            {
-                                //sets the values of firstParameter stored in the variable
-                                firstParameter = store_variables[splitbysign[0]].ToString();
-                                //sets the values of secondParameter from the splitted array
-                                secondParameter = splitbysign[1];
-                                if (firstParameter == secondParameter)
-                                {
-                                    expression = true;
-                                }
-                            }
-                            //if secondparameter  is stored as a key in variable dictionary then setting the values into it
-                            else if (!store_variables.ContainsKey(splitbysign[0]) && store_variables.ContainsKey(splitbysign[1]))
-                            {
-                                //sets the values  of firstParameter from the splitted array
-                                firstParameter = splitbysign[0];
-                                //sets the values of firstParameter stored in the variable
-                                secondParameter = store_variables[splitbysign[1]].ToString();
-                                if (firstParameter == secondParameter)
-                                {
-                                    expression = true;
-                                }
-                            }
-                            else
-                            {
-                                //sets the values  of firstParameter from the splitted array
-                                firstParameter = splitbysign[0].ToString();
-                                //sets the values  of secondParameter from the splitted array
-                                secondParameter = splitbysign[1].ToString();
-                                if (firstParameter == secondParameter)
-                                {
-                                    expression = true;
-                                }
-                            }
-                        }
-                        if (command.Contains("!="))
-                        {
-                            equals = true;
-                            //if firstaparameter and secondparameter are stored as a key in variable dictionary then setting the values into them
-                            if (store_variables.ContainsKey(splitbysign[0]) && store_variables.ContainsKey(splitbysign[1]))
-                            {
-                                //sets the values of firstParameter stored in the variable
-                                firstParameter = store_variables[splitbysign[0]].ToString();
-                                //sets the values of secondParameter stored in the variable
-                                secondParameter = store_variables[splitbysign[1]].ToString();
-                                if (firstParameter != secondParameter)
-                                {
-                                    expression = true;
-                                }
-                            }
-                            //if firstaparameter  is stored as a key in variable dictionary then setting the values into it
-                            else if (store_variables.ContainsKey(splitbysign[0]) && !store_variables.ContainsKey(splitbysign[1]))
-                            {
-                                //sets the values of firstParameter stored in the variable
-                                firstParameter = store_variables[splitbysign[0]].ToString();
-                                //sets the values of secondParameter from the splitted array
-                                secondParameter = splitbysign[1];
-                                if (firstParameter != secondParameter)
-                                {
-                                    expression = true;
-                                }
-
-                            }
-                            //if secondparameter  is stored as a key in variable dictionary then setting the values into it
-                            else if (!store_variables.ContainsKey(splitbysign[0]) && store_variables.ContainsKey(splitbysign[1]))
-                            {
-                                //sets the values  of firstParameter from the splitted array
-                                firstParameter = splitbysign[0];
-                                //sets the values of firstParameter stored in the variable
-                                secondParameter = store_variables[splitbysign[1]].ToString();
-                                if (firstParameter != secondParameter)
-                                {
-                                    expression = true;
-                                }
-
-                            }
-                            else
-                            {
-                                //sets the values  of firstParameter from the splitted array
-                                firstParameter = splitbysign[0].ToString();
-                                //sets the values  of secondParameter from the splitted array
-                                secondParameter = splitbysign[1].ToString();
-                                if (firstParameter != secondParameter)
-                                {
-                                    expression = true;
-                                }
-                            }
-                        }
                         //if firstaparameter and secondparameter are stored as a key in variable dictionary then setting the values into them
                         if (store_variables.ContainsKey(splitbysign[0]) && store_variables.ContainsKey(splitbysign[1]))
                         {
@@ -613,11 +520,10 @@ namespace Draw_Shapes
                         }
                         //replacing the splitted parameters by firstparameter and secondparameter
                         String replaced = parameters.Replace(splitbysign[0], firstParameter).Replace(splitbysign[1], secondParameter);
-                        if (!equals)
-                        {
-                            //checking if the condition meet between the firstParameter and secondParameter using compute method
-                            expression = Convert.ToBoolean(table.Compute(replaced, String.Empty));
-                        }
+                      
+                         //checking if the condition meet between the firstParameter and secondParameter using compute method
+                         expression = Convert.ToBoolean(table.Compute(replaced, String.Empty));
+                        
                     }
                     //when while command didn't find then exception will be thrown
                     else
@@ -668,13 +574,35 @@ namespace Draw_Shapes
             //initializing loop_count to zero while will be used later on to loop the lines
             int loop_count = 0;
             //if while firstparameter is existed in the dictionary as a key then setting the values of loop with the value of the variable name
-            if (store_variables.ContainsKey(splitbysign[0]))
+            if (store_variables.ContainsKey(splitbysign[0])&& store_variables.ContainsKey(splitbysign[1]))
+            {
+                //sets the values of loop
+                loop = Convert.ToInt32(store_variables[splitbysign[0]]);
+                //sets the values of loop count
+                loop_count = Convert.ToInt32(store_variables[splitbysign[1]]);
+            }
+            if (store_variables.ContainsKey(splitbysign[0])&&!store_variables.ContainsKey(splitbysign[1]))
             {
                 //sets the values of loop
                 loop = Convert.ToInt32(store_variables[splitbysign[0]]);
                 //sets the values of loop count
                 loop_count = Convert.ToInt32(splitbysign[1]);
             }
+            if (!store_variables.ContainsKey(splitbysign[0])&&store_variables.ContainsKey(splitbysign[1]))
+            {
+                //sets the values of loop
+                loop = Convert.ToInt32(store_variables[splitbysign[1]]);
+                //sets the values of loop count
+                loop_count = Convert.ToInt32(splitbysign[0]);
+            }
+            if (!store_variables.ContainsKey(splitbysign[0]) && !store_variables.ContainsKey(splitbysign[1]))
+            {
+                //sets the values of loop
+                loop = Convert.ToInt32(splitbysign[0]);
+                //sets the values of loop count
+                loop_count = Convert.ToInt32(splitbysign[1]);
+            }
+
             //for loop to loop the lines 
             for (int count = loop; count <= loop_count; count++)
             {
@@ -707,8 +635,19 @@ namespace Draw_Shapes
                     }
 
                 }
-                //incrementing the value of count
-                count = Convert.ToInt32(store_variables[splitbysign[0]]);
+                if (store_variables.ContainsKey(splitbysign[0])&&!store_variables.ContainsKey(splitbysign[1]))
+                {
+                    //incrementing the value of count
+                    count = Convert.ToInt32(store_variables[splitbysign[0]]);
+                }
+                if (!store_variables.ContainsKey(splitbysign[0])&&store_variables.ContainsKey(splitbysign[1]))
+                {
+                    count = Convert.ToInt32(store_variables[splitbysign[1]]);
+                }
+                if (store_variables.ContainsKey(splitbysign[0])&&store_variables.ContainsKey(splitbysign[1]))
+                {
+                    count = Convert.ToInt32(store_variables[splitbysign[0]]);
+                }
             }
         }
 
@@ -1004,84 +943,92 @@ namespace Draw_Shapes
                 //if command is a method then run this block
                 if (splitter[0].Equals("method"))
                 {
-                    //splitting parameters by brackets
-                    singleParameter = splitter[1].Split(new String[] { "(", ")" }, StringSplitOptions.RemoveEmptyEntries).Select(p => p.Trim()).ToArray();
-                    String[] parameter = splitter[1].Split('(');
-                    //Part for regex
-                    string methodPlaceholder = "method";
-                    string parametersPlaceholder = "parameters";
-                    //pattern for parameterized method
-                    string pattern = string.Format(@"^(?<{0}>\w+)(\((?<{1}>[^)]*)\))?$", methodPlaceholder, parametersPlaceholder);
-                    //Regex to match the parameterized method
-                    Regex check = new Regex(pattern, RegexOptions.Compiled);
-                    //if pattern matched then this block will get executed
-                    if (check.IsMatch(splitter[1]))
+                    try
                     {
-                        //stroing method name
-                        methodName = parameter[0];
-                        //first checks if method contains ,
-                        if (command.Contains(','))
+                        //splitting parameters by brackets
+                        singleParameter = splitter[1].Split(new String[] { "(", ")" }, StringSplitOptions.RemoveEmptyEntries).Select(p => p.Trim()).ToArray();
+                        String[] parameter = splitter[1].Split('(');
+                        //Part for regex
+                        string methodPlaceholder = "method";
+                        string parametersPlaceholder = "parameters";
+                        //pattern for parameterized method
+                        string pattern = string.Format(@"^(?<{0}>\w+)(\((?<{1}>[^)]*)\))?$", methodPlaceholder, parametersPlaceholder);
+                        //Regex to match the parameterized method
+                        Regex check = new Regex(pattern, RegexOptions.Compiled);
+                        //if pattern matched then this block will get executed
+                        if (check.IsMatch(splitter[1]))
                         {
-                            //if comma found then split parameters by comma
-                            numberOfParameters = parameter[1].Split(new string[] { ",", ")" }, StringSplitOptions.RemoveEmptyEntries);
-                            //foreach to iterate the parameters existed in method
-                            foreach (String parameters in numberOfParameters)
+                            //stroing method name
+                            methodName = parameter[0];
+                            //first checks if method contains ,
+                            if (command.Contains(','))
                             {
-                                //passing paramters to a method to add them into the dictionary
-                                ParameterizedMethod(parameters);
-                            }
-                            //for loop starts from the line where method command found
-                            for (int i = count_line; i < lines.Length; i++)
-                            {
-                                //runs the loop untill the endmethod command is found into the lines
-                                if (!lines[i].Equals("endmethod"))
+                                //if comma found then split parameters by comma
+                                numberOfParameters = parameter[1].Split(new string[] { ",", ")" }, StringSplitOptions.RemoveEmptyEntries);
+                                //foreach to iterate the parameters existed in method
+                                foreach (String parameters in numberOfParameters)
                                 {
-                                    //checking a commandtype by passing a lines 
-                                    string command_types = CheckCommandTypes(lines[i]);
-                                    //if commandtype return drawing_command then adding the block of lines in ArrayList
-                                    if (command_types.Equals("drawing_commands"))
+                                    //passing paramters to a method to add them into the dictionary
+                                    ParameterizedMethod(parameters);
+                                }
+                                //for loop starts from the line where method command found
+                                for (int i = count_line; i < lines.Length; i++)
+                                {
+                                    //runs the loop untill the endmethod command is found into the lines
+                                    if (!lines[i].Equals("endmethod"))
                                     {
-                                        //adding lines in arraylist
-                                        line_of_commands.Add(lines[i]);
+                                        //checking a commandtype by passing a lines 
+                                        string command_types = CheckCommandTypes(lines[i]);
+                                        //if commandtype return drawing_command then adding the block of lines in ArrayList
+                                        if (command_types.Equals("drawing_commands"))
+                                        {
+                                            //adding lines in arraylist
+                                            line_of_commands.Add(lines[i]);
+                                        }
+
                                     }
-
-                                }
-                                else
-                                {
-                                    continue;
-                                }
-                            }
-
-                        }
-                        //checks if method contains only one parameter 
-                        else if (singleParameter[1].Length == 1)
-                        {
-                            //passing a sing paramter to a parameterizedMethod to add them into the dictionary
-                            ParameterizedMethod(singleParameter[1]);
-                            //for loop starts from the line where method command found
-                            for (int i = count_line; i < lines.Length; i++)
-                            {
-                                //runs the loop untill the endmethod command is found into the lines
-                                if (!lines[i].Equals("endmethod"))
-                                {
-                                    //checking a commandtype by passing a lines 
-                                    string command_types = CheckCommandTypes(lines[i]);
-                                    //if commandtype return drawing_command then adding the block of lines in ArrayList
-                                    if (command_types.Equals("drawing_commands"))
+                                    else
                                     {
-                                        //adding lines in arraylist
-                                        line_of_commands.Add(lines[i]);
+                                        continue;
                                     }
                                 }
-                                else
+
+                            }
+                            //checks if method contains only one parameter 
+                            else if (singleParameter[1].Length == 1)
+                            {
+                                //passing a sing paramter to a parameterizedMethod to add them into the dictionary
+                                ParameterizedMethod(singleParameter[1]);
+                                //for loop starts from the line where method command found
+                                for (int i = count_line; i < lines.Length; i++)
                                 {
-                                    continue;
+                                    //runs the loop untill the endmethod command is found into the lines
+                                    if (!lines[i].Equals("endmethod"))
+                                    {
+                                        //checking a commandtype by passing a lines 
+                                        string command_types = CheckCommandTypes(lines[i]);
+                                        //if commandtype return drawing_command then adding the block of lines in ArrayList
+                                        if (command_types.Equals("drawing_commands"))
+                                        {
+                                            //adding lines in arraylist
+                                            line_of_commands.Add(lines[i]);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        continue;
+                                    }
                                 }
+
                             }
 
+                            return true;
                         }
-
-                        return true;
+                    }
+                    catch(IndexOutOfRangeException e)
+                    {
+                        CommandLine.error = true;
+                        ErrorRepository.errorsList.Add("Invalid method syntax at line " + DrawAllShapes.line_number);
                     }
                 }
             }
@@ -1156,35 +1103,42 @@ namespace Draw_Shapes
                     //if parameterized method matched then this block will get executed
                     else if (check.IsMatch(lines[i]))
                     {
+                        
                         bool validParameter = false;
-
-                        //checks if lines contains comma
-                        if (lines[i].Contains(","))
+                        if (lines[i].Contains(methodName))
                         {
-                            //split the line by bracket and comma
-                            String[] splitters = lines[i].Split('(');
-                            String[] splitter = splitters[1].Split(new String[] { "(", ",", ")" }, StringSplitOptions.RemoveEmptyEntries);
-
-                            //for loop starts to store the variables into the key of dictionary
-                            for (int index = 0; index < splitter.Length; index++)
+                            //checks if lines contains comma
+                            if (lines[i].Contains(","))
                             {
-                                if (!Regex.IsMatch(splitter[index], @"^[a-zA-Z]+$"))
+                                //split the line by bracket and comma
+                                String[] splitters = lines[i].Split('(');
+                                String[] splitter = splitters[1].Split(new String[] { "(", ",", ")" }, StringSplitOptions.RemoveEmptyEntries);
+
+                                //for loop starts to store the variables into the key of dictionary
+                                for (int index = 0; index < splitter.Length; index++)
                                 {
-                                    validParameter = true;
-                                    //storing values into the dictionary value
-                                    store_variables[numberOfParameters[index]] = splitter[index];
-                                    if (store_variables.ContainsKey(numberOfParameters[index]))
+                                    if (!Regex.IsMatch(splitter[index], @"^[a-zA-Z]+$"))
                                     {
-                                        numberOfParameters[index] = store_variables[numberOfParameters[index]];
+                                        validParameter = true;
+                                        //storing values into the dictionary value
+                                        store_variables[numberOfParameters[index]] = splitter[index];
+                                        if (store_variables.ContainsKey(numberOfParameters[index]))
+                                        {
+                                            numberOfParameters[index] = store_variables[numberOfParameters[index]];
+                                        }
                                     }
-                                }
+                                    else
+                                    {
+                                        throw new InvalidCommandParametersException("Invalid parameter passed at method calling ");
+                                    }
 
+                                }
+                                if (!validParameter)
+                                {
+                                    throw new InvalidCommandParametersException("Invalid parameter passed at method calling. Error at line " + DrawAllShapes.line_number);
+                                }
+                                return true;
                             }
-                            if (!validParameter)
-                            {
-                                throw new InvalidCommandParametersException("Invalid parameter passed at method calling. Error at line " + DrawAllShapes.line_number);
-                            }
-                            return true;
                         }
                         //checks if lines contains the method signature
                         if (lines[i].Contains(methodName))
@@ -1209,7 +1163,7 @@ namespace Draw_Shapes
                                 }
                                 else
                                 {
-                                    throw new InvalidCommandParametersException("Invalid parameter passed at method calling. Error at line " + DrawAllShapes.line_number);
+                                    throw new InvalidCommandParametersException("Invalid parameter passed at method calling ");
                                 }
                                 return true;
                             }

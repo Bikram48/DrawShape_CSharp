@@ -56,7 +56,7 @@ namespace Draw_Shapes
             else
             {
                 CommandLine.error = true;
-                CommandLine.errors.Add("Invalid color name at line " + DrawAllShapes.line_number);
+                ErrorRepository.errorsList.Add("Invalid color name at line " + DrawAllShapes.line_number);
             }
             //returning the color for the pen
             return colour;
