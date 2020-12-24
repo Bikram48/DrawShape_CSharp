@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Draw_Shapes
 {
+    /// <summary>
+    /// This is the user defined exception class which is extended from the base class called Exception.
+    /// This exception will be thrown when invalid parameters are passed into the commands.
+    /// </summary>
     class InvalidCommandParametersException:Exception
     {
         public InvalidCommandParametersException()

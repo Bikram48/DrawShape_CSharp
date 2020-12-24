@@ -100,7 +100,7 @@ namespace Draw_Shapes
                 if (isPen == true)
                 {
                     //makes the pen
-                    Pen p = new Pen(colour, 2);
+                    Pen p = new Pen(colour, 4);
                     //draws the rectangle in canvas
                     g.DrawRectangle(p, xAxis, yAxis, width, height);
                 }
@@ -108,7 +108,7 @@ namespace Draw_Shapes
                 else
                 {
                     //creates the pen
-                    Pen p = new Pen(Color.Black, 2);
+                    Pen p = new Pen(Color.Black, 4);
                     //draws the rectangle in canvas.
                     g.DrawRectangle(p, xAxis, yAxis, width, height);
                 }

@@ -9,22 +9,25 @@ using System.Windows.Forms;
 namespace Draw_Shapes
 {
     /// <summary>
-    /// This class contains a various types of methods to draw a shapes in a canvas.
+    /// This <c>Draw_Shapes</c> class contains a various types of methods to draw a shapes in a canvas.
     /// This class first checks if the shape exists on the system through ShapeFactory class. If exist then it makes
     /// the object of that shape and calls the draw method to draw the shapes.
     /// The methods in these class takes the parameters which will be needed to draw the
     /// shapes and it passed those parameter to shape classes (rectangle,Triangle,Circle) to draw the shapes.
     /// </summary>
+    ///<remarks>
+    ///This class get the parameters like colour,xAxsis,yAxis,g which will be appropriate for all the shapes.
+    /// </remarks>
     class Canvas
     { 
         /// <summary>
-        /// Instantiates an object of ShapeFacotry shape.
+        /// Instantiates an object of ShapeFacotry class.
+        /// ShapeFactory is a factory design pattern which returns the object of the shape if existed.
         /// </summary>
         ShapeFactory shape = new ShapeFactory();
-
         /// <summary>
         /// If the shape is rectangle then this method helps to get the parameters requires 
-        /// fro the rectangle class.
+        /// for the rectangle class.
         /// </summary>
         /// <param name="colour">Pen color</param>
         /// <param name="xAxis">xAxis from moveTo command</param>
@@ -48,7 +51,7 @@ namespace Draw_Shapes
 
         /// <summary>
         /// If the shape is circle then this method helps to get the parameters requires 
-        /// fro the circle class.
+        /// for the circle class.
         /// </summary>
         /// <param name="colour">Pen color</param>
         /// <param name="xAxis">xAxis from moveTo command</param>
@@ -71,7 +74,7 @@ namespace Draw_Shapes
 
         /// <summary>
         /// If the shape is triangle then this method helps to get the parameters requires 
-        /// fro the triangle class.
+        /// for the triangle class.
         /// </summary>
         /// <param name="colour">Pen color</param>
         /// <param name="xAxis">xAxis from moveTo command</param>
@@ -102,12 +105,12 @@ namespace Draw_Shapes
         /// <param name="point1">First point</param>
         /// <param name="point2">Second point</param>
         /// <param name="g">Graphics reference</param>
-        public void drawLine(Color colour, int xAxis, int yAxis, Boolean fillOn, int point1, int point2, Graphics g)
+        public void drawLine(Color colour, int xAxis, int yAxis, Boolean isPen, int point1, int point2, Graphics g)
         {
             if (!DrawAllShapes.syntaxCheckerClicked)
             {
                 //if pen is set from the commandline then this block will get executed
-                if (CommandChecker.isPen == true)
+                if (isPen == true)
                 {
                     //creates the pen
                     Pen p = new Pen(colour, 2);

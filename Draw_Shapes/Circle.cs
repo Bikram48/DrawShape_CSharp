@@ -1,4 +1,5 @@
-﻿using System;
+﻿///
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -12,6 +13,10 @@ namespace Draw_Shapes
     /// It implements the abstract method of base class Shapes.
     /// It also contains the additional properties which will be required to draw a circle.
     /// </summary>
+    /// <remarks>
+    ///     <para>Radius is declaired to give a radius to the circle</para>
+    /// </remarks>
+    ///See <see cref="abstract"/> to know about the abstract classes
     class Circle : Shapes
     {
         /// <summary>
@@ -67,7 +72,7 @@ namespace Draw_Shapes
             if (fillOn == true)
             {
                 //checks if pen command is entered. If entered then the back color will be set with the same color of pen.
-                if (CommandChecker.isPen == true)
+                if (isPen == true)
                 {
                     //brush is created to fill the circle by color.
                     SolidBrush sb = new SolidBrush(colour);
@@ -88,7 +93,7 @@ namespace Draw_Shapes
                 if (isPen == true)
                 {
                     //makes the pen
-                    Pen p = new Pen(colour, 2);
+                    Pen p = new Pen(colour, 4);
                     //draws the rectangle in canvas
                     g.DrawEllipse(p, xAxis - radius, yAxis - radius, radius + radius, radius + radius);
                 }
@@ -96,7 +101,7 @@ namespace Draw_Shapes
                 else
                 {
                     //creates the pen
-                    Pen p = new Pen(Color.Black, 2);
+                    Pen p = new Pen(Color.Black, 4);
                     //draws the rectangle in canvas.
                     g.DrawEllipse(p, xAxis - radius, yAxis - radius, radius + radius, radius + radius);
                 }

@@ -47,7 +47,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Canvas.cs" />
-    <Compile Include="CheckCommands.cs" />
     <Compile Include="Circle.cs" />
     <Compile Include="CommandChecker.cs" />
     <Compile Include="CommandLine.cs" />
